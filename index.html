@@ -11,8 +11,38 @@
 <style>
 /* === RESET === */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#0c0e12;--s1:#121620;--s2:#181d28;--s3:#212836;--s4:#2b3342;--bd:#242c3a;--bl:#364154;--ac:#3ee08c;--ag:#3ee08c22;--dg:#e85454;--dgg:#e8545422;--sf:#3ee08c;--sfg:#3ee08c22;--wa:#e8a634;--in:#5b9df0;--ig:#5b9df022;--t1:#e9edf3;--t2:#96a0b0;--t3:#5c6676;--r:8px;--rl:12px;--rxl:16px;--sh:0 1px 2px rgba(0,0,0,.35);--shl:0 12px 32px rgba(0,0,0,.45);--tr:.18s cubic-bezier(.4,0,.2,1)}
-.mode-sale{--ac:#5b9df0;--ag:#5b9df022}
+:root{
+  --bg:#0a0c10;
+  --s1:#11141a;
+  --s2:#161b22;
+  --s3:#1c2330;
+  --s4:#253044;
+  --bd:rgba(255,255,255,.07);
+  --bl:rgba(255,255,255,.14);
+  --ac:#7c8cff;
+  --ag:rgba(124,140,255,.16);
+  --dg:#f07178;
+  --dgg:rgba(240,113,120,.14);
+  --sf:#3dd68c;
+  --sfg:rgba(61,214,140,.14);
+  --wa:#e8b86d;
+  --in:#6eb6ff;
+  --ig:rgba(110,182,255,.14);
+  --t1:#eef1f6;
+  --t2:#9aa4b2;
+  --t3:#6b7585;
+  --r:10px;
+  --rl:14px;
+  --rxl:18px;
+  --sh:0 1px 2px rgba(0,0,0,.28);
+  --sh-md:0 8px 24px rgba(0,0,0,.22);
+  --shl:0 16px 48px rgba(0,0,0,.38);
+  --tr:.2s cubic-bezier(.22,1,.36,1);
+  --tr-s:.12s cubic-bezier(.22,1,.36,1);
+  --grad-card:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,0));
+  --grad-accent:linear-gradient(135deg,rgba(124,140,255,.22),rgba(110,182,255,.08));
+}
+.mode-sale{--ac:#6eb6ff;--ag:rgba(110,182,255,.16)}
 html{font-size:15px;scroll-behavior:smooth}
 body{font-family:'Inter','Noto Sans SC',system-ui,sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 ::selection{background:var(--ac);color:var(--bg)}
@@ -68,6 +98,17 @@ input,button,select,textarea{font-family:inherit;font-size:inherit;border:none;o
 .tt{font-weight:600;font-size:.95rem}.tm{font-size:.6rem;font-family:'DM Mono',monospace;padding:.15rem .45rem;border-radius:4px}.tsp{flex:1}
 .sbox{position:relative;width:220px}.sbox input{width:100%;padding:.45rem .8rem .45rem 2rem;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1);font-size:.78rem;transition:all var(--tr)}.sbox input:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--ag)}
 .sbox svg{position:absolute;left:.6rem;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--t3)}
+/* inv toolbar: equal heights */
+.sbox input, #iY, .tb select, .tb input[type="text"], .tb input[type="number"] {
+  box-sizing: border-box;
+  height: 38px;
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 1.4;
+}
+.sbox input { padding-left: 2rem; padding-right: .75rem; }
+#iY { width: 92px; padding-left: .75rem; padding-right: .75rem; }
+
 .cnt{flex:1;padding:1.3rem 1.5rem 2rem;min-width:0;width:100%;box-sizing:border-box}
 .sov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:99}.sov.show{display:block}
 
@@ -112,7 +153,7 @@ tbody tr{border-bottom:1px solid var(--bd);transition:background var(--tr)}tbody
 /* === BADGES & TAGS === */
 .badge{display:inline-block;padding:.1rem .4rem;border-radius:5px;font-size:.62rem;font-weight:500}
 .b-ad{background:#3ee08c18;color:#3ee08c;border:1px solid #3ee08c30}.b-st{background:#5b9df018;color:#5b9df0;border:1px solid #5b9df030}.b-sl{background:#3ee08c18;color:#3ee08c;border:1px solid #3ee08c30}.b-on{background:#3ee08c18;color:#3ee08c;border:1px solid #3ee08c30}.b-off{background:#e8545418;color:#e85454;border:1px solid #e8545430}.b-dr{background:#8c919d18;color:#8c919d;border:1px solid #8c919d30}.b-pd{background:#e8a63418;color:#e8a634;border:1px solid #e8a63430}.b-pk{background:#5b9df018;color:#5b9df0;border:1px solid #5b9df030}.b-dn{background:#3ee08c18;color:#3ee08c;border:1px solid #3ee08c30}.b-cn{background:#e8545418;color:#e85454;border:1px solid #e8545430}
-.b-novo{background:#3ee08c18;color:#3ee08c;border:1px solid #3ee08c30}.b-oferta{background:#e8a63418;color:#e8a634;border:1px solid #e8a63430}.b-promo{background:#c77dff18;color:#c77dff;border:1px solid #c77dff30}
+.b-novo{background:#3ee08c18;color:#3ee08c;border:1px solid #3ee08c30}.b-oferta{background:#e8a63418;color:#e8a634;border:1px solid #e8a63430}.b-promo,.b-promocao{background:#c77dff18;color:#c77dff;border:1px solid #c77dff30}.b-normal{background:#8c919d18;color:#8c919d;border:1px solid #8c919d30}.b-maiscaro{background:#f43f5e18;color:#f43f5e;border:1px solid #f43f5e30}
 .ctags{display:flex;gap:.2rem;flex-wrap:wrap}.ctag{display:inline-flex;align-items:center;gap:.15rem;padding:.1rem .4rem;border-radius:5px;font-size:.62rem;font-weight:500;white-space:nowrap}
 .ptags{display:flex;gap:.15rem;flex-wrap:wrap}.ptag{font-size:.55rem;padding:.08rem .3rem;border-radius:4px;background:var(--s3);color:var(--t3)}.ptag.on{background:var(--sfg);color:var(--sf);border:1px solid #3ee08c22}
 .cpills{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.3rem}
@@ -353,7 +394,663 @@ tbody td:nth-child(5){font-variant-numeric:tabular-nums}
 .pd-k{flex-shrink:0;width:5.2rem;font-size:.75rem;color:var(--t3);line-height:1.7}
 .pd-v{flex:1;min-width:0;font-size:.82rem;line-height:1.7;word-break:break-word;overflow-wrap:anywhere}
 .tf{flex-wrap:wrap;gap:.35rem}
-@media(max-width:600px){.pcard{padding:.65rem .75rem}.pd-k{width:4.3rem;font-size:.72rem}.pd-v{font-size:.78rem}}</style>
+@media(max-width:600px){.pcard{padding:.65rem .75rem}.pd-k{width:4.3rem;font-size:.72rem}.pd-v{font-size:.78rem}}
+/* === UI POLISH: modern WMS (Linear/Stripe-inspired) === */
+body{background:
+  radial-gradient(1200px 600px at 12% -10%, rgba(124,140,255,.09), transparent 55%),
+  radial-gradient(900px 480px at 88% 0%, rgba(110,182,255,.05), transparent 50%),
+  var(--bg)}
+h1,h2,h3,.mt,.pnT{letter-spacing:-.02em}
+.sc{
+  background:var(--grad-card),var(--s1);
+  border:1px solid var(--bd);
+  border-radius:var(--rl);
+  box-shadow:var(--sh);
+}
+.sc:hover{
+  border-color:var(--bl);
+  transform:translateY(-2px);
+  box-shadow:var(--sh-md);
+  background:var(--grad-card),var(--s2);
+}
+.sc .sl{font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.sc .sv{font-size:1.85rem;font-weight:700;letter-spacing:-.03em;line-height:1.05;margin:.35rem 0}
+.sch{
+  display:inline-flex;align-items:center;gap:.3rem;
+  padding:.22rem .55rem;border-radius:999px;font-size:.68rem;font-weight:600;
+  background:var(--s3);color:var(--t2);border:1px solid var(--bd)
+}
+.sch.up{background:var(--sfg);color:var(--sf);border-color:rgba(61,214,140,.22)}
+.sch.down{background:var(--dgg);color:var(--dg);border-color:rgba(240,113,120,.22)}
+.pnl{
+  background:var(--grad-card),var(--s1);
+  border:1px solid var(--bd);
+  border-radius:var(--rl);
+  box-shadow:var(--sh);
+  overflow:hidden
+}
+.pnH{padding:.95rem 1.15rem;border-bottom:1px solid var(--bd)}
+.pnT{font-weight:650;font-size:.92rem;letter-spacing:-.01em}
+.pcard{
+  background:var(--grad-card),var(--s2);
+  border:1px solid var(--bd);
+  border-radius:var(--rl);
+  padding:.85rem 1rem;
+  box-shadow:var(--sh)
+}
+.pcard:hover{
+  border-color:rgba(124,140,255,.35);
+  background:var(--grad-card),var(--s3);
+  box-shadow:var(--sh-md);
+  transform:translateY(-1px)
+}
+.btn{
+  border-radius:10px;
+  font-weight:600;
+  letter-spacing:-.01em;
+  transition:transform var(--tr-s),background var(--tr),border-color var(--tr),box-shadow var(--tr)
+}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn.bp{
+  background:linear-gradient(180deg,#8b98ff,#6d7cf0);
+  color:#fff;
+  box-shadow:0 6px 18px rgba(124,140,255,.28)
+}
+.btn.bp:hover{box-shadow:0 10px 28px rgba(124,140,255,.36)}
+.btn.bg{background:var(--s3);color:var(--t1);border:1px solid var(--bd)}
+.btn.bg:hover{border-color:var(--bl);background:var(--s4)}
+.sbox input,#iY,.tb select,.tb input[type="text"]{
+  border-radius:10px;
+  border:1px solid var(--bd);
+  background:rgba(255,255,255,.03);
+  transition:border-color var(--tr),box-shadow var(--tr),background var(--tr)
+}
+.sbox input:focus,#iY:focus,.tb select:focus,.tb input:focus{
+  border-color:rgba(124,140,255,.55);
+  box-shadow:0 0 0 3px rgba(124,140,255,.18);
+  background:rgba(255,255,255,.05)
+}
+.badge{
+  display:inline-flex;align-items:center;gap:.25rem;
+  padding:.18rem .55rem;border-radius:999px;font-size:.68rem;font-weight:600;letter-spacing:.01em
+}
+.b-novo{background:rgba(61,214,140,.14);color:#3dd68c;border:1px solid rgba(61,214,140,.22)}
+.b-oferta{background:rgba(232,184,109,.14);color:#e8b86d;border:1px solid rgba(232,184,109,.22)}
+.b-promo,.b-promocao{background:rgba(124,140,255,.14);color:#9aa8ff;border:1px solid rgba(124,140,255,.22)}
+.b-normal{background:rgba(255,255,255,.06);color:var(--t2);border:1px solid var(--bd)}
+.mono,.sk{font-family:'DM Mono',ui-monospace,SFMono-Regular,monospace;letter-spacing:-.02em}
+.pdk{color:var(--t3);font-size:.72rem;font-weight:500}
+.pdv{font-size:.82rem;font-weight:600;letter-spacing:-.01em}
+.pdl{display:flex;gap:.35rem;align-items:baseline;line-height:1.65}
+.pimg{
+  border-radius:12px;
+  border:1px solid var(--bd);
+  background:linear-gradient(145deg,var(--s3),var(--s2))
+}
+.mo .mdl{
+  background:var(--grad-card),var(--s1);
+  border:1px solid var(--bd);
+  border-radius:var(--rxl);
+  box-shadow:var(--shl)
+}
+.tc{
+  background:var(--s1);
+  border:1px solid var(--bd);
+  border-radius:12px;
+  box-shadow:var(--shl)
+}
+.stats{gap:.9rem}
+.sc:nth-child(1)::after{background:linear-gradient(90deg,var(--ac),transparent)}
+.sc:nth-child(2)::after{background:linear-gradient(90deg,var(--sf),transparent)}
+.sc:nth-child(3)::after{background:linear-gradient(90deg,var(--in),transparent)}
+.sc:nth-child(4)::after{background:linear-gradient(90deg,var(--dg),transparent)}
+.sc::after{height:2px;opacity:.85}
+button,select{transition:all var(--tr-s)}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none!important;animation:none!important}
+}
+/* === end polish === */
+
+/* === UI POLISH 2 === */
+.tb{
+  gap:.55rem;
+  padding:.35rem;
+  background:rgba(255,255,255,.025);
+  border:1px solid var(--bd);
+  border-radius:14px;
+}
+.fc{
+  padding:.32rem .72rem;
+  border-radius:999px;
+  border:1px solid var(--bd);
+  background:transparent;
+  color:var(--t2);
+  font-size:.72rem;
+  font-weight:600;
+  transition:all var(--tr-s)
+}
+.fc:hover{color:var(--t1);border-color:var(--bl);background:rgba(255,255,255,.04)}
+.fc.on{
+  background:var(--ag);
+  color:var(--ac);
+  border-color:rgba(124,140,255,.35)
+}
+.csi{
+  background:var(--grad-card),var(--s2);
+  border:1px solid var(--bd);
+  border-radius:12px;
+  padding:.65rem .85rem;
+  margin-bottom:.45rem
+}
+.csi:hover{
+  border-color:rgba(124,140,255,.28);
+  background:var(--grad-card),var(--s3);
+  box-shadow:var(--sh)
+}
+.cat-toggle-arrow{width:28px;height:28px;font-size:1.15rem;border-radius:8px}
+.cat-children.collapsed{display:none}
+.cascade-item{
+  border-radius:10px;
+  padding:.55rem .75rem;
+  margin:.2rem 0;
+  border:1px solid transparent;
+  transition:all var(--tr-s)
+}
+.cascade-item:hover{background:rgba(255,255,255,.045);border-color:var(--bd)}
+.cascade-item.on{
+  background:var(--ag);
+  border-color:rgba(124,140,255,.35);
+  color:var(--ac)
+}
+.cascade-tag,.ctag{
+  border-radius:999px;
+  padding:.22rem .65rem;
+  font-size:.72rem;
+  font-weight:600;
+  border:1px solid var(--bd);
+  background:rgba(255,255,255,.04)
+}
+.lsi{
+  padding:.7rem .15rem;
+  border-bottom:1px dashed var(--bd)
+}
+.lsi:last-child{border-bottom:none}
+.lsi:hover{background:rgba(255,255,255,.025);border-radius:10px}
+.ai{
+  padding:.75rem .25rem;
+  border-bottom:1px dashed var(--bd)
+}
+.ai:last-child{border-bottom:none}
+.stb,.b-pd{
+  border-radius:999px;
+  font-size:.65rem;
+  font-weight:600
+}
+.sbr2{
+  height:4px;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  overflow:hidden
+}
+.sbf2{height:100%;border-radius:999px}
+.pnl .pnB{padding:1rem 1.15rem}
+.mh{padding:1.05rem 1.25rem}
+.mb{padding:1.15rem 1.25rem}
+.mf{padding:1rem 1.25rem;border-top:1px solid var(--bd);gap:.55rem}
+.fg label,.fgm label{
+  font-size:.72rem;
+  font-weight:600;
+  color:var(--t3);
+  letter-spacing:.03em
+}
+.fg input,.fgm input,.fgm textarea,.fgm select{
+  border-radius:10px;
+  border:1px solid var(--bd);
+  background:rgba(255,255,255,.03);
+  padding:.65rem .85rem
+}
+table{
+  width:100%;
+  border-collapse:collapse
+}
+th{
+  font-size:.7rem;
+  font-weight:650;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--t3);
+  padding:.75rem .55rem;
+  border-bottom:1px solid var(--bd)
+}
+td{
+  padding:.85rem .55rem;
+  border-bottom:1px solid var(--bd);
+  vertical-align:middle
+}
+tr:hover td{background:rgba(255,255,255,.02)}
+.sk{
+  font-size:.78rem;
+  padding:.18rem .5rem;
+  border-radius:6px;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--bd)
+}
+.empty{
+  padding:1.5rem;
+  text-align:center;
+  color:var(--t3);
+  border:1px dashed var(--bd);
+  border-radius:var(--rl);
+  background:rgba(255,255,255,.015)
+}
+/* === end polish 2 === */
+
+/* === UI POLISH 3: shell === */
+.ni{
+  border-radius:10px;
+  padding:.62rem .85rem;
+  transition:all var(--tr-s)
+}
+.ni:hover{background:rgba(255,255,255,.05)}
+.ni.on{
+  background:var(--ag);
+  color:var(--ac);
+  box-shadow:inset 0 0 0 1px rgba(124,140,255,.22)
+}
+.nl{
+  margin:1.15rem 0 .45rem;
+  padding-left:.85rem;
+  font-size:.65rem;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--t3)
+}
+.sb,header,.hdr{
+  background:rgba(10,12,16,.72);
+  backdrop-filter:blur(12px)
+}
+/* === end polish 3 === */
+
+/* === HEADER CONTROLS === */
+header .bi#langBtn,
+header .sbox input,
+header input#gS{
+  height:38px;
+  box-sizing:border-box;
+  border-radius:10px;
+}
+header .sbox{width:220px;display:flex;align-items:center}
+header .sbox input{padding:0 .85rem 0 2.1rem}
+header .sbox svg{top:50%;transform:translateY(-50%)}
+/* === end header controls === */
+
+/* === SELECT POPUP === */
+select{
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239aa4b2' stroke-width='2.2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right .65rem center;
+  padding-right:1.85rem !important;
+  cursor:pointer
+}
+select:hover{border-color:var(--bl)}
+select:focus{
+  border-color:rgba(124,140,255,.55);
+  box-shadow:0 0 0 3px rgba(124,140,255,.18)
+}
+select option{
+  background:#161b22;
+  color:#eef1f6;
+  padding:.55rem .75rem;
+  border-radius:8px
+}
+select option:checked,
+select option:hover,
+select option:focus{
+  background:rgba(124,140,255,.22);
+  color:#eef1f6
+}
+select option:disabled{
+  color:#6b7585
+}
+/* darker popup for WebKit/Blink */
+select,
+select option{
+  color-scheme:dark
+}
+body{color-scheme:dark}
+/* === end select popup === */
+
+/* === UI POLISH 3: motion & system === */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes riseIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.mo.show{animation:fadeIn .18s ease}
+.mo .mdl{animation:riseIn .22s cubic-bezier(.22,1,.36,1)}
+.stats .sc{animation:riseIn .28s cubic-bezier(.22,1,.36,1) both}
+.stats .sc:nth-child(2){animation-delay:.04s}
+.stats .sc:nth-child(3){animation-delay:.08s}
+.stats .sc:nth-child(4){animation-delay:.12s}
+.pcards .pcard{animation:riseIn .22s cubic-bezier(.22,1,.36,1) both}
+.tc{animation:scaleIn .2s cubic-bezier(.22,1,.36,1)}
+.spinner{
+  width:28px;height:28px;border-radius:50%;
+  border:2px solid rgba(255,255,255,.1);
+  border-top-color:var(--ac);
+  animation:spin .7s linear infinite;
+  margin:.75rem auto
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{
+  background:linear-gradient(180deg,rgba(255,255,255,.02),transparent);
+  animation:fadeIn .2s ease
+}
+.lsi .lf{
+  height:3px;
+  border-radius:999px;
+  background:var(--ac);
+  box-shadow:0 0 8px rgba(124,140,255,.35)
+}
+.lsi .lf.c{background:var(--dg);box-shadow:0 0 8px rgba(240,113,120,.35)}
+.lsi .lf.w{background:var(--wa);box-shadow:0 0 8px rgba(232,184,109,.3)}
+.ai .ad{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ai .ad.in{background:var(--sf);box-shadow:0 0 8px rgba(61,214,140,.45)}
+.ai .ad.out{background:var(--in);box-shadow:0 0 8px rgba(110,182,255,.45)}
+.btn:focus-visible,.fc:focus-visible,select:focus-visible,input:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 3px rgba(124,140,255,.28)
+}
+.pcard:active,.sc:active{transform:scale(.985)}
+.pnl{animation:riseIn .22s cubic-bezier(.22,1,.36,1) both}
+.sbr2 .sbf2{transition:width .35s cubic-bezier(.22,1,.36,1)}
+.badge{transition:all var(--tr-s)}
+.badge:hover{filter:brightness(1.08)}
+/* order / activity rows */
+.oi-row,.od-section{
+  border-radius:12px;
+  border:1px solid var(--bd);
+  background:rgba(255,255,255,.02);
+  padding:.85rem 1rem
+}
+/* end polish 3 motion */
+
+/* === TOAST POLISH 3 === */
+.tc{
+  min-width:220px;
+  padding:.85rem 1.1rem;
+  font-size:.82rem;
+  font-weight:500;
+  animation:riseIn .22s cubic-bezier(.22,1,.36,1)
+}
+.tc.ok{border-color:rgba(61,214,140,.35);box-shadow:0 12px 32px rgba(61,214,140,.12)}
+.tc.er{border-color:rgba(240,113,120,.35);box-shadow:0 12px 32px rgba(240,113,120,.12)}
+/* end toast polish 3 */
+
+/* === CATEGORY EXPAND UI (unified) === */
+.cat-toggle-arrow{
+  width:28px;
+  height:28px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  border:1px solid transparent;
+  background:rgba(255,255,255,.03);
+  color:var(--t2);
+  font-size:.85rem;
+  line-height:1;
+  transition:all var(--tr-s);
+  user-select:none;
+  flex-shrink:0
+}
+.cat-toggle-arrow:hover{
+  color:var(--ac);
+  background:var(--ag);
+  border-color:rgba(124,140,255,.25)
+}
+.cat-toggle-arrow.expanded{
+  transform:rotate(90deg);
+  color:var(--ac);
+  background:var(--ag);
+  border-color:rgba(124,140,255,.22)
+}
+.cat-children{
+  margin-left:.15rem;
+  padding-left:.55rem;
+  border-left:1px solid var(--bd);
+  overflow:hidden
+}
+.cat-children.collapsed{display:none}
+.cascade-item .ci-arrow,
+.cascade-item.has-children::after{
+  color:var(--t3)
+}
+.ci-arrow{
+  margin-left:auto;
+  width:22px;
+  height:22px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:6px;
+  background:rgba(255,255,255,.03);
+  font-size:.72rem;
+  color:var(--t2)
+}
+.cascade-item:hover .ci-arrow{
+  color:var(--ac);
+  background:var(--ag)
+}
+.cascade-selector{
+  border:1px solid var(--bd);
+  border-radius:14px;
+  background:rgba(255,255,255,.02);
+  padding:.35rem
+}
+.cascade-selected{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.4rem;
+  margin-bottom:.45rem
+}
+select{
+  appearance:none;
+  -webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239aa4b2' stroke-width='2.2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right .7rem center;
+  padding-right:2rem !important;
+  height:38px;
+  box-sizing:border-box;
+  border-radius:10px;
+  border:1px solid var(--bd);
+  background-color:rgba(255,255,255,.03);
+  color:var(--t1);
+  font-size:.8rem;
+  cursor:pointer;
+  transition:all var(--tr-s)
+}
+select:hover{border-color:var(--bl);background-color:rgba(255,255,255,.05)}
+select:focus{
+  border-color:rgba(124,140,255,.55);
+  box-shadow:0 0 0 3px rgba(124,140,255,.16)
+}
+select option{
+  background:#161b22;
+  color:#eef1f6;
+  padding:.5rem .75rem
+}
+select option:checked,select option:hover{background:rgba(124,140,255,.22);color:#eef1f6}
+/* end category expand ui */
+
+/* === FORM CONTROLS UNIFIED === */
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="email"],
+input[type="search"],
+textarea{
+  height:38px;
+  box-sizing:border-box;
+  border-radius:10px;
+  border:1px solid var(--bd);
+  background:rgba(255,255,255,.035);
+  color:var(--t1);
+  padding:0 .75rem;
+  font-size:.82rem;
+  transition:border-color var(--tr-s),box-shadow var(--tr-s),background var(--tr-s)
+}
+input[type="number"]{
+  -moz-appearance:textfield;
+  appearance:textfield;
+  padding-right:1.75rem;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='22' viewBox='0 0 10 22'%3E%3Cpath d='M5 2l3 3H2z' fill='%239aa4b2'/%3E%3Cpath d='M5 20l3-3H2z' fill='%239aa4b2'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right .45rem center
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button{
+  -webkit-appearance:none;
+  margin:0
+}
+input[type="text"]:hover,
+input[type="number"]:hover,
+textarea:hover{border-color:var(--bl);background:rgba(255,255,255,.05)}
+input:focus,textarea:focus,select:focus{
+  outline:none;
+  border-color:rgba(124,140,255,.55);
+  box-shadow:0 0 0 3px rgba(124,140,255,.16);
+  background:rgba(255,255,255,.05)
+}
+input::placeholder,textarea::placeholder{color:var(--t3)}
+input[type="checkbox"]{
+  appearance:none;
+  -webkit-appearance:none;
+  width:18px;
+  height:18px;
+  border-radius:5px;
+  border:1.5px solid var(--bl);
+  background:rgba(255,255,255,.03);
+  cursor:pointer;
+  flex-shrink:0;
+  position:relative;
+  transition:all var(--tr-s)
+}
+input[type="checkbox"]:hover{
+  border-color:var(--ac);
+  background:var(--ag)
+}
+input[type="checkbox"]:checked{
+  background:var(--ac);
+  border-color:var(--ac);
+  box-shadow:0 0 0 3px rgba(124,140,255,.18)
+}
+input[type="checkbox"]:checked::after{
+  content:'';
+  position:absolute;
+  left:5px;
+  top:1.5px;
+  width:4px;
+  height:9px;
+  border:solid #fff;
+  border-width:0 2px 2px 0;
+  transform:rotate(45deg)
+}
+/* card / page inputs inherit */
+.pcard input[type="number"],
+.pcard input[type="text"]{
+  height:34px;
+  font-size:.82rem
+}
+#bulk_sel,#lp_\d,
+input[id^="lp_"]{
+  height:34px !important;
+  background:rgba(255,255,255,.035) !important;
+  border:1px solid var(--bd) !important;
+  color:var(--t1) !important;
+  border-radius:9px !important
+}
+/* end form controls unified */
+
+/* === INV SELECT UI === */
+.inv-sel{
+  height:38px;
+  box-sizing:border-box;
+  min-width:112px;
+  padding:0 2rem 0 .75rem !important;
+  border-radius:10px;
+  border:1px solid var(--bd);
+  background-color:rgba(255,255,255,.035);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239aa4b2' stroke-width='2.2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right .7rem center;
+  color:var(--t1);
+  font-size:.8rem;
+  font-weight:500;
+  cursor:pointer;
+  transition:all var(--tr-s);
+  appearance:none;
+  -webkit-appearance:none
+}
+.inv-sel:hover{
+  border-color:var(--bl);
+  background-color:rgba(255,255,255,.05)
+}
+.inv-sel:focus{
+  border-color:rgba(124,140,255,.55);
+  box-shadow:0 0 0 3px rgba(124,140,255,.16)
+}
+.inv-sel option{
+  background:#161b22;
+  color:#eef1f6;
+  padding:.55rem .75rem
+}
+.inv-sel option:checked,
+.inv-sel option:hover{
+  background:rgba(124,140,255,.22);
+  color:#eef1f6
+}
+/* filter row chrome like other toolbars */
+#invCat1, #invCat2, #invCat3, #invCat4{
+  font-family:inherit
+}
+/* end inv select ui */
+
+/* === FIX: header clutter & search icon === */
+.tc:empty{display:none !important;min-width:0 !important;padding:0 !important;border:none !important;box-shadow:none !important;background:transparent !important}
+.sbox > input,
+.sbox input#gS,
+.sbox input#iS{
+  padding-left:2.15rem !important;
+  padding-right:.75rem !important
+}
+.sbox > svg,
+.sbox svg{
+  left:.72rem;
+  z-index:1;
+  pointer-events:none
+}
+#loginLangBtn{display:none !important}
+/* visible only on login screen */
+#loginPage:not([style*="display: none"]):not([style*="display:none"]) #loginLangBtn{
+  display:flex !important
+}
+.bi#langBtn{
+  background:var(--s2);
+  border:1px solid var(--bd);
+  overflow:hidden
+}
+.bi::after,.bm::after,.bl::after,.pg::after{
+  background:transparent !important;
+  pointer-events:none
+}
+/* end fix header */
+</style>
 </head>
 <body>
 
@@ -389,7 +1086,7 @@ tbody td:nth-child(5){font-variant-numeric:tabular-nums}
     <span class="tt" id="tT">仪表盘</span>
     <span class="tm" id="tM">仓库端</span>
     <span class="tsp"></span>
-    <button class="bi" onclick="toggleLang()" title="中/PT" id="langBtn" style="font-family:'DM Mono',monospace;font-size:.65rem;width:auto;padding:0 .5rem;border-radius:var(--r)">中/BR</button>
+    <button class="bi" onclick="toggleLang()" title="中/PT" id="langBtn" style="font-family:'DM Mono',monospace;font-size:.65rem;width:auto;height:38px;min-width:52px;padding:0 .75rem;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box">中/BR</button>
     <div class="sbox"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="gS" data-t-ph="searchPH" placeholder="搜索商品、SKU..." oninput="gSearch(this.value)" /></div>
   </header>
   <div class="cnt" id="mc"></div>
@@ -399,7 +1096,7 @@ tbody td:nth-child(5){font-variant-numeric:tabular-nums}
 <!-- ═══════════ MODALS ═══════════ -->
 
 <!-- Product Modal -->
-<div class="mo" id="pmo"><div class="mdl"><div class="mh"><span class="mt" id="pmT">新增商品</span><button class="mx" onclick="cMo('pmo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="pmId" /><input type="hidden" id="pmManual" value="0" /><div class="fgm"><label data-t="productImage">商品图片</label><div class="iu"><div class="ib" id="pmIB" onclick="document.getElementById('pmIF').click()"><span class="ia">+</span><input type="file" id="pmIF" accept="image/*" onchange="hImg(this,'pmIB','pmImgData')" /></div></div></div><div class="fgm"><label data-t="productName">商品名称 *</label><input type="text" id="pmN" data-t-ph="enterProductName" placeholder="输入商品名称" /></div><div class="fgm"><label data-t="productCategory">商品分类 * (可多选)</label><div class="cpills" id="pmCats"></div></div><div class="fgm"><label data-t="skuCode">SKU 编码</label><div class="sku-prev" id="skuPrev"><span class="spl">SKU:</span><span class="spv" id="skuAuto">请先选择分类</span><span class="spm" id="skuMode" onclick="toggleSkuMode()">切换手动</span></div></div><div class="fr"><div class="fgm"><label data-t="stockQty">库存数量</label><input type="number" id="pmS" placeholder="0" min="0" /></div><div class="fgm"><label data-t="position">存放位置</label><input type="text" id="pmL" data-t-ph="positionPH" placeholder="如 A区-3层-2号" /></div></div>
+<div class="mo" id="pmo"><div class="mdl"><div class="mh"><span class="mt" id="pmT">新增商品</span><button class="mx" onclick="cMo('pmo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="pmId" /><input type="hidden" id="pmManual" value="0" /><div class="fgm"><label data-t="productImage">商品图片</label><div class="iu"><div class="ib" id="pmIB" onclick="document.getElementById('pmIF').click()"><span class="ia">+</span><input type="file" id="pmIF" accept="image/*" onchange="hImg(this,'pmIB','pmImgData')" /></div></div></div><div class="fgm"><label data-t="productName">商品名称 *</label><input type="text" id="pmN" data-t-ph="enterProductName" placeholder="输入商品名称" /></div><div class="fgm"><label data-t="productCategory">商品分类 *</label><div class="cpills" id="pmCats"></div></div><div class="fgm"><label data-t="skuCode">SKU 编码</label><div class="sku-prev" id="skuPrev"><span class="spl">SKU:</span><span class="spv" id="skuAuto">请先选择分类</span><span class="spm" id="skuMode" onclick="toggleSkuMode()">切换手动</span></div></div><div class="fr"><div class="fgm"><label data-t="stockQty">库存数量</label><input type="number" id="pmS" placeholder="0" min="0" /></div><div class="fgm"><label data-t="position">存放位置</label><input type="text" id="pmL" data-t-ph="positionPH" placeholder="如 A区-3层-2号" /></div></div>
 <div class="fgm"><label data-t="productType">商品类型</label>
 <select id="pmCatType" onchange="toggleSizeFields()">
   <option value="general" data-t="general">通用</option>
@@ -420,7 +1117,7 @@ tbody td:nth-child(5){font-variant-numeric:tabular-nums}
   </div>
 </div>
 <div style="font-size:.6rem;color:var(--t3)">' + t('bagCaseHint') + '</div></div>
-<div class="fr"><div class="fgm"><label data-t="sellPrice">销售单价 (¥)</label><input type="number" id="pmP" placeholder="0.00" min="0" step="0.01" /></div><div class="fgm" id="pmCw"><label data-t="costPrice">进货成本 (¥)</label><input type="number" id="pmC" placeholder="0.00" min="0" step="0.01" /></div></div><div class="fgm"><label data-t="remarks">备注</label><textarea id="pmNt" data-t-ph="optionalNote" placeholder="可选备注..."></textarea></div><div class="fgm"><label>标签</label><select id="pmLabel"><option value="">无</option><option value="novo">🆕 Novo</option><option value="oferta">🏷️ Oferta</option><option value="promo">🎉 Promoção</option></select></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('pmo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="saveProd()" data-t="saveProduct">保存商品</button></div></div></div>
+<div class="fr"><div class="fgm"><label data-t="sellPrice">销售单价 (¥)</label><input type="number" id="pmP" placeholder="0.00" min="0" step="0.01" /></div><div class="fgm" id="pmCw"><label data-t="costPrice">进货成本 (¥)</label><input type="number" id="pmC" placeholder="0.00" min="0" step="0.01" /></div></div><div class="fgm"><label data-t="remarks">备注</label><textarea id="pmNt" data-t-ph="optionalNote" placeholder="可选备注..."></textarea></div><div class="fgm"><label>标签</label><select id="pmLabel"><option value="normal">Normal</option><option value="novo">Novo</option><option value="oferta">Oferta</option><option value="promocao">Promoção</option></select></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('pmo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="saveProd()" data-t="saveProduct">保存商品</button></div></div></div>
 
 <!-- IO Modal -->
 <div class="mo" id="imo"><div class="mdl"><div class="mh"><span class="mt" id="ioT">入库</span><button class="mx" onclick="cMo('imo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="ioTp" /><div class="fgm"><label data-t="selectProduct">商品 *</label><div style="position:relative"><input type="text" id="ioPrSearch" placeholder="' + t('searchProductIO') + '" style="width:100%;padding:.5rem .7rem;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1);font-size:.82rem" oninput="filterIOProducts(this.value)" onfocus="filterIOProducts(this.value)" /><input type="hidden" id="ioPr" /><div id="ioPrDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:200px;overflow-y:auto;background:var(--s2);border:1px solid var(--bd);border-radius:0 0 var(--r) var(--r);z-index:10"></div></div></div><div class="fgm"><label data-t="quantity">数量 *</label><input type="number" id="ioQ" placeholder="0" min="1" /></div><div class="fgm"><label data-t="remarks">备注</label><input type="text" id="ioN" data-t-ph="reasonPH" placeholder="原因..." /></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('imo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="doIO()" data-t="confirm">确认</button></div></div></div>
@@ -508,7 +1205,7 @@ const T = {
     switchManual:'切换手动', switchAuto:'自动', stockQty:'库存数量', position:'存放位置',
     sellPrice:'销售单价 (¥)', costPrice:'进货成本 (¥)', remarks:'备注',
     saveProduct:'保存商品', enterProductName:'输入商品名称', positionPH:'如 A区-3层-2号', optionalNote:'可选备注...',
-    enterNameErr:'请输入商品名称', selectCatErr:'请至少选择一个分类', productUpdated:'商品已更新', productAdded:'商品已添加',
+    enterNameErr:'请输入商品名称', selectCatErr:'请至少选择一个分类', selectLeafCat:'请选择叶子分类', productUpdated:'商品已更新', productAdded:'商品已添加', shelf:'上下架', mall:'商城', gallery:'相册', mallList:'商城上下架', galleryList:'相册上下架', mallOn:'商城上架', mallOff:'商城下架', galleryOn:'相册上架', galleryOff:'相册下架', onShelf:'已上架', offShelf:'未上架',
     productDeleted:'已删除', saveFailed:'保存失败', deleteFailed:'删除失败', confirmDelete:'确定删除「{0}」？',
     addInbound:'新增入库', addOutbound:'新增出库', selectProduct:'商品 *', quantity:'数量 *',
     reasonPH:'原因...', selectAndEnter:'请选择商品并输入数量', insufficient:'库存不足！仅{0}',
@@ -626,7 +1323,7 @@ const T = {
     searchCats:'搜索分类...', moveTo:'移动到', selectTarget:'选择目标分类',
     catMoved:'分类已移动', cantMoveToDescendant:'不能移到自己的子分类下',
     cascadeSelect:'点击选择分类', selectedCats:'已选分类', catPath:'分类路径',
-    productLabels:'商品标签', customerMgmtNav:'顾客管理', financeMgmtNav:'财务管理', noMatchProduct:'无匹配商品', allSubCats:'-- 全部 --', searchProductIO:'搜索商品名称或SKU...', labelTag:'标签', prodDetail:'商品详情', cName:'名字', cSku:'sku', version:'版本', feats:'特征点', cPrice:'价格', cStock:'库存',
+    productLabels:'商品标签', customerMgmtNav:'顾客管理', financeMgmtNav:'财务管理', labelPrice:'折扣价管理', labelPriceHint:'仅对 Novo / Oferta / Promoção 标签商品生效', bulkPrice:'统一价格', applyBulk:'应用到该标签', perItemPrice:'单价', savePrices:'保存价格', priceUpdated:'价格已更新', labelFilterAll:'全部', labelPriceEmpty:'未设折扣价', labelPriceKeep:'折扣价，保留原价', selectAll:'全选', selectedCount:'已选 {0} 项', applySelected:'应用到已选', discountPrice:'折扣价', noMatchProduct:'无匹配商品', allSubCats:'-- 全部 --', searchProductIO:'搜索商品名称或SKU...', labelTag:'标签', prodDetail:'商品详情', cName:'名字', cSku:'sku', version:'版本', feats:'特征点', cPrice:'价格', cStock:'库存',
   },
   pt: {
     warehouse:'Armazém', sales:'Vendas', whDesc:'Estoque · Entrada/Saída · Pedidos', slDesc:'Criar pedido · Consultar estoque',
@@ -651,7 +1348,7 @@ const T = {
     switchManual:'Manual', switchAuto:'Automático', stockQty:'Quantidade', position:'Localização',
     sellPrice:'Preço de Venda (¥)', costPrice:'Custo (¥)', remarks:'Observações',
     saveProduct:'Salvar Produto', enterProductName:'Nome do produto', positionPH:'Ex: Setor A-3-2', optionalNote:'Observação opcional...',
-    enterNameErr:'Digite o nome do produto', selectCatErr:'Selecione pelo menos uma categoria', productUpdated:'Produto atualizado', productAdded:'Produto adicionado',
+    enterNameErr:'Digite o nome do produto', selectCatErr:'Selecione pelo menos uma categoria', selectLeafCat:'Selecione uma categoria folha', shelf:'Vitrine', mall:'Loja', gallery:'Galeria', mallList:'Loja online', galleryList:'Galeria', mallOn:'Publicar na loja', mallOff:'Remover da loja', galleryOn:'Publicar na galeria', galleryOff:'Remover da galeria', onShelf:'Publicado', offShelf:'Não publicado', productUpdated:'Produto atualizado', productAdded:'Produto adicionado',
     productDeleted:'Excluído', saveFailed:'Falha ao salvar', deleteFailed:'Falha ao excluir', confirmDelete:'Excluir「{0}」?',
     addInbound:'Nova Entrada', addOutbound:'Nova Saída', selectProduct:'Produto *', quantity:'Quantidade *',
     reasonPH:'Motivo...', selectAndEnter:'Selecione produto e quantidade', insufficient:'Estoque insuficiente! Apenas {0}',
@@ -715,7 +1412,7 @@ const T = {
     selectCategoryFirst:'Selecione uma categoria primeiro',
     inboundOp:'Entrada', outboundOp:'Saída', viewCost:'Ver Custo',
     createOrder:'Criar Pedido', processOrder:'Processar Pedido', editProduct:'Editar Produto', deleteProduct:'Excluir Produto',
-    memberLevel:'Níveis de Membro', payAccount:'Contas de Pagamento', payAccountSettings:'Configurações de Pagamento',
+    memberLevel:'Níveis de Membro', payAccount:'Contas de Pagamento', labelPrice:'Gerenciar desconto', labelPriceHint:'Apenas produtos com etiqueta Novo / Oferta / Promoção', bulkPrice:'Preço unitário', applyBulk:'Aplicar à etiqueta', perItemPrice:'Preço', savePrices:'Salvar preços', priceUpdated:'Preços atualizados', labelFilterAll:'Todos', labelPriceEmpty:'Sem desconto', labelPriceKeep:'Desconto, mantém preço original', selectAll:'Selecionar todos', selectedCount:'Selecionados: {0}', applySelected:'Aplicar aos selecinados', discountPrice:'Desconto', payAccountSettings:'Configurações de Pagamento',
     paySettingsInfo:'O cliente verá essas informações ao fazer o pedido', pixAccount:'Conta PIX',
     bankName:'Nome do Banco', bankAccount:'Conta Bancária', accountHolder:'Titular',
     wechatPay:'WeChat Pay', alipayPay:'Alipay', paymentNote:'Nota de Pagamento',
@@ -862,14 +1559,94 @@ function safeUrl(u) {
 function oMo(id) { document.getElementById(id).classList.add('show'); document.body.style.overflow = 'hidden'; }
 function cMo(id) { document.getElementById(id).classList.remove('show'); document.body.style.overflow = ''; }
 function prodById(id) { return DB.prods.find(p => p.id === id); }
+
+function tokenizeSearch(q) {
+  return String(q || '').toLowerCase().trim().split(/\s+/).filter(Boolean);
+}
+function searchHaystack(p) {
+  const name = (p.name || '').toLowerCase();
+  const sku = (p.sku || '').toLowerCase();
+  let catText = '';
+  if (p.catIds && p.catIds.length) {
+    catText = p.catIds.map(cid => {
+      if (typeof catById === 'function') {
+        const c = catById(cid);
+        return c ? ((c.name || '') + ' ' + (c.code || '')).toLowerCase() : '';
+      }
+      return '';
+    }).join(' ');
+  }
+  return name + ' ' + sku + ' ' + catText;
+}
+function matchSearch(p, tokens) {
+  if (!tokens || !tokens.length) return true;
+  const hay = searchHaystack(p);
+  return tokens.every(t => hay.indexOf(t) >= 0);
+}
+function scoreSearch(p, tokens) {
+  if (!tokens || !tokens.length) return 0;
+  const name = (p.name || '').toLowerCase();
+  const sku = (p.sku || '').toLowerCase();
+  let s = 0;
+  tokens.forEach(t => {
+    if (name.indexOf(t) >= 0) s += 3;
+    if (sku.indexOf(t) >= 0) s += 2;
+    if (name.indexOf(t) === 0) s += 2;
+    let idx = name.indexOf(t), n = 0;
+    while (idx >= 0) { n++; idx = name.indexOf(t, idx + t.length); }
+    s += n;
+  });
+  return s;
+}
 function catById(id) { return DB.cats.find(c => c.id === id); }
+function catChainOf(id) {
+  var chain = [], cur = catById(Number(id)), guard = 0;
+  while (cur && guard < 12) { chain.unshift(cur); cur = (cur.parent_id != null) ? catById(cur.parent_id) : null; guard++; }
+  return chain;
+}
+
+function labelText(label) {
+  const l = label || 'normal';
+  if (l === 'novo') return 'Novo';
+  if (l === 'oferta') return 'Oferta';
+  if (l === 'promocao' || l === 'promo') return 'Promoção';
+  return 'Normal';
+}
+function labelBadge(label) {
+  const l = label || 'normal';
+  let cls = (l === 'promo') ? 'promocao' : l; if (cls === 'maiscaro' || cls === 'mais caro' || cls === 'mai') cls = 'novo';
+  return '<span class="badge b-' + cls + '" style="font-size:.55rem;margin-left:.3rem">' + labelText(l) + '</span>';
+}
+
+function deepestCatId(ids) {
+  if (!ids || !ids.length) return null;
+  let best = null, bestDepth = -1;
+  ids.map(Number).forEach(id => {
+    const c = catById(id);
+    if (!c) return;
+    const d = Number(c.depth) || 0;
+    if (!best || d > bestDepth || (d === bestDepth && c.id > best.id)) { best = c; bestDepth = d; }
+  });
+  return best ? best.id : null;
+}
+function productInCat(p, catId) {
+  if (!p || !p.catIds || !p.catIds.length) return false;
+  return p.catIds.some(cid => {
+    let c = catById(cid);
+    while (c) {
+      if (c.id === catId) return true;
+      c = c.parent_id != null ? catById(c.parent_id) : null;
+    }
+    return false;
+  });
+}
 function cusById(id) { return DB.cus.find(c => c.id === id); }
 function catTagsP(p, compact) {
   if (!p || !p.catIds) return '';
   return p.catIds.map(cid => {
     const c = catById(cid); if (!c) return '';
     const ci = c.id % CAT_COLORS.length;
-    return '<span class="ctag" style="background:'+CAT_COLORS[ci]+'18;color:'+CAT_COLORS[ci]+';border:1px solid '+CAT_COLORS[ci]+'30">'+c.icon+(compact?'':' '+c.code)+'</span>';
+    return '<span class="ctag" title="' + esc(getCatPathWithCodes(cid)) + '" style="background:'+CAT_COLORS[ci]+'18;color:'+CAT_COLORS[ci]+';border:1px solid '+CAT_COLORS[ci]+'30">'+c.icon+(compact?'':' '+getCatCodePath(cid))+'</span>';
   }).join('');
 }
 function toast(m, tp='inf') {
@@ -941,6 +1718,92 @@ async function fetchPaged(build) {
   }
   return { data: out, error: null };
 }
+
+// Optional: Edge Function write gateway (deployed admin-api).
+// If fetch fails, callers should fall back to sb.from(...).
+
+// Write gateway via Edge Function admin-api (service key stays server-side).
+function adminFrom(table) {
+  const asThenable = (promise) => {
+    const t = {
+      then: (onOk, onErr) => promise.then(onOk, onErr),
+      catch: (onErr) => promise.catch(onErr),
+    };
+    return t;
+  };
+  return {
+    insert(row) {
+      const wantSingle = { v: false };
+      const wantSelect = { v: false };
+      const run = () => adminApi('insert', { table, row, single: wantSingle.v, select: wantSelect.v });
+      const chain = {
+        select() { wantSelect.v = true; return chain; },
+        single() {
+          wantSingle.v = true;
+          return asThenable(run().then((d) => ({ data: d, error: null }), (e) => ({ data: null, error: e })));
+        },
+        then: (onOk, onErr) => run().then(
+          (d) => {
+            const out = wantSingle.v ? { data: d, error: null } : { data: d, error: null };
+            return onOk ? onOk(out) : out;
+          },
+          onErr
+        ),
+        catch: (onErr) => run().catch(onErr),
+      };
+      return chain;
+    },
+    upsert(rows) {
+      return asThenable(adminApi('upsert', { table, rows }).then(() => ({ data: null, error: null })));
+    },
+    update(patch) {
+      const where = {};
+      const chain = {
+        eq(k, v) { where[k] = v; return chain; },
+        then: (onOk, onErr) => adminApi('update', { table, patch, where }).then(
+          () => onOk ? onOk({ data: null, error: null }) : { data: null, error: null },
+          onErr
+        ),
+        catch: (onErr) => adminApi('update', { table, patch, where }).catch(onErr),
+      };
+      return chain;
+    },
+    delete() {
+      const where = {};
+      const chain = {
+        eq(k, v) { where[k] = v; return chain; },
+        then: (onOk, onErr) => adminApi('delete', { table, where }).then(
+          () => onOk ? onOk({ data: null, error: null }) : { data: null, error: null },
+          onErr
+        ),
+        catch: (onErr) => adminApi('delete', { table, where }).catch(onErr),
+      };
+      return chain;
+    },
+  };
+}
+
+
+async function adminSelect(table, opts) {
+  return adminApi('select', Object.assign({ table }, opts || {}));
+}
+async function adminApi(action, payload) {
+  const url = 'https://qpynlblzpmkoovyaxygn.supabase.co/functions/v1/admin-api';
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Admin-Token': ADMIN_TOKEN || ''
+    },
+    body: JSON.stringify(Object.assign({ action }, payload || {}))
+  });
+  let data = null;
+  try { data = await res.json(); } catch (_) {}
+  if (!res.ok || !data || data.ok === false) {
+    throw new Error((data && data.error) || ('admin_api_' + res.status));
+  }
+  return data.data;
+}
 function safeQ(p) {
   return Promise.resolve(p).then(r => ({ data: (r && r.data) || [], error: (r && r.error) || null }))
     .catch(() => ({ data: [], error: { message: 'denied' } }));
@@ -953,17 +1816,17 @@ async function loadAllData() {
       safeQ(sb.rpc('app_list_accounts')),
       safeQ(fetchPaged(function() { return sb.from('products').select('*').order('id', { ascending: true }); })),
       safeQ(fetchPaged(function() { return sb.from('product_categories').select('*').order('product_id', { ascending: true }).order('category_id', { ascending: true }); })),
-      safeQ(fetchPaged(function() { return sb.from('orders').select('*').order('created_at',{ascending:false}).order('id', { ascending: false }); })),
-      safeQ(sb.from('order_items').select('*')),
-      safeQ(sb.from('inbound_records').select('*').order('created_at',{ascending:false})),
-      safeQ(sb.from('outbound_records').select('*').order('created_at',{ascending:false})),
-      safeQ(fetchPaged(function() { return sb.from('customers').select('*').order('created_at',{ascending:false}).order('id', { ascending: false }); })),
-      safeQ(sb.from('order_changes').select('*').order('created_at',{ascending:false}))
+      safeQ(ADMIN_TOKEN ? adminSelect('orders', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : fetchPaged(function() { return sb.from('orders').select('*').order('created_at',{ascending:false}).order('id', { ascending: false }); })),
+      safeQ(ADMIN_TOKEN ? adminSelect('order_items', { limit: 5000 }) : sb.from('order_items').select('*')),
+      safeQ(ADMIN_TOKEN ? adminSelect('inbound_records', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : sb.from('inbound_records').select('*').order('created_at',{ascending:false})),
+      safeQ(ADMIN_TOKEN ? adminSelect('outbound_records', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : sb.from('outbound_records').select('*').order('created_at',{ascending:false})),
+      safeQ(ADMIN_TOKEN ? adminSelect('customers', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : fetchPaged(function() { return sb.from('customers').select('*').order('created_at',{ascending:false}).order('id', { ascending: false }); })),
+      safeQ(ADMIN_TOKEN ? adminSelect('order_changes', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : sb.from('order_changes').select('*').order('created_at',{ascending:false}))
     ]);
     DB.cats = (catR.data||[]).map(c => ({id:Number(c.id),name:c.name,code:c.code,icon:c.icon,order:c.order_num,parent_id:c.parent_id!=null?Number(c.parent_id):null,depth:Number(c.depth||0),visible:c.visible!==false,image:c.image||'',description:c.description||'',locked:c.locked||false,product_count:Number(c.product_count||0)}));
     DB.accts = (acctR.data||[]).map(a => ({id:a.id,u:a.username,n:a.display_name,r:a.role,s:a.status,c:fmtDate(a.created_at).split(' ')[0],perm:a.perms||{}}));
     const pc = pcR.data||[];
-    DB.prods = (prodR.data||[]).map(p => ({id:p.id,name:p.name,catIds:pc.filter(x=>x.product_id===p.id).map(x=>x.category_id),sku:p.sku,skuManual:p.sku_manual?1:0,stock:p.stock,price:Number(p.price),cost:Number(p.cost),loc:p.location||'',note:p.note||'',cr:fmtDate(p.created_at).split(' ')[0],img:p.image||'',category_type:p.category_type||'general',sizes:p.sizes||[],size_stock:p.size_stock||{},has_bag:p.has_bag||false,bag_price:Number(p.bag_price||0),has_case:p.has_case||false,case_price:Number(p.case_price||0),label:p.label||'',yr:p.release_year||'',ver:p.release_version||'',tg:p.tags||[]}));
+    DB.prods = (prodR.data||[]).map(p => ({id:p.id,name:p.name,catIds:(function(){const ids=pc.filter(x=>x.product_id===p.id).map(x=>x.category_id);const d=deepestCatId(ids);return d?[d]:[]})(),sku:p.sku,skuManual:p.sku_manual?1:0,stock:p.stock,price:Number(p.price),cost:Number(p.cost),loc:p.location||'',note:p.note||'',cr:fmtDate(p.created_at).split(' ')[0],img:p.image||'',category_type:p.category_type||'general',sizes:p.sizes||[],size_stock:p.size_stock||{},has_bag:p.has_bag||false,bag_price:Number(p.bag_price||0),has_case:p.has_case||false,case_price:Number(p.case_price||0),label:p.label||'',lp:(p.label_price==null?null:Number(p.label_price)),lp:(p.label_price==null?null:Number(p.label_price)),yr:p.release_year||'',ver:p.release_version||'',tg:p.tags||[],ml:!!p.mall_listed,gl:p.gallery_listed!==false}));
     const oi = oiR.data||[];
     DB.ords = (ordR.data||[]).map(o => ({id:o.id,no:o.order_no,items:oi.filter(x=>x.order_id===o.id).map(x=>({pid:x.product_id,qty:x.qty,price:Number(x.price||0),original_price:Number(x.original_price||0),unit_price:Number(x.unit_price||0)})),pk:o.pickup_method,st:o.status,oi:o.order_image||'',bi:o.bill_image||'',note:o.note||'',cr:fmtDate(o.created_at),by:o.created_by,pb:o.processed_by||'',payM:o.payment_method||'cash',payS:o.payment_status||'pending',payI:o.payment_image||'',payU:o.payment_upload||'yes',pacI:o.packing_image||'',supI:o.supplementary_image||'',supT:o.supplementary_type||'',custId:o.customer_id||'',shipAddr:o.shipping_address||'',shipCost:Number(o.shipping_cost||0),billDeadline:o.bill_deadline||null,origTotal:Number(o.original_total||0),priceModified:o.price_modified||false,onibusName:o.onibus_name||'',onibusImg:o.onibus_schedule_img||'',billUploadedAt:o.bill_uploaded_at||null,adminConfirmedShip:o.admin_confirmed_ship||false,adminShipBy:o.admin_ship_confirmed_by||''}));
     DB.inb = (inbR.data||[]).map(r => ({id:r.id,pid:r.product_id,qty:r.qty,op:r.operator,note:r.note||'',t:fmtDate(r.created_at)}));
@@ -1088,13 +1951,14 @@ function buildNav() {
       if (has('manageCategories')) h += '<div class="ni" data-p="cats" onclick="goPage(\'cats\',this)">'+sv.cat+' '+t('categories')+'</div>';
     }
     h += '<div class="nl">'+t('productLabels')+'</div>';
-    h += '<div class="ni" data-p="inv" onclick="goPageLabel(\'inv\',\'novo\',this)">🆕 Novo</div>';
-    h += '<div class="ni" data-p="inv" onclick="goPageLabel(\'inv\',\'oferta\',this)">🏷️ Oferta</div>';
-    h += '<div class="ni" data-p="inv" onclick="goPageLabel(\'inv\',\'promo\',this)">🎉 Promoção</div>';
+    h += '<div class="ni" data-p="inv" onclick="goPageLabel(\'inv\',\'novo\',this)">Novo</div>';
+    h += '<div class="ni" data-p="inv" onclick="goPageLabel(\'inv\',\'oferta\',this)">Oferta</div>';
+    h += '<div class="ni" data-p="inv" onclick="goPageLabel(\'inv\',\'promocao\',this)">Promoção</div>';
     h += '<div class="nl">'+t('customerMgmtNav')+'</div>';
     if (has('manageAccounts')) h += '<div class="ni" data-p="memberLevels" onclick="goPage(\'memberLevels\',this)">'+sv.cus+' '+t('memberLevel')+'</div>';
     h += '<div class="nl">'+t('financeMgmtNav')+'</div>';
     if (user.r==='wh_admin') h += '<div class="ni" data-p="paySettings" onclick="goPage(\'paySettings\',this)">'+'💳'+' '+t('payAccount')+'</div>';
+    if (user.r==='wh_admin') h += '<div class="ni" data-p="labelPrice" onclick="goPage(\'labelPrice\',this)">'+'🏷️'+' '+t('labelPrice')+'</div>';
   }
   n.innerHTML = h;
 }
@@ -1106,7 +1970,7 @@ function goPage(p, el, keepLabel) {
   if (el) el.classList.add('on');
   else { const e = document.querySelector('[data-p="'+p+'"]'); if (e) e.classList.add('on'); }
   curP = p;
-  const ts = {dash:t('dashboard'),inv:t('inventory'),inb:t('inboundRecord'),outb:t('outboundRecord'),ana:t('analytics'),accts:t('accounts'),cats:t('categories'),whOrd:t('orderProcess'),sWork:t('salesWorkspace'),sNewOrd:t('newOrder'),sOrds:t('orderList'),sProds:t('productQuery'),sCus:t('customerMgmt'),approvals:t('approvalCenter'),paySettings:t('payAccountSettings'),memberLevels:t('memberLevel')};
+  const ts = {dash:t('dashboard'),inv:t('inventory'),inb:t('inboundRecord'),outb:t('outboundRecord'),ana:t('analytics'),accts:t('accounts'),cats:t('categories'),whOrd:t('orderProcess'),sWork:t('salesWorkspace'),sNewOrd:t('newOrder'),sOrds:t('orderList'),sProds:t('productQuery'),sCus:t('customerMgmt'),approvals:t('approvalCenter'),paySettings:t('payAccountSettings'),labelPrice:t('labelPrice'),memberLevels:t('memberLevel')};
   document.getElementById('tT').textContent = ts[p]||'';
   render(p);
   document.getElementById('sidebar').classList.remove('open');
@@ -1144,6 +2008,7 @@ function render(p) {
     case 'sCus': c.innerHTML = rSCus(); break;
     case 'approvals': c.innerHTML = rApprovals(); break;
     case 'paySettings': c.innerHTML = rPaySettings(); loadPaySettings(); break;
+    case 'labelPrice': c.innerHTML = rLabelPrice(); loadLabelPrices(); break;
     case 'memberLevels': c.innerHTML = rMemberLevels(); break;
   }
 }
@@ -1155,6 +2020,18 @@ function render(p) {
 // ═══════════════════════════════════════
 // DASHBOARD
 // ═══════════════════════════════════════
+
+function sparkline(vals, color) {
+  if (!vals || !vals.length) return '';
+  const w = 72, h = 22, max = Math.max(...vals, 1), min = Math.min(...vals, 0);
+  const span = (max - min) || 1;
+  const pts = vals.map((v, i) => {
+    const x = (i / Math.max(vals.length - 1, 1)) * w;
+    const y = h - ((v - min) / span) * (h - 2) - 1;
+    return x.toFixed(1) + ',' + y.toFixed(1);
+  }).join(' ');
+  return '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" style="opacity:.9"><polyline fill="none" stroke="' + (color || 'var(--ac)') + '" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" points="' + pts + '"/></svg>';
+}
 function rDash() {
   const P = DB.prods;
   const total = P.reduce((s, p) => s + p.stock, 0);
@@ -1174,7 +2051,8 @@ function rDash() {
     const icon = (catById((p.catIds || [])[0]) || {icon: '📦'}).icon;
     return '<div class="lsi"><div class="licon">' + icon + '</div><div class="li"><div class="ln">' + esc(p.name) + '</div><div class="ld">' + esc(p.sku) + ' · ' + t('remaining') + ' ' + p.stock + '</div></div><div class="lb"><div class="lf ' + l + '" style="width:' + pct + '%"></div></div></div>';
   }).join('') + (lhi.length > LOW_SHOW ? '<div class="empty" style="cursor:pointer;padding:.55rem" onclick="goLowStock()"><p style="color:var(--ac)">+' + (lhi.length - LOW_SHOW) + t('item') + ' →</p></div>' : '') : '<div class="empty"><p>' + t('stockOk') + '</p></div>';
-  return '<div class="stats"><div class="sc" onclick="fStock=\'\';goPage(\'inv\')"><div class="sl">' + t('productTypes') + '</div><div class="sv">' + P.length + '</div><div class="sch up">' + t('running') + '</div></div><div class="sc" onclick="fStock=\'\';goPage(\'inv\')"><div class="sl">' + t('totalStock') + '</div><div class="sv">' + total.toLocaleString() + '</div><div class="sch up">' + P.filter(p => p.stock > 10).length + ' ' + t('sufficient') + '</div></div><div class="sc" onclick="goPage(\'whOrd\')"><div class="sl">' + t('pendingOrders') + '</div><div class="sv" style="color:' + (pend ? 'var(--wa)' : 'var(--sf)') + '">' + pend + '</div><div class="sch ' + (pend ? 'down' : 'up') + '">' + t('needProcess') + '</div></div><div class="sc" onclick="goLowStock()"><div class="sl">' + t('alertProducts') + '</div><div class="sv" style="color:' + (low + out ? 'var(--dg)' : 'var(--sf)') + '">' + (low + out) + '</div><div class="sch ' + (low + out ? 'down' : 'up') + '">' + low + t('lowStock') + '·' + out + t('outOfStock') + '</div></div></div><div class="dg"><div class="pnl"><div class="pnH" onclick="goPage(\'ana\')"><span class="pnT">' + t('recentOps') + '</span><span style="font-size:.62rem;color:var(--t3)">→</span></div><div class="pnB">' + ah + '</div></div><div class="pnl"><div class="pnH" onclick="goLowStock()"><span class="pnT">' + t('lowStockAlert') + '</span><span style="font-size:.62rem;color:var(--dg)">' + lhi.length + t('item') + ' →</span></div><div class="pnB">' + lhh + '</div></div></div>';
+  const stockSpark = sparkline(P.slice(0, 12).map(p => p.stock || 0), 'var(--ac)');
+  return '<div class="stats"><div class="sc" onclick="fStock=\'\';goPage(\'inv\')"><div class="sl">' + t('productTypes') + '</div><div class="sv">' + P.length + '</div><div class="sch up">' + t('running') + '</div><div style="margin-top:.55rem">' + stockSpark + '</div></div><div class="sc" onclick="fStock=\'\';goPage(\'inv\')"><div class="sl">' + t('totalStock') + '</div><div class="sv">' + total.toLocaleString() + '</div><div class="sch up">' + P.filter(p => p.stock > 10).length + ' ' + t('sufficient') + '</div></div><div class="sc" onclick="goPage(\'whOrd\')"><div class="sl">' + t('pendingOrders') + '</div><div class="sv" style="color:' + (pend ? 'var(--wa)' : 'var(--sf)') + '">' + pend + '</div><div class="sch ' + (pend ? 'down' : 'up') + '">' + t('needProcess') + '</div></div><div class="sc" onclick="goLowStock()"><div class="sl">' + t('alertProducts') + '</div><div class="sv" style="color:' + (low + out ? 'var(--dg)' : 'var(--sf)') + '">' + (low + out) + '</div><div class="sch ' + (low + out ? 'down' : 'up') + '">' + low + t('lowStock') + '·' + out + t('outOfStock') + '</div></div></div><div class="dg"><div class="pnl"><div class="pnH" onclick="goPage(\'ana\')"><span class="pnT">' + t('recentOps') + '</span><span style="font-size:.62rem;color:var(--t3)">→</span></div><div class="pnB">' + ah + '</div></div><div class="pnl"><div class="pnH" onclick="goLowStock()"><span class="pnT">' + t('lowStockAlert') + '</span><span style="font-size:.62rem;color:var(--dg)">' + lhi.length + t('item') + ' →</span></div><div class="pnB">' + lhh + '</div></div></div>';
 }
 function goLowStock() {
   fStock = 'low'; fCat = 'all'; fLabel = ''; iSq = ''; iYq = ''; iPg = 1;
@@ -1192,13 +2070,8 @@ function rInv() {
   // Category cascade dropdowns
   var topCats = DB.cats.filter(function(c){ return c.parent_id === null; }).sort(function(a,b){ return a.order - b.order; });
   var ch = '<div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">';
-  function catChainOf(id) {
-    var chain = [], cur = catById(Number(id)), guard = 0;
-    while (cur && guard < 12) { chain.unshift(cur); cur = (cur.parent_id != null) ? catById(cur.parent_id) : null; guard++; }
-    return chain;
-  }
-  var selStyle = 'padding:.35rem .6rem;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1);font-size:.78rem;min-width:100px';
-  ch += '<select id="invCat1" onchange="onInvCascadeChange(1)" style="' + selStyle + '">';
+  var selStyle = 'class="inv-sel"';
+  ch += '<select id="invCat1" onchange="onInvCascadeChange(1)" class="inv-sel">';
   ch += '<option value="all"' + (fCat === 'all' ? ' selected' : '') + '>' + t('all') + '</option>';
   topCats.forEach(function(c) {
     var chain = (fCat !== 'all') ? catChainOf(fCat) : [];
@@ -1213,9 +2086,9 @@ function rInv() {
       var children = DB.cats.filter(function(c){ return c.parent_id === parent.id; }).sort(function(a,b){ return a.order - b.order; });
       if (!children.length) break;
       ch += '<select id="invCat' + (lv + 1) + '" onchange="onInvCascadeChange(' + (lv + 1) + ')" style="' + selStyle + '">';
-      ch += '<option value="' + parent.id + '"' + (Number(fCat) === parent.id || !chain[lv] ? ' selected' : '') + '>' + t('allSubCats') + '</option>';
+      ch += '<option value="' + parent.id + '"' + (Number(fCat) === parent.id ? ' selected' : '') + '>' + t('allSubCats') + '</option>';
       children.forEach(function(c) {
-        ch += '<option value="' + c.id + '"' + (Number(fCat) === c.id ? ' selected' : '') + '>' + c.icon + ' ' + esc(c.name) + '</option>';
+        ch += '<option value="' + c.id + '"' + (chain[lv] && chain[lv].id === c.id ? ' selected' : '') + '>' + c.icon + ' ' + esc(c.name) + '</option>';
       });
       ch += '</select>';
     }
@@ -1225,7 +2098,11 @@ function rInv() {
   const yq = (iYq || '').trim();
   if (yq) fl = fl.filter(p => (p.yr || '') === yq || (p.name || '').includes(yq));
   const q = (iSq || document.getElementById('iS')?.value || '').toLowerCase().trim();
-  if (q) fl = fl.filter(p => p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q) || (p.catIds || []).some(cid => { const c = catById(cid); return c && (c.name.toLowerCase().includes(q) || c.code.toLowerCase().includes(q)); }));
+  const tokens = tokenizeSearch(q);
+  if (tokens.length) {
+    fl = fl.filter(p => matchSearch(p, tokens));
+    fl.sort((a, b) => scoreSearch(b, tokens) - scoreSearch(a, tokens));
+  }
   if (fCat !== 'all') {
     // Include all descendant categories
     const catIds = [Number(fCat)];
@@ -1234,7 +2111,7 @@ function rInv() {
     fl = fl.filter(p => (p.catIds || []).some(cid => catIds.includes(cid)));
   }
   if (fLabel) {
-    fl = fl.filter(p => p.label === fLabel);
+    fl = fl.filter(p => (p.label || 'normal') === fLabel || (fLabel === 'promocao' && p.label === 'promo'));
   }
   if (fStock === 'low') {
     fl = fl.filter(p => p.stock <= 10);
@@ -1254,17 +2131,30 @@ function rInv() {
       const lv = p.stock === 0 ? 'lo' : p.stock <= 10 ? 'md' : 'hi';
       const lvC = lv === 'lo' ? 'dg' : lv === 'md' ? 'wa' : 'sf';
       return '<button type="button" class="pcard" onclick="openPDetail(' + p.id + ')">'
-        + '<div class="pdl"><span class="pdk">' + t('cName') + '：</span><span class="pdv">' + esc(p.name) + '</span></div>'
-        + '<div class="pdl"><span class="pdk">' + t('cSku') + '：</span><span class="pdv mono">' + esc(p.sku) + '</span></div>'
-        + '<div class="pdl"><span class="pdk">' + t('cPrice') + '：</span><span class="pdv mono">¥' + p.price.toLocaleString() + '</span></div>'
-        + '<div class="pdl"><span class="pdk">' + t('cStock') + '：</span><span class="pdv mono" style="color:var(--' + lvC + ')">' + p.stock + '</span></div>'
+        + '<div style="display:flex;gap:.75rem;align-items:center">'
+        + '<div style="flex-shrink:0;width:56px">'
+        + '<div style="margin-bottom:.25rem;text-align:center;line-height:1">' + labelBadge(p.label).replace('margin-left:.3rem', 'margin-left:0') + '</div>'
+        + '<div class="pimg" style="width:56px;height:56px">' + (p.img ? '<img src="' + safeUrl(p.img) + '" alt="" onerror="this.remove()">' : '') + '</div>'
+        + '</div>'
+        + '<div style="flex:1;min-width:0">'
+        + '<div class="pdl"><span class="pdk" style="width:3.2em">' + t('cName') + '：</span><span class="pdv">' + esc(p.name) + '</span></div>'
+        + '<div class="pdl"><span class="pdk" style="width:3.2em">' + t('cSku') + '：</span><span class="pdv mono">' + esc(p.sku) + '</span></div>'
+        + '<div class="pdl"><span class="pdk" style="width:3.2em">' + t('cPrice') + '：</span><span class="pdv mono" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:.35rem;line-height:1.2">'
+        + '<span>¥' + Number(p.price||0).toLocaleString() + '</span>'
+        + (p.lp != null ? '<span style="color:var(--ac)">' + t('discountPrice') + ' ¥' + Number(p.lp).toLocaleString() + '</span>' : '')
+        + '<span class="badge ' + (p.ml ? 'b-novo' : 'b-normal') + '" style="font-size:.55rem;padding:.08rem .35rem">' + t('mall') + (p.ml ? '✓' : '·') + '</span>'
+        + '<span class="badge ' + (p.gl ? 'b-novo' : 'b-normal') + '" style="font-size:.55rem;padding:.08rem .35rem">' + t('gallery') + (p.gl ? '✓' : '·') + '</span>'
+        + '</span></div>'
+        + '<div class="pdl"><span class="pdk" style="width:3.2em">' + t('cStock') + '：</span><span class="pdv mono" style="color:var(--' + lvC + ')">' + p.stock + '</span></div>'
+        + '</div>'
+        + '</div>'
         + '</button>';
     }).join('');
   }
   const pgSizeSel = '<select onchange="pgSz(this.value)" title="' + t('pgSize') + '" style="margin-left:.6rem;padding:.15rem .35rem;background:var(--s2);border:1px solid var(--bd);border-radius:5px;color:var(--t2);font-size:.65rem">' + [20, 50, 100].map(function(n) { return '<option value="' + n + '"' + (PG === n ? ' selected' : '') + '>' + n + '</option>'; }).join('') + '</select>';
   let labelBar = '';
   if (fLabel) {
-    const lblName = fLabel === 'novo' ? '🔥 Novo' : fLabel === 'oferta' ? '💰 Oferta' : '🔥 Promoção';
+    const lblName = fLabel === 'novo' ? 'Novo' : fLabel === 'oferta' ? 'Oferta' : 'Promoção';
     labelBar = '<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem;padding:.45rem .75rem;background:var(--ag);border:1px solid var(--ac);border-radius:var(--r);font-size:.72rem;color:var(--ac)"><b>' + t('filterLabel') + ':</b>&nbsp;' + lblName + '<button onclick="clearLabelFilter()" title="' + t('clearFilter') + '" style="margin-left:auto;width:20px;height:20px;border:none;background:transparent;color:var(--ac);cursor:pointer;font-size:.85rem">✕</button></div>';
   }
   if (fStock === 'low') {
@@ -1282,7 +2172,7 @@ function rInv() {
     else pg += '<button class="pg ' + (iv === iPg ? 'on' : '') + '" onclick="pgTo(' + iv + ')">' + iv + '</button>';
   });
   pg += '<button class="pg"' + (iPg >= tp ? ' disabled' : ' onclick="pgTo(' + (iPg + 1) + ')"') + '>&rsaquo;</button>';
-  return '<div class="tb"><div class="sbox"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="iS" value="' + av(iSq) + '" placeholder="' + t('searchNameSku') + '" oninput="iSq=this.value;_ic=this.selectionStart;iPg=1;render(\'inv\');rf(\'iS\')" /></div><input type="text" id="iY" value="' + av(iYq) + '" placeholder="' + t('year') + '" oninput="iYq=this.value;_ic=this.selectionStart;iPg=1;render(\'inv\');rf(\'iY\')" style="width:92px;padding:.45rem .7rem;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1);font-size:.78rem" /><span class="tbsp"></span>' + (has('addProduct') ? '<button class="btn bp bs aw" onclick="openAddP()">+ ' + t('addNew') + '</button>' : '') + '</div>' + labelBar + '<div style="margin-bottom:.7rem">' + ch + '</div><div class="tw">' + sortBar + '<div class="pcards">' + tb + '</div><div class="tf"><span>' + t('items') + total + ' · ' + iPg + '/' + tp + '</span>' + pgSizeSel + '<div class="pag">' + pg + '</div></div></div>';
+  return '<div class="tb"><div class="sbox"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="iS" value="' + av(iSq) + '" placeholder="' + t('searchNameSku') + '" oninput="iSq=this.value;_ic=this.selectionStart;iPg=1;render(\'inv\');rf(\'iS\')" /></div><input type="text" id="iY" value="' + av(iYq) + '" placeholder="' + t('year') + '" oninput="iYq=this.value;_ic=this.selectionStart;iPg=1;render(\'inv\');rf(\'iY\')" style="width:92px;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1);font-size:.78rem" /><span class="tbsp"></span>' + (has('addProduct') ? '<button class="btn bp bs aw" onclick="openAddP()">+ ' + t('addNew') + '</button>' : '') + '</div>' + labelBar + '<div style="margin-bottom:.7rem">' + ch + '</div><div class="tw">' + sortBar + '<div class="pcards">' + tb + '</div><div class="tf"><span>' + t('items') + total + ' · ' + iPg + '/' + tp + '</span>' + pgSizeSel + '<div class="pag">' + pg + '</div></div></div>';
 }
 
 function getCatParentId(catId) {
@@ -1314,7 +2204,7 @@ function openAddP() {
   document.getElementById('pmId').value = '';
   document.getElementById('pmN').value = '';
   document.getElementById('pmNt').value = '';
-  document.getElementById('pmLabel').value = '';
+  document.getElementById('pmLabel').value = 'normal';
   document.getElementById('pmL').value = '';
   document.getElementById('pmS').value = '';
   document.getElementById('pmP').value = '';
@@ -1335,6 +2225,7 @@ function openAddP() {
   document.getElementById('pmCasePrice').value = '';
   document.getElementById('pmCasePrice').disabled = true;
   document.getElementById('pmCats').innerHTML = renderCatPills(pmCats);
+  applyCatCascade(pmCats.length ? Number(pmCats[0]) : null);
   updateSkuPreview();
   const ib = document.getElementById('pmIB');
   ib.innerHTML = '<span class="ia">+</span><input type="file" id="pmIF" accept="image/*" onchange="hImg(this,\'pmIB\',\'pmImgData\')" />';
@@ -1347,7 +2238,7 @@ function openEditP(id) {
   document.getElementById('pmT').textContent = t('edit') + ' ' + t('product');
   document.getElementById('pmId').value = id;
   document.getElementById('pmN').value = p.name;
-  pmCats = [...(p.catIds || [])];
+  pmCats = [deepestCatId(p.catIds || [])].filter(x => x != null);
   pmSkuManual = !!p.skuManual;
   document.getElementById('pmManual').value = p.skuManual ? '1' : '0';
   document.getElementById('pmS').value = p.stock;
@@ -1355,7 +2246,7 @@ function openEditP(id) {
   document.getElementById('pmC').value = p.cost;
   document.getElementById('pmL').value = p.loc || '';
   document.getElementById('pmNt').value = p.note || '';
-  document.getElementById('pmLabel').value = p.label || '';
+  document.getElementById('pmLabel').value = p.label || 'normal';
   pmImgData = p.img || '';
   document.getElementById('pmCw').style.display = has('viewCost') ? '' : 'none';
   // Populate new fields
@@ -1377,6 +2268,7 @@ function openEditP(id) {
   document.getElementById('pmCasePrice').value = p.case_price || '';
   document.getElementById('pmCasePrice').disabled = !p.has_case;
   document.getElementById('pmCats').innerHTML = renderCatPills(pmCats);
+  applyCatCascade(pmCats.length ? Number(pmCats[0]) : null);
   updateSkuPreview();
   const ib = document.getElementById('pmIB');
   if (p.img) {
@@ -1397,15 +2289,16 @@ function openPDetail(id) {
   const sc = has('viewCost');
   const lv = p.stock === 0 ? 'lo' : p.stock <= 10 ? 'md' : 'hi';
   const lvC = lv === 'lo' ? 'dg' : lv === 'md' ? 'wa' : 'sf';
-  const labelTag = p.label ? '<span class="badge b-' + p.label + '" style="font-size:.55rem;margin-left:.3rem">' + (p.label==='novo'?'🆕 Novo':p.label==='oferta'?'🏷️ Oferta':'🎉 Promo') + '</span>' : '';
+  const labelTag = labelBadge(p.label);;
   let rows = '';
   rows += pdRow(t('name'), '<strong>' + esc(p.name) + '</strong>' + labelTag);
   rows += pdRow(t('sku'), '<span class="sk">' + esc(p.sku) + '</span>');
-  rows += pdRow(t('category'), catTagsP(p) || '-');
+  rows += pdRow(t('category'), (p.catIds && p.catIds.length ? getCatPathWithCodes(p.catIds[0]) : '-') + '<div style="margin-top:.25rem">' + (catTagsP(p) || '') + '</div>');
   if (p.loc) rows += pdRow(t('location'), esc(p.loc));
   let stv = '<span style="font-family:DM Mono,monospace;font-weight:600;color:var(--' + lvC + ')">' + p.stock + '</span>';
   if (p.sizes && p.sizes.length) stv += '<div style="font-size:.62rem;color:var(--t3);margin-top:.2rem;font-family:DM Mono,monospace">' + p.sizes.map(function(s) { return s + ':' + ((p.size_stock || {})[s] || 0); }).join(' ') + '</div>';
   rows += pdRow(t('stock'), stv);
+  rows += pdRow(t('labelTag'), labelBadge(p.label));
   rows += pdRow(t('price'), '<span style="font-family:DM Mono,monospace">¥' + p.price.toLocaleString() + '</span>');
   if (sc) rows += pdRow(t('cost'), '<span style="font-family:DM Mono,monospace">¥' + p.cost + '</span>');
   if (p.has_bag) rows += pdRow(t('bagPrice'), '<span style="font-family:DM Mono,monospace">¥' + (p.bag_price || 0) + '</span>');
@@ -1414,10 +2307,16 @@ function openPDetail(id) {
   if (p.ver) rows += pdRow(t('version'), esc(p.ver));
   if (p.tg && p.tg.length) rows += pdRow(t('feats'), p.tg.map(function(x){ return '<span style="display:inline-block;background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:.05rem .45rem;margin-right:.25rem;font-size:.68rem">' + esc(x) + '</span>'; }).join(' '));
   rows += pdRow(t('remarks'), p.note ? '<span style="white-space:pre-wrap">' + esc(p.note) + '</span>' : '<span style="color:var(--t3)">-</span>');
+  rows += pdRow(t('mallList'), p.ml ? '<span class="badge b-novo">' + t('onShelf') + '</span>' : '<span class="badge b-normal">' + t('offShelf') + '</span>');
+  rows += pdRow(t('galleryList'), p.gl ? '<span class="badge b-novo">' + t('onShelf') + '</span>' : '<span class="badge b-normal">' + t('offShelf') + '</span>');
   const img = p.img ? '<div style="margin-bottom:.85rem;text-align:center"><img src="' + safeUrl(p.img) + '" alt="" style="width:100%;max-height:55vh;object-fit:contain;border-radius:12px;border:1px solid var(--bd);background:var(--s2);cursor:zoom-in" onclick="window.open(this.src)" onerror="this.remove()"></div>' : '<div style="margin-bottom:.85rem;height:180px;display:flex;align-items:center;justify-content:center;background:var(--s2);border:1px dashed var(--bd);border-radius:12px;font-size:2.2rem">👕</div>';
   document.getElementById('pdT').textContent = t('prodDetail');
   document.getElementById('pdB').innerHTML = img + rows;
   let f = '<button class="btn bg bs" onclick="cMo(\'pdm\')">' + t('close') + '</button>';
+  if (has('editProduct')) {
+    f += '<button class="btn bs aw" style="background:' + (p.ml ? 'var(--wa)' : 'var(--sf)') + ';color:#fff" onclick="toggleMallListed(' + p.id + ')">' + (p.ml ? t('mallOff') : t('mallOn')) + '</button>';
+    f += '<button class="btn bs aw" style="background:' + (p.gl ? 'var(--wa)' : 'var(--sf)') + ';color:#fff" onclick="toggleGalleryListed(' + p.id + ')">' + (p.gl ? t('galleryOff') : t('galleryOn')) + '</button>';
+  }
   if (has('deleteProduct')) f += '<button class="btn bs aw" style="background:var(--dg);color:#fff" onclick="delP(' + p.id + ')">' + t('delete') + '</button>';
   if (has('editProduct')) f += '<button class="btn bp bs aw" onclick="cMo(\'pdm\');openEditP(' + p.id + ')">' + t('edit') + '</button>';
   document.getElementById('pdF').innerHTML = f;
@@ -1426,23 +2325,84 @@ function openPDetail(id) {
 
 
 function renderCatPills(selected) {
-  // Cascade selector: show selected cats as tags + a button to open picker
-  let html = '<div class="cascade-selected">';
-  selected.forEach(cid => {
-    const c = catById(cid);
-    if (!c) return;
-    // Build path
-    const path = getCatPath(cid);
-    html += '<span class="cascade-tag">' + c.icon + ' ' + esc(path) + ' <span class="ct-rm" onclick="event.stopPropagation();togglePMCat(' + cid + ')">✕</span></span>';
+  // 与库存管理同一套级联下拉（catChainOf + 逐层 select）
+  // 注意：不在 HTML 里写 selected，渲染后用 applyCatCascade 按 chain 强制 .value，避免深层回显丢失
+  const selId = (selected && selected.length) ? Number(selected[0]) : null;
+  const chain = selId ? catChainOf(selId) : [];
+  const topCats = DB.cats.filter(function(c){ return c.parent_id === null; }).sort(function(a,b){ return a.order - b.order; });
+  let html = '';
+  if (selId) {
+    const c = catById(selId);
+    if (c) {
+      html += '<div class="cascade-selected"><span class="cascade-tag">' + c.icon + ' ' + esc(getCatPath(selId)) + ' <span class="ct-rm" onclick="event.stopPropagation();togglePMCat(0)">✕</span></span></div>';
+    }
+  }
+  html += '<div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">';
+  html += '<select id="pmCat1" class="inv-sel" onchange="onPmCascadeChange(1)">';
+  html += '<option value="">' + t('selectCategoryFirst') + '</option>';
+  topCats.forEach(function(c) {
+    html += '<option value="' + c.id + '">' + c.icon + ' ' + esc(c.name) + '</option>';
   });
-  html += '</div>';
-  html += '<div class="cascade-selector" id="cascadePicker" style="margin-top:.3rem">';
-  // Build tree recursively, showing one level at a time
-  html += buildCascadeLevel(null, 0, selected);
+  html += '</select>';
+  if (selId) {
+    for (let lv = 1; lv <= chain.length; lv++) {
+      const parent = chain[lv - 1];
+      const children = DB.cats.filter(function(c){ return c.parent_id === parent.id; }).sort(function(a,b){ return a.order - b.order; });
+      if (!children.length) break;
+      html += '<select id="pmCat' + (lv + 1) + '" class="inv-sel" onchange="onPmCascadeChange(' + (lv + 1) + ')">';
+      html += '<option value="' + parent.id + '">' + t('allSubCats') + '</option>';
+      children.forEach(function(c) {
+        html += '<option value="' + c.id + '">' + c.icon + ' ' + esc(c.name) + '</option>';
+      });
+      html += '</select>';
+    }
+  }
   html += '</div>';
   return html;
 }
 
+function applyCatCascade(selId) {
+  const chain = selId ? catChainOf(selId) : [];
+  for (let i = 0; i < chain.length; i++) {
+    const s = document.getElementById('pmCat' + (i + 1));
+    if (s) s.value = String(chain[i].id);
+  }
+  const last = chain[chain.length - 1];
+  if (last) {
+    const s = document.getElementById('pmCat' + (chain.length + 1));
+    if (s) s.value = String(last.id);
+  }
+}
+
+function refreshPmCats() {
+  const selId = (pmCats && pmCats.length) ? Number(pmCats[0]) : null;
+  const box = document.getElementById('pmCats');
+  if (!box) return;
+  box.innerHTML = renderCatPills(pmCats);
+  applyCatCascade(selId);
+  updateSkuPreview();
+}
+
+
+function getCatCodePath(catId) {
+  const parts = [];
+  let c = catById(catId);
+  while (c) {
+    if (c.code) parts.unshift(String(c.code));
+    c = c.parent_id ? catById(c.parent_id) : null;
+  }
+  return parts.join('');
+}
+function getCatPathWithCodes(catId) {
+  const names = [], codes = [];
+  let c = catById(catId);
+  while (c) {
+    names.unshift(c.name);
+    codes.unshift(c.code || '');
+    c = c.parent_id ? catById(c.parent_id) : null;
+  }
+  return names.map((n, i) => n + '[' + codes[i] + ']').join(' > ');
+}
 function getCatPath(catId) {
   const parts = [];
   let c = catById(catId);
@@ -1453,35 +2413,27 @@ function getCatPath(catId) {
   return parts.join(' > ');
 }
 
-function buildCascadeLevel(parentId, depth, selected) {
-  const children = DB.cats.filter(c => c.parent_id === parentId && c.visible !== false).sort((a, b) => a.order - b.order);
-  if (!children.length) return '';
-  let html = '';
-  children.forEach(c => {
-    const cnt = DB.prods.filter(p => (p.catIds || []).includes(c.id)).length;
-    const subChildren = DB.cats.filter(x => x.parent_id === c.id);
-    const isSelected = selected.includes(c.id);
-    const indent = depth > 0 ? '<span style="opacity:.4;font-size:.6rem;margin-right:.2rem">' + '└ '.repeat(depth) + '</span>' : '';
-    html += '<div class="cascade-item ' + (isSelected ? 'on' : '') + (subChildren.length ? ' has-children' : '') + '" style="padding-left:' + (0.6 + depth * 0.8) + 'rem" onclick="togglePMCat(' + c.id + ')">';
-    html += indent;
-    html += '<span>' + c.icon + '</span>';
-    html += '<span style="font-size:.78rem">' + esc(c.name) + '</span>';
-    html += '<span style="font-family:DM Mono,monospace;font-size:.6rem;color:var(--t3)">[' + c.code + ']</span>';
-    html += '<span style="font-size:.6rem;color:var(--t3)">' + cnt + '</span>';
-    if (subChildren.length) html += '<span class="ci-arrow">▸</span>';
-    html += '</div>';
-    // Recursively show sub-levels
-    html += buildCascadeLevel(c.id, depth + 1, selected);
-  });
-  return html;
+function onPmCascadeChange(level) {
+  const sel = document.getElementById('pmCat' + level);
+  if (!sel) return;
+  const v = sel.value;
+  if (!v) { pmCats = []; }
+  else {
+    const id = Number(v);
+    // 与库存一致：可选到任意层；商品仍只挂叶子（saveProd 用 deepestCatId）
+    pmCats = [id];
+  }
+  pmSkuManual = false;
+  document.getElementById('pmManual').value = '0';
+  refreshPmCats();
 }
 
 function togglePMCat(id) {
-  pmCats = [id];
+  if (!id) { pmCats = []; }
+  else { pmCats = [id]; }
   pmSkuManual = false;
   document.getElementById('pmManual').value = '0';
-  document.getElementById('pmCats').innerHTML = renderCatPills(pmCats);
-  updateSkuPreview();
+  refreshPmCats();
 }
 
 function updateSkuPreview() {
@@ -1507,6 +2459,11 @@ async function saveProd() {
   const name = document.getElementById('pmN').value.trim();
   if (!name) { toast(t('enterNameErr'), 'er'); return; }
   if (!pmCats.length) { toast(t('selectCatErr'), 'er'); return; }
+  const _leafId = deepestCatId(pmCats);
+  if (_leafId == null || DB.cats.some(c => c.parent_id === _leafId)) {
+    toast(t('selectLeafCat') || t('selectCatErr'), 'er');
+    return;
+  }
   const sku = pmSkuManual ? (document.getElementById('skuAuto') ? document.getElementById('skuAuto').value : '') : genSku(pmCats, parseInt(id) || null);
   const stock = parseInt(document.getElementById('pmS').value) || 0;
   const price = parseFloat(document.getElementById('pmP').value) || 0;
@@ -1528,18 +2485,20 @@ async function saveProd() {
   const hasCase = document.getElementById('pmHasCase').checked;
   const casePrice = hasCase ? (parseFloat(document.getElementById('pmCasePrice').value) || 0) : 0;
   const row = { name, sku, sku_manual: pmSkuManual, stock: sumStock, price, cost, location: loc, note, image: pmImgData || '',
-    category_type: catType, sizes: sizes, size_stock: sizeStock, has_bag: hasBag, bag_price: bagPrice, has_case: hasCase, case_price: casePrice, label: document.getElementById('pmLabel').value };
+    category_type: catType, sizes: sizes, size_stock: sizeStock, has_bag: hasBag, bag_price: bagPrice, has_case: hasCase, case_price: casePrice, label: document.getElementById('pmLabel').value || 'normal' };
   try {
     if (id) {
-      const { error } = await sb.from('products').update(row).eq('id', id);
-      if (error) throw error;
-      await sb.from('product_categories').delete().eq('product_id', id);
-      if (pmCats.length) await sb.from('product_categories').insert(pmCats.map(cid => ({ product_id: Number(id), category_id: cid })));
+      await adminApi('update', { table: 'products', patch: row, where: { id: Number(id) } });
+      await adminApi('delete', { table: 'product_categories', where: { product_id: Number(id) } });
+      const _pc = [deepestCatId(pmCats)].filter(x => x != null);
+      if (_pc.length) await adminApi('insert', { table: 'product_categories', rows: _pc.map(cid => ({ product_id: Number(id), category_id: cid })) });
       toast(t('productUpdated'), 'ok');
     } else {
-      const { data, error } = await sb.from('products').insert(Object.assign({}, row, { status: 'active' })).select().single();
-      if (error) throw error;
-      if (pmCats.length && data) await sb.from('product_categories').insert(pmCats.map(cid => ({ product_id: data.id, category_id: cid })));
+      const data = await adminApi('insert', { table: 'products', row: Object.assign({}, row, { status: 'active' }), single: true, select: true });
+      const err = null;
+      const idNew = data && data.id;
+      const _pcn = [deepestCatId(pmCats)].filter(x => x != null);
+      if (_pcn.length && idNew) await adminApi('insert', { table: 'product_categories', rows: _pcn.map(cid => ({ product_id: Number(idNew), category_id: cid })) });
       toast(t('productAdded'), 'ok');
     }
     await loadAllData();
@@ -1548,11 +2507,36 @@ async function saveProd() {
   } catch (err) { toast(t('saveFailed') + ': ' + err.message, 'er'); }
 }
 
+async function toggleMallListed(id) {
+  const p = prodById(id);
+  if (!p) return;
+  const next = !p.ml;
+  try {
+    await adminApi('update', { table: 'products', patch: { mall_listed: next }, where: { id: Number(id) } });
+    p.ml = next;
+    toast(next ? t('mallOn') : t('mallOff'), 'ok');
+    openPDetail(id);
+    render(curP);
+  } catch (err) { toast(t('saveFailed') + ': ' + err.message, 'er'); }
+}
+async function toggleGalleryListed(id) {
+  const p = prodById(id);
+  if (!p) return;
+  const next = !p.gl;
+  try {
+    await adminApi('update', { table: 'products', patch: { gallery_listed: next }, where: { id: Number(id) } });
+    p.gl = next;
+    toast(next ? t('galleryOn') : t('galleryOff'), 'ok');
+    openPDetail(id);
+    render(curP);
+  } catch (err) { toast(t('saveFailed') + ': ' + err.message, 'er'); }
+}
+
 async function delP(id) {
   const p = prodById(id);
   if (!p || !confirm(t('confirmDelete', p.name))) return;
   try {
-    await sb.from('products').delete().eq('id', id);
+    await adminFrom('products').delete().eq('id', id);
     await loadAllData();
     toast(t('productDeleted'), 'inf');
     cMo('pdm');
@@ -1662,9 +2646,9 @@ async function doIO() {
   if (tp === 'out' && qty > p.stock) { toast(t('insufficient', p.stock), 'er'); return; }
   try {
     if (tp === 'in') {
-      await sb.from('inbound_records').insert({ product_id: pid, qty, operator: user.u, note });
+      await adminFrom('inbound_records').insert({ product_id: pid, qty, operator: user.u, note });
     } else {
-      await sb.from('outbound_records').insert({ product_id: pid, qty, operator: user.u, note });
+      await adminFrom('outbound_records').insert({ product_id: pid, qty, operator: user.u, note });
     }
     // Update size_stock and stock
     if (p.sizes && p.sizes.length > 0 && Object.keys(sizeUpdates).length > 0) {
@@ -1676,13 +2660,13 @@ async function doIO() {
         }
       });
       var newStock = Object.values(newSizeStock).reduce(function(a,b){return a+b},0);
-      await sb.from('products').update({ size_stock: newSizeStock, stock: newStock }).eq('id', pid);
+      await adminFrom('products').update({ size_stock: newSizeStock, stock: newStock }).eq('id', pid);
     } else {
       // Fallback for non-sized products
       if (tp === 'in') {
-        await sb.from('products').update({ stock: p.stock + qty }).eq('id', pid);
+        await adminFrom('products').update({ stock: p.stock + qty }).eq('id', pid);
       } else {
-        await sb.from('products').update({ stock: p.stock - qty }).eq('id', pid);
+        await adminFrom('products').update({ stock: p.stock - qty }).eq('id', pid);
       }
     }
     await loadAllData();
@@ -1782,7 +2766,7 @@ async function togAcct(id) {
   if (!a || a.id === user.id) { toast(t('selfDisable'), 'er'); return; }
   const ns = a.s === 'active' ? 'disabled' : 'active';
   try {
-    await sb.from('accounts').update({ status: ns }).eq('id', id);
+    await adminFrom('accounts').update({ status: ns }).eq('id', id);
     await loadAllData();
     render('accts');
   } catch (err) { toast(t('saveFailed') + ': ' + err.message, 'er'); }
@@ -1793,7 +2777,7 @@ async function delAcct(id) {
   if (!a || a.id === user.id) { toast(t('selfDelete'), 'er'); return; }
   if (!confirm(t('confirmDeleteUser', a.u))) return;
   try {
-    await sb.from('accounts').delete().eq('id', id);
+    await adminFrom('accounts').delete().eq('id', id);
     await loadAllData();
     render('accts');
   } catch (err) { toast(t('deleteFailed') + ': ' + err.message, 'er'); }
@@ -1818,7 +2802,7 @@ async function savePerms() {
   const newPerm = {};
   document.querySelectorAll('#prL .ts2').forEach(sw => { newPerm[sw.dataset.key] = sw.classList.contains('on') ? 1 : 0; });
   try {
-    await sb.from('accounts').update({ perms: newPerm }).eq('id', id);
+    await adminFrom('accounts').update({ perms: newPerm }).eq('id', id);
     await loadAllData();
     cMo('prmo');
     toast(t('permUpdated'), 'ok');
@@ -1839,7 +2823,7 @@ function rCats() {
     const children = getChildren(parentId);
     if (!children.length) return '';
     return children.map(c => {
-      const cnt = DB.prods.filter(p => (p.catIds || []).includes(c.id)).length;
+      const cnt = DB.prods.filter(p => productInCat(p, c.id)).length;
       const subCats = getChildren(c.id);
       const hasChildren = subCats.length > 0;
       const collapsed = catCollapsed[c.id] !== false; // default collapsed
@@ -1917,7 +2901,7 @@ async function addCat() {
   const depth = parent ? (parent.depth || 0) + 1 : 0;
   const siblings = DB.cats.filter(c => c.parent_id === parentId);
   const mx = siblings.reduce((m, c) => Math.max(m, c.order), 0);
-  const { error } = await sb.from('categories').insert({ name, code, icon, order_num: mx + 1, parent_id: parentId, depth, visible: true, locked: false });
+  const { error } = await adminFrom('categories').insert({ name, code, icon, order_num: mx + 1, parent_id: parentId, depth, visible: true, locked: false });
   if (error) { toast(t('saveFailed') + ': ' + error.message, 'er'); return; }
   await loadAllData();
   ['ncI', 'ncC'].forEach(id => { document.getElementById(id).value = ''; });
@@ -1942,7 +2926,7 @@ async function openAddSubCat(parentId) {
   const depth = (p.depth || 0) + 1;
   const siblings = DB.cats.filter(c => c.parent_id === parentId);
   const mx = siblings.reduce((m, c) => Math.max(m, c.order), 0);
-  const { error } = await sb.from('categories').insert({ name: name.trim(), code: codeUp, icon, order_num: mx + 1, parent_id: parentId, depth, visible: true, locked: false });
+  const { error } = await adminFrom('categories').insert({ name: name.trim(), code: codeUp, icon, order_num: mx + 1, parent_id: parentId, depth, visible: true, locked: false });
   if (error) { toast(t('saveFailed') + ': ' + error.message, 'er'); return; }
   await loadAllData();
   render('cats');
@@ -1951,7 +2935,7 @@ async function openAddSubCat(parentId) {
 
 async function toggleCatVis(id, current) {
   try {
-    await sb.from('categories').update({ visible: !current }).eq('id', id);
+    await adminFrom('categories').update({ visible: !current }).eq('id', id);
     await loadAllData();
     render('cats');
   } catch (err) { toast(t('saveFailed'), 'er'); }
@@ -1959,7 +2943,7 @@ async function toggleCatVis(id, current) {
 
 async function toggleCatLock(id, current) {
   try {
-    await sb.from('categories').update({ locked: !current }).eq('id', id);
+    await adminFrom('categories').update({ locked: !current }).eq('id', id);
     await loadAllData();
     render('cats');
     toast(current ? t('unlockCat') : t('lockCat'), 'ok');
@@ -1973,7 +2957,7 @@ async function renameCat(id) {
   const n = prompt(t('enterNewName'), c.name);
   if (n && n.trim() && n.trim() !== c.name) {
     try {
-      await sb.from('categories').update({ name: n.trim() }).eq('id', id);
+      await adminFrom('categories').update({ name: n.trim() }).eq('id', id);
       await loadAllData();
       render('cats');
     } catch (err) { toast(t('saveFailed'), 'er'); }
@@ -1987,7 +2971,7 @@ async function editCatIcon(id) {
   const n = prompt(t('enterNewIcon'), c.icon);
   if (n && n.trim()) {
     try {
-      await sb.from('categories').update({ icon: n.trim() }).eq('id', id);
+      await adminFrom('categories').update({ icon: n.trim() }).eq('id', id);
       await loadAllData();
       render('cats');
     } catch (err) { toast(t('saveFailed'), 'er'); }
@@ -2003,7 +2987,7 @@ async function editCatCode(id) {
   const code = n.trim().toUpperCase();
   if (DB.cats.some(x => x.code === code && x.id !== id && (x.parent_id || null) === (c.parent_id || null))) { toast(t('codeExists'), 'er'); return; }
   try {
-    await sb.from('categories').update({ code }).eq('id', id);
+    await adminFrom('categories').update({ code }).eq('id', id);
     await loadAllData();
     render('cats');
   } catch (err) { toast(t('saveFailed'), 'er'); }
@@ -2018,8 +3002,8 @@ async function moveCat(id, d) {
   const ti = i + d;
   if (ti < 0 || ti >= siblings.length) return;
   try {
-    await sb.from('categories').update({ order_num: siblings[ti].order }).eq('id', siblings[i].id);
-    await sb.from('categories').update({ order_num: siblings[i].order }).eq('id', siblings[ti].id);
+    await adminFrom('categories').update({ order_num: siblings[ti].order }).eq('id', siblings[i].id);
+    await adminFrom('categories').update({ order_num: siblings[i].order }).eq('id', siblings[ti].id);
     await loadAllData();
     render('cats');
   } catch (err) { toast(t('sortFailed'), 'er'); }
@@ -2040,7 +3024,7 @@ async function delCat(id) {
   const c = catById(id);
   if (!c) return;
   if (c.locked) { toast(t('catLocked'), 'er'); return; }
-  if (DB.prods.some(p => (p.catIds || []).includes(id))) { toast(t('noDeleteWithProducts'), 'er'); return; }
+  if (DB.prods.some(p => productInCat(p, id))) { toast(t('noDeleteWithProducts'), 'er'); return; }
   const children = DB.cats.filter(x => x.parent_id === id);
   const msg = children.length
     ? t('confirmDelete') + '「' + c.name + '」' + t('subCats') + ' (' + children.length + '), ' + t('confirm') + '?'
@@ -2050,10 +3034,10 @@ async function delCat(id) {
     // Delete children first
     if (children.length) {
       for (const child of children) {
-        await sb.from('categories').delete().eq('id', child.id);
+        await adminFrom('categories').delete().eq('id', child.id);
       }
     }
-    await sb.from('categories').delete().eq('id', id);
+    await adminFrom('categories').delete().eq('id', id);
     await loadAllData();
     render('cats');
   } catch (err) { toast(t('deleteFailed'), 'er'); }
@@ -2073,8 +3057,8 @@ async function catDD(e) {
   // Same parent: swap order
   if ((a.parent_id || null) === (b.parent_id || null)) {
     try {
-      await sb.from('categories').update({ order_num: b.order }).eq('id', a.id);
-      await sb.from('categories').update({ order_num: a.order }).eq('id', b.id);
+      await adminFrom('categories').update({ order_num: b.order }).eq('id', a.id);
+      await adminFrom('categories').update({ order_num: a.order }).eq('id', b.id);
       await loadAllData();
       render('cats');
     } catch (err) { toast(t('sortFailed'), 'er'); }
@@ -2083,12 +3067,12 @@ async function catDD(e) {
     const newDepth = (b.depth || 0);
     const depthDiff = newDepth - (a.depth || 0) + 1;
     try {
-      await sb.from('categories').update({ parent_id: b.id, depth: newDepth + 1 }).eq('id', a.id);
+      await adminFrom('categories').update({ parent_id: b.id, depth: newDepth + 1 }).eq('id', a.id);
       // Update all descendants' depth
       function updateDescendantDepth(pid, dd) {
         DB.cats.filter(c => c.parent_id === pid).forEach(async c => {
           const nd = (c.depth || 0) + dd;
-          await sb.from('categories').update({ depth: nd }).eq('id', c.id);
+          await adminFrom('categories').update({ depth: nd }).eq('id', c.id);
           updateDescendantDepth(c.id, dd);
         });
       }
@@ -2135,13 +3119,13 @@ async function confirmMoveCat(id) {
   try {
     const siblings = DB.cats.filter(x => x.parent_id === targetId && x.id !== id);
     const mx = siblings.reduce((m, x) => Math.max(m, x.order), 0);
-    await sb.from('categories').update({ parent_id: targetId, depth: newDepth, order_num: mx + 1 }).eq('id', id);
+    await adminFrom('categories').update({ parent_id: targetId, depth: newDepth, order_num: mx + 1 }).eq('id', id);
     // Update descendants depth
     async function updateDescDepth(pid, dd) {
       const children = DB.cats.filter(x => x.parent_id === pid);
       for (const ch of children) {
         const nd = (ch.depth || 0) + dd;
-        await sb.from('categories').update({ depth: nd }).eq('id', ch.id);
+        await adminFrom('categories').update({ depth: nd }).eq('id', ch.id);
         await updateDescDepth(ch.id, dd);
       }
     }
@@ -2180,7 +3164,7 @@ function openCatDetail(catId) {
   document.getElementById('catCode').value = c.code || '';
   document.getElementById('catVis').checked = !!c.visible;
   document.getElementById('catLock').checked = !!c.locked;
-  const cnt = DB.prods.filter(p => (p.catIds || []).includes(c.id)).length;
+  const cnt = DB.prods.filter(p => productInCat(p, c.id)).length;
   const parentName = c.parent_id != null ? ((catById(c.parent_id) || {}).name || '') : t('topCategory');
   document.getElementById('catMeta').textContent = t('parent') + ': ' + parentName + ' · ' + cnt + t('items') + ' · L' + ((Number(c.depth) || 0) + 1);
   const opts = document.getElementById('catParent');
@@ -2211,10 +3195,10 @@ async function saveCatDetail() {
   if (!name) { toast(t('nameRequired'), 'er'); return; }
   if (!code || code.length < 2 || code.length > 6 || !/^[A-Za-z0-9]+$/.test(code)) { toast(t('codeRequired'), 'er'); return; }
   if (DB.cats.some(x => x.code === code && x.id !== id && (x.parent_id || null) === (c.parent_id || null))) { toast(t('codeExists'), 'er'); return; }
-  const hasProducts = DB.prods.some(p => (p.catIds || []).includes(id));
+  const hasProducts = DB.prods.some(p => productInCat(p, id));
   if (hasProducts && code !== c.code) { toast(t('codeProtected'), 'er'); code = c.code; }
   try {
-    await sb.from('categories').update({
+    await adminFrom('categories').update({
       name, icon, code, visible: vis, locked, parent_id: parentId,
       depth: parentId == null ? 0 : ((Number((catById(parentId) || {}).depth) || 0) + 1)
     }).eq('id', id);
@@ -2332,7 +3316,7 @@ function rWhOrd() {
 async function adminConfirmShip(id) {
   if (!confirm(t('confirmEarlyShip'))) return;
   try {
-    await sb.from('orders').update({ admin_confirmed_ship: true, admin_ship_confirmed_by: user.u }).eq('id', id);
+    await adminFrom('orders').update({ admin_confirmed_ship: true, admin_ship_confirmed_by: user.u }).eq('id', id);
     await loadAllData();
     toast(t('confirmEarlyShipDone'), 'ok');
     render(curP);
@@ -2346,7 +3330,7 @@ function editOrdShipInfo(id) {
   if (o.pk === 'onibus') {
     const name = prompt('Ônibus 客户姓名：', o.onibusName || '');
     if (name !== null) {
-      sb.from('orders').update({ onibus_name: name.trim() }).eq('id', id).then(() => {
+      adminFrom('orders').update({ onibus_name: name.trim() }).eq('id', id).then(() => {
         // If schedule image not set, prompt upload
         if (!o.onibusImg) {
           toast('请在打包时上传班次图片', 'inf');
@@ -2357,7 +3341,7 @@ function editOrdShipInfo(id) {
   } else if (o.pk === 'motoboy' || o.pk === 'correios') {
     const addr = prompt('收货地址：', o.shipAddr || '');
     if (addr !== null) {
-      sb.from('orders').update({ shipping_address: addr.trim() }).eq('id', id).then(() => {
+      adminFrom('orders').update({ shipping_address: addr.trim() }).eq('id', id).then(() => {
         loadAllData().then(() => viewOrd(id));
       });
     }
@@ -2453,7 +3437,7 @@ function updOrdStatus(id, st) {
       toast(msg, 'er'); return;
     }
   }
-  sb.from('orders').update({ status: st, processed_by: user.u }).eq('id', id).then(() => {
+  adminFrom('orders').update({ status: st, processed_by: user.u }).eq('id', id).then(() => {
     loadAllData().then(() => { toast(t('opSuccess'), 'ok'); render(curP); });
   }).catch(err => toast(t('opFailed') + ': ' + err.message, 'er'));
 }
@@ -2468,10 +3452,10 @@ async function cancelOrd(id) {
     for (const item of o.items) {
       const p = prodById(item.pid);
       if (p) {
-        await sb.from('products').update({ stock: p.stock + item.qty }).eq('id', item.pid);
+        await adminFrom('products').update({ stock: p.stock + item.qty }).eq('id', item.pid);
       }
     }
-    await sb.from('orders').update({ status: 'cancel', processed_by: user.u }).eq('id', id);
+    await adminFrom('orders').update({ status: 'cancel', processed_by: user.u }).eq('id', id);
     await loadAllData();
     toast('订单已取消，库存已回补', 'ok');
     render(curP);
@@ -2524,7 +3508,7 @@ async function confirmPack() {
     let supType = 'waybill';
     if (o.pk === 'pickup') supType = 'label';
     else if (o.pk === 'onibus') supType = 'package_surface';
-    await sb.from('orders').update({
+    await adminFrom('orders').update({
       processed_by: user.u,
       packing_image: pkPacImg, supplementary_image: pkSupImg, supplementary_type: supType
     }).eq('id', id);
@@ -2562,7 +3546,7 @@ async function submitChange() {
   if (newM === o.pk) { toast(t('sameMethodErr'), 'er'); return; }
   if (!chImg) { toast(t('uploadBillErr'), 'er'); return; }
   try {
-    await sb.from('order_changes').insert({
+    await adminFrom('order_changes').insert({
       order_id: oid, old_method: o.pk, new_method: newM,
       shipping_cost: cost, bill_image: chImg, status: 'pending', requested_by: user.u
     });
@@ -2598,7 +3582,7 @@ function openPayConf(id) {
 async function confirmPay() {
   const id = parseInt(document.getElementById('payOid').value);
   try {
-    await sb.from('orders').update({ payment_status: 'confirmed' }).eq('id', id);
+    await adminFrom('orders').update({ payment_status: 'confirmed' }).eq('id', id);
     await loadAllData();
     cMo('paymo');
     toast(t('confirmed'), 'ok');
@@ -2609,7 +3593,7 @@ async function confirmPay() {
 async function rejectPay() {
   const id = parseInt(document.getElementById('payOid').value);
   try {
-    await sb.from('orders').update({ payment_status: 'rejected' }).eq('id', id);
+    await adminFrom('orders').update({ payment_status: 'rejected' }).eq('id', id);
     await loadAllData();
     cMo('paymo');
     toast(t('rejected'), 'inf');
@@ -2684,7 +3668,7 @@ async function saveOrdPrice(orderId) {
       }
     });
     // Update order total and mark as price_modified
-    await sb.from('orders').update({
+    await adminFrom('orders').update({
       shipping_cost: 0,
       price_modified: true
     }).eq('id', orderId);
@@ -2696,7 +3680,7 @@ async function saveOrdPrice(orderId) {
         // Find the order_item record to update
         const { data: oiRecords } = await sb.from('order_items').select('id').eq('order_id', orderId).eq('product_id', item.pid);
         if (oiRecords && oiRecords.length) {
-          await sb.from('order_items').update({ unit_price: newPrice }).eq('id', oiRecords[0].id);
+          await adminFrom('order_items').update({ unit_price: newPrice }).eq('id', oiRecords[0].id);
         }
       }
     }
@@ -2721,6 +3705,203 @@ function printOrd(id) {
 // ═══════════════════════════════════════
 // APPROVAL CENTER
 // ═══════════════════════════════════════
+
+// ═══════════ LABEL PRICE (finance) ═══════════
+let labelPriceTab = 'all';
+function rLabelPrice() {
+  return '<div class="pnl"><div class="pnH"><span class="pnT">🏷️ ' + t('labelPrice') + '</span><span style="font-size:.65rem;color:var(--t3)">' + t('labelPriceHint') + '</span></div><div class="pnB" id="labelPriceArea"><div class="spinner"></div></div></div>';
+}
+
+let labelSelected = new Set();
+let labelPricePg = 1;
+let labelPriceSize = 12;
+let lpCat1 = 'all';
+let lpCat2 = 'all';
+let lpCat3 = 'all';
+let labelPriceCat = 'all';
+
+
+
+
+function loadLabelPrices() {
+  const area = document.getElementById('labelPriceArea');
+  if (!area) return;
+  const labels = ['novo', 'oferta', 'promocao'];
+  let list = DB.prods.filter(p => labels.includes(p.label || 'normal'));
+  const catRoot = (typeof lpCat1 !== 'undefined' && lpCat1 && lpCat1 !== 'all') ? Number(lpCat1) : null;
+  const catSub = (typeof lpCat2 !== 'undefined' && lpCat2 && lpCat2 !== 'all') ? Number(lpCat2) : null;
+  const catSub2 = (typeof lpCat3 !== 'undefined' && lpCat3 && lpCat3 !== 'all') ? Number(lpCat3) : null;
+  const filterCatId = catSub2 || catSub || catRoot;
+  if (filterCatId) {
+    const catIds = new Set([filterCatId]);
+    (function addDescendants(pid) {
+      DB.cats.filter(x => Number(x.parent_id) === Number(pid)).forEach(x => {
+        catIds.add(Number(x.id));
+        addDescendants(x.id);
+      });
+    })(filterCatId);
+    list = list.filter(prod => (prod.catIds || []).some(cid => catIds.has(Number(cid))));
+  }
+  const shownAll = labelPriceTab === 'all' ? list : list.filter(p => p.label === labelPriceTab);
+  const total = shownAll.length;
+  const size = labelPriceSize || 12;
+  const pages = Math.max(1, Math.ceil(total / size));
+  if (labelPricePg > pages) labelPricePg = pages;
+  const shown = shownAll.slice((labelPricePg - 1) * size, labelPricePg * size);
+  [...labelSelected].forEach(id => { if (!shown.some(p => p.id === id)) labelSelected.delete(id); });
+
+  const ctl = 'height:36px;box-sizing:border-box;border-radius:10px;border:1px solid var(--bd);background:rgba(255,255,255,.03);padding:0 .7rem;color:var(--t1);font-size:.8rem';
+  const chip = (on, txt, fn) => '<button class="btn bs" style="height:32px;padding:0 .8rem;border-radius:999px;flex:0 0 auto;border:1px solid ' + (on ? 'transparent' : 'var(--bd)') + ';background:' + (on ? 'var(--ac)' : 'rgba(255,255,255,.03)') + ';color:' + (on ? '#fff' : 'var(--t2)') + ';font-size:.75rem;font-weight:600" onclick="' + fn + '">' + txt + '</button>';
+
+  let html = '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;padding:.55rem .65rem;border:1px solid var(--bd);border-radius:14px;background:rgba(255,255,255,.025);margin-bottom:.75rem">';
+  html += chip(labelPriceTab === 'all', t('labelFilterAll') + ' (' + list.length + ')', "labelPriceTab='all';labelPricePg=1;loadLabelPrices()");
+  labels.forEach(l => {
+    const n = list.filter(p => p.label === l).length;
+    html += chip(labelPriceTab === l, labelText(l) + ' (' + n + ')', "labelPriceTab='" + l + "';labelPricePg=1;loadLabelPrices()");
+  });
+  html += '<span style="width:1px;height:22px;background:var(--bd);margin:0 .15rem"></span>';
+  const topCats = DB.cats.filter(function(x){ return x.parent_id === null; }).sort(function(a,b){ return a.order - b.order; });
+  html += '<select onchange="lpCat1=this.value;lpCat2=\'all\';labelPricePg=1;loadLabelPrices()" style="' + ctl + ';min-width:130px">';
+  html += '<option value="all"' + ((!lpCat1 || lpCat1 === 'all') ? ' selected' : '') + '>' + t('all') + '</option>';
+  topCats.forEach(function(x) {
+    html += '<option value="' + x.id + '"' + (String(lpCat1) === String(x.id) ? ' selected' : '') + '>' + x.icon + ' ' + esc(x.name) + '</option>';
+  });
+  html += '</select>';
+  if (lpCat1 && lpCat1 !== 'all') {
+    const kids = DB.cats.filter(function(x){ return Number(x.parent_id) === Number(lpCat1); }).sort(function(a,b){ return a.order - b.order; });
+    if (kids.length) {
+      html += '<select onchange="lpCat2=this.value;labelPricePg=1;loadLabelPrices()" style="' + ctl + ';min-width:120px">';
+      html += '<option value="all">' + t('allSubCats') + '</option>';
+      kids.forEach(function(x) {
+        html += '<option value="' + x.id + '"' + (String(lpCat2) === String(x.id) ? ' selected' : '') + '>' + x.icon + ' ' + esc(x.name) + '</option>';
+      });
+      html += '</select>';
+    }
+    if (lpCat2 && lpCat2 !== 'all') {
+      const kids2 = DB.cats.filter(function(x){ return Number(x.parent_id) === Number(lpCat2); }).sort(function(a,b){ return a.order - b.order; });
+      if (kids2.length) {
+        html += '<select onchange="lpCat3=this.value;labelPricePg=1;loadLabelPrices()" style="' + ctl + ';min-width:120px">';
+        html += '<option value="all">' + t('allSubCats') + '</option>';
+        kids2.forEach(function(x) {
+          html += '<option value="' + x.id + '"' + (String(lpCat3) === String(x.id) ? ' selected' : '') + '>' + x.icon + ' ' + esc(x.name) + '</option>';
+        });
+        html += '</select>';
+      }
+    }
+  }
+  html += '<span style="width:1px;height:22px;background:var(--bd);margin:0 .15rem"></span>';
+  html += '<label style="display:flex;align-items:center;gap:.35rem;cursor:pointer;font-size:.75rem;color:var(--t2);height:36px"><input type="checkbox" ' + (shown.length && shown.every(p => labelSelected.has(p.id)) ? 'checked' : '') + ' onchange="toggleAllLabelPrice(this.checked)" style="width:16px;height:16px" /> ' + t('selectAll') + '</label>';
+  html += '<span style="font-size:.72rem;color:var(--t3);height:36px;display:flex;align-items:center">' + t('selectedCount').replace('{0}', labelSelected.size) + '</span>';
+  html += '<span style="margin-left:auto;display:flex;align-items:center;gap:.35rem;height:36px">';
+  html += '<input type="number" min="0" step="0.01" id="bulk_sel" placeholder="0" style="' + ctl + ';width:96px" />';
+  html += '<button class="btn bp bs" style="height:36px;padding:0 .9rem;border-radius:10px;font-size:.78rem" onclick="applySelectedLabelPrice()">' + t('applySelected') + '</button>';
+  html += '</span></div>';
+
+  html += '<div class="pcards">';
+  shown.sort((a, b) => (a.label || '').localeCompare(b.label || '') || (a.name || '').localeCompare(b.name || ''));
+  shown.forEach(p => {
+    const lv = p.stock === 0 ? 'lo' : p.stock <= 10 ? 'md' : 'hi';
+    const lvC = lv === 'lo' ? 'dg' : lv === 'md' ? 'wa' : 'sf';
+    const sel = labelSelected.has(p.id);
+    html += '<div class="pcard" style="cursor:default;display:flex;gap:.75rem;align-items:center;padding:.85rem 1rem">'
+      + '<input type="checkbox" ' + (sel ? 'checked' : '') + ' style="flex-shrink:0;cursor:pointer" onchange="toggleLabelSelect(' + p.id + ', this.checked)" />'
+      + '<div class="pimg" style="width:56px;height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:center">' + (p.img ? '<img src="' + safeUrl(p.img) + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:10px" onerror="this.remove()">' : '') + '</div>'
+      + '<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:.28rem">'
+      + '<div class="pdl"><span class="pdk" style="width:3.2em;flex-shrink:0">' + t('cName') + '：</span><span class="pdv" style="flex:1;min-width:0">' + esc(p.name) + ' ' + labelBadge(p.label) + '</span></div>'
+      + '<div class="pdl"><span class="pdk" style="width:3.2em;flex-shrink:0">' + t('cSku') + '：</span><span class="pdv mono">' + esc(p.sku) + '</span></div>'
+      + '<div class="pdl" style="align-items:center"><span class="pdk" style="width:3.2em;flex-shrink:0">' + t('cPrice') + '：</span><span class="pdv mono">¥' + Number(p.price || 0).toLocaleString() + '</span>'
+      + '<span style="font-size:.68rem;color:var(--t3);margin-left:.55rem">' + t('discountPrice') + '</span>'
+      + '<input type="number" min="0" step="0.01" id="lp_' + p.id + '" value="' + (p.lp == null ? '' : p.lp) + '" placeholder="—" style="width:104px;margin-left:.35rem" />'
+      + '<span style="font-size:.62rem;color:var(--t3);margin-left:.35rem">' + (p.lp == null ? t('labelPriceEmpty') : t('labelPriceKeep')) + '</span>'
+      + '</div>'
+      + '<div class="pdl"><span class="pdk" style="width:3.2em;flex-shrink:0">' + t('cStock') + '：</span><span class="pdv mono" style="color:var(--' + lvC + ')">' + p.stock + '</span></div>'
+      + '</div></div>';
+  });
+  if (!shown.length) html += '<div class="empty"><p>' + t('noMatchProduct') + '</p></div>';
+  html += '</div>';
+
+  // pager
+  if (total > size) {
+    html += '<div style="display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;margin-top:.9rem">';
+    html += '<button class="btn bg bs" style="height:34px;padding:0 .85rem' + (labelPricePg <= 1 ? ';opacity:.4' : '') + '"' + (labelPricePg <= 1 ? ' disabled' : '') + ' onclick="labelPricePg--;loadLabelPrices()">' + (t('prev') || '‹') + '</button>';
+    html += '<span style="font-size:.78rem;color:var(--t2)">' + labelPricePg + ' / ' + pages + ' · ' + total + '</span>';
+    html += '<button class="btn bg bs" style="height:34px;padding:0 .85rem' + (labelPricePg >= pages ? ';opacity:.4' : '') + '"' + (labelPricePg >= pages ? ' disabled' : '') + ' onclick="labelPricePg++;loadLabelPrices()">' + (t('next') || '›') + '</button>';
+    html += '<span style="margin-left:auto;display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--t3)">' + (t('pgSize') || 'Size')
+      + '<select onchange="labelPriceSize=Number(this.value);labelPricePg=1;loadLabelPrices()" style="' + ctl + ';height:34px;min-width:72px">'
+      + [12, 24, 48].map(n => '<option value="' + n + '"' + (labelPriceSize === n ? ' selected' : '') + '>' + n + '</option>').join('')
+      + '</select></span>';
+    html += '</div>';
+  }
+
+  html += '<div style="display:flex;justify-content:flex-end;margin-top:.9rem"><button class="btn bp bs aw" style="height:40px;padding:0 1.15rem" onclick="saveLabelPrices()">' + t('savePrices') + '</button></div>';
+  area.innerHTML = html;
+}
+function toggleLabelSelect(id, on) {
+  if (on) labelSelected.add(id); else labelSelected.delete(id);
+  const el = document.getElementById('labelPriceArea');
+  if (el) {
+    const box = el.querySelector('div[style*="已选"], div[style*="color:var(--t2)"] span');
+    // light update of count without full rerender
+    const spans = el.querySelectorAll('span');
+    for (const s of spans) {
+      if (s.textContent && (s.textContent.indexOf('已选') >= 0 || s.textContent.indexOf('Selecionados') >= 0)) {
+        s.textContent = t('selectedCount').replace('{0}', labelSelected.size);
+        break;
+      }
+    }
+  }
+}
+function toggleAllLabelPrice(on) {
+  const labels = ['novo', 'oferta', 'promocao'];
+  const list = DB.prods.filter(p => labels.includes(p.label || 'normal'));
+  const shown = labelPriceTab === 'all' ? list : list.filter(p => p.label === labelPriceTab);
+  shown.forEach(p => { if (on) labelSelected.add(p.id); else labelSelected.delete(p.id); });
+  loadLabelPrices();
+}
+async function applySelectedLabelPrice() {
+  const input = document.getElementById('bulk_sel');
+  const val = Number(input && input.value);
+  if (!input || isNaN(val) || val < 0) { toast(t('cPrice'), 'er'); return; }
+  if (!labelSelected.size) { toast(t('selectCategoryFirst'), 'er'); return; }
+  labelSelected.forEach(id => {
+    const p = DB.prods.find(x => x.id === id);
+    if (p) p.lp = val;
+    const el = document.getElementById('lp_' + id);
+    if (el) el.value = val;
+  });
+  toast(t('priceUpdated'), 'ok');
+}
+async function applyBulkLabelPrice(label) {
+  const input = document.getElementById('bulk_' + label);
+  const val = Number(input && input.value);
+  if (!input || isNaN(val) || val < 0) { toast(t('enterPriceErr') || t('cPrice'), 'er'); return; }
+  DB.prods.filter(p => (p.label || 'normal') === label).forEach(p => {
+    p.lp = val;
+    const el = document.getElementById('lp_' + p.id);
+    if (el) el.value = val;
+  });
+  toast(t('priceUpdated'), 'ok');
+}
+async function saveLabelPrices() {
+  const labels = ['novo', 'oferta', 'promocao'];
+  const targets = DB.prods.filter(p => labels.includes(p.label || 'normal'));
+  try {
+    let n = 0;
+    for (const p of targets) {
+      const el = document.getElementById('lp_' + p.id);
+      const raw = el ? String(el.value).trim() : '';
+      const price = raw === '' ? null : Number(raw);
+      if (price != null && (isNaN(price) || price < 0)) continue;
+      if ((p.lp == null ? null : Number(p.lp)) === price) continue;
+      await adminApi('update', { table: 'products', patch: { label_price: price }, where: { id: p.id } });
+      p.lp = price;
+      n++;
+    }
+    toast(t('priceUpdated') + ' (' + n + ')', 'ok');
+  } catch (e) {
+    toast(t('saveFailed') + ': ' + e.message, 'er');
+  }
+}
 function rPaySettings() {
   return '<div class="pnl"><div class="pnH"><span class="pnT">💳 ' + t('payAccountSettings') + '</span><span style="font-size:.65rem;color:var(--t3)">' + t('paySettingsInfo') + '</span></div><div class="pnB" id="paySettingsArea"><div class="spinner"></div></div></div>';
 }
@@ -2811,18 +3992,18 @@ async function savePaySettings() {
       const val = el.value.trim();
       const { data: existing } = await sb.from('site_settings').select('key').eq('key', key).limit(1);
       if (existing && existing.length) {
-        await sb.from('site_settings').update({ value: val, updated_at: new Date().toISOString() }).eq('key', key);
+        await adminFrom('site_settings').update({ value: val, updated_at: new Date().toISOString() }).eq('key', key);
       } else {
-        await sb.from('site_settings').insert({ key, value: val, label: key });
+        await adminFrom('site_settings').insert({ key, value: val, label: key });
       }
     }
     syncPayTierInputs();
     const tiersJson = JSON.stringify(window._payTiers || []);
     const { data: tierRow } = await sb.from('site_settings').select('key').eq('key', 'pay_tiers').limit(1);
     if (tierRow && tierRow.length) {
-      await sb.from('site_settings').update({ value: tiersJson, updated_at: new Date().toISOString() }).eq('key', 'pay_tiers');
+      await adminFrom('site_settings').update({ value: tiersJson, updated_at: new Date().toISOString() }).eq('key', 'pay_tiers');
     } else {
-      await sb.from('site_settings').insert({ key: 'pay_tiers', value: tiersJson, label: 'pay_tiers' });
+      await adminFrom('site_settings').insert({ key: 'pay_tiers', value: tiersJson, label: 'pay_tiers' });
     }
     toast(t('payAccountSaved'), 'ok');
   } catch(e) { toast(t('saveFailed') + '：' + e.message, 'er'); }
@@ -2909,9 +4090,9 @@ async function saveMemberLevel() {
     try {
       var { data: rows } = await sb.from('member_levels').select('id').eq('level_key', key).limit(1);
       if (rows && rows.length) {
-        await sb.from('member_levels').update({ name: data.name, icon: data.icon, description: data.desc, discount: data.discount, enabled: data.enabled }).eq('level_key', key);
+        await adminFrom('member_levels').update({ name: data.name, icon: data.icon, description: data.desc, discount: data.discount, enabled: data.enabled }).eq('level_key', key);
       } else {
-        await sb.from('member_levels').insert({ level_key: key, name: data.name, icon: data.icon, description: data.desc, discount: data.discount, enabled: data.enabled });
+        await adminFrom('member_levels').insert({ level_key: key, name: data.name, icon: data.icon, description: data.desc, discount: data.discount, enabled: data.enabled });
       }
     } catch(e) {
       console.warn('member_levels table not available, saved locally:', e.message);
@@ -2961,7 +4142,7 @@ function rApprovals() {
 
 async function reviewCus(id, status) {
   try {
-    await sb.from('customers').update({ status, approved_by: user.u }).eq('id', id);
+    await adminFrom('customers').update({ status, approved_by: user.u }).eq('id', id);
     await loadAllData();
     toast(t('reviewDone'), 'ok');
     render('approvals');
@@ -2970,9 +4151,9 @@ async function reviewCus(id, status) {
 
 async function reviewChange(id, status, newM, cost, oid) {
   try {
-    await sb.from('order_changes').update({ status, reviewed_by: user.u }).eq('id', id);
+    await adminFrom('order_changes').update({ status, reviewed_by: user.u }).eq('id', id);
     if (status === 'approved') {
-      await sb.from('orders').update({ pickup_method: newM, shipping_cost: cost }).eq('id', oid);
+      await adminFrom('orders').update({ pickup_method: newM, shipping_cost: cost }).eq('id', oid);
     }
     await loadAllData();
     toast(t('reviewDone'), 'ok');
@@ -3174,9 +4355,9 @@ async function saveDraft() {
   try {
     const row = { ...buildOrderRow(), status: 'draft' };
     let ordId;
-    if (dEditId) { await sb.from('orders').update(row).eq('id', dEditId); ordId = dEditId; await sb.from('order_items').delete().eq('order_id', dEditId); }
-    else { const { data, error } = await sb.from('orders').insert(row).select().single(); if (error) throw error; ordId = data.id; }
-    if (dItems.length) await sb.from('order_items').insert(dItems.map(i => ({ order_id: ordId, product_id: i.pid, qty: i.qty })));
+    if (dEditId) { await adminFrom('orders').update(row).eq('id', dEditId); ordId = dEditId; await adminFrom('order_items').delete().eq('order_id', dEditId); }
+    else { const { data, error } = await adminFrom('orders').insert(row).select().single(); if (error) throw error; ordId = data.id; }
+    if (dItems.length) await adminFrom('order_items').insert(dItems.map(i => ({ order_id: ordId, product_id: i.pid, qty: i.qty })));
     await loadAllData();
     toast(t('draftSaved'), 'ok');
     clearDraft();
@@ -3205,12 +4386,12 @@ async function submitOrd() {
   try {
     const row = { ...buildOrderRow(), status: 'pending' };
     let ordId;
-    if (dEditId) { await sb.from('orders').update(row).eq('id', dEditId); ordId = dEditId; await sb.from('order_items').delete().eq('order_id', dEditId); }
-    else { const { data, error } = await sb.from('orders').insert(row).select().single(); if (error) throw error; ordId = data.id; }
-    if (dItems.length) await sb.from('order_items').insert(dItems.map(i => ({ order_id: ordId, product_id: i.pid, qty: i.qty })));
+    if (dEditId) { await adminFrom('orders').update(row).eq('id', dEditId); ordId = dEditId; await adminFrom('order_items').delete().eq('order_id', dEditId); }
+    else { const { data, error } = await adminFrom('orders').insert(row).select().single(); if (error) throw error; ordId = data.id; }
+    if (dItems.length) await adminFrom('order_items').insert(dItems.map(i => ({ order_id: ordId, product_id: i.pid, qty: i.qty })));
     // Lock stock immediately
     for (const it of dItems) {
-      await sb.from('products').update({ stock: (prodById(it.pid)?.stock || 0) - it.qty }).eq('id', it.pid);
+      await adminFrom('products').update({ stock: (prodById(it.pid)?.stock || 0) - it.qty }).eq('id', it.pid);
     }
     await loadAllData();
     toast(t('orderSubmitted'), 'ok');
@@ -3266,7 +4447,7 @@ async function delOrd(id) {
   const o = DB.ords.find(x => x.id === id);
   if (!o || o.st !== 'draft') return;
   if (!confirm(t('confirmDeleteDraft'))) return;
-  try { await sb.from('orders').delete().eq('id', id); await loadAllData(); render('sOrds'); } catch (err) { toast(t('deleteFailed'), 'er'); }
+  try { await adminFrom('orders').delete().eq('id', id); await loadAllData(); render('sOrds'); } catch (err) { toast(t('deleteFailed'), 'er'); }
 }
 
 // ═══════════════════════════════════════
@@ -3318,7 +4499,7 @@ async function saveCus() {
   const corrAddr = document.getElementById('cusCA').value.trim();
   const creditLimit = parseFloat(document.getElementById('cusCL').value) || 0;
   try {
-    await sb.from('customers').insert({
+    await adminFrom('customers').insert({
       name, phone, moto_address: motoAddr, correio_address: corrAddr,
       credit_limit: creditLimit, credit_used: 0, status: 'pending', created_by: user.u
     });
