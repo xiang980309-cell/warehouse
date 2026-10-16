@@ -382,7 +382,7 @@ tbody td:nth-child(5){font-variant-numeric:tabular-nums}
 .pcard:hover{border-color:var(--bl);background:var(--s3)}
 .pcard:active{transform:scale(.99)}
 .pdl{display:flex;align-items:baseline;gap:.35rem;min-width:0}
-.pdk{flex-shrink:0;font-size:.72rem;color:var(--t3)}
+.pdk{flex-shrink:0;font-size:.72rem;color:var(--t3);white-space:nowrap;min-width:3.2em}
 .pdv{font-weight:600;word-break:break-word;overflow-wrap:anywhere;min-width:0}
 .pdv.mono{font-family:'DM Mono',monospace;font-weight:500}
 .sortbar{display:flex;flex-wrap:wrap;gap:.35rem;padding:.6rem .75rem;border-bottom:1px solid var(--bd)}
@@ -391,10 +391,10 @@ tbody td:nth-child(5){font-variant-numeric:tabular-nums}
 .sbtn.on{background:var(--ag);border-color:var(--ac);color:var(--ac);font-weight:600}
 .pd-row{display:flex;gap:.75rem;padding:.55rem 0;border-bottom:1px solid var(--bd)}
 .pd-row:last-child{border-bottom:none}
-.pd-k{flex-shrink:0;width:5.2rem;font-size:.75rem;color:var(--t3);line-height:1.7}
+.pd-k{flex-shrink:0;width:auto;min-width:5.2rem;max-width:9rem;font-size:.75rem;color:var(--t3);line-height:1.7}
 .pd-v{flex:1;min-width:0;font-size:.82rem;line-height:1.7;word-break:break-word;overflow-wrap:anywhere}
 .tf{flex-wrap:wrap;gap:.35rem}
-@media(max-width:600px){.pcard{padding:.65rem .75rem}.pd-k{width:4.3rem;font-size:.72rem}.pd-v{font-size:.78rem}}
+@media(max-width:600px){.pcard{padding:.65rem .75rem}.pd-k{min-width:4.3rem;max-width:7.5rem;font-size:.72rem}.pd-v{font-size:.78rem}}
 /* === UI POLISH: modern WMS (Linear/Stripe-inspired) === */
 body{background:
   radial-gradient(1200px 600px at 12% -10%, rgba(124,140,255,.09), transparent 55%),
@@ -480,7 +480,7 @@ h1,h2,h3,.mt,.pnT{letter-spacing:-.02em}
 .b-promo,.b-promocao{background:rgba(124,140,255,.14);color:#9aa8ff;border:1px solid rgba(124,140,255,.22)}
 .b-normal{background:rgba(255,255,255,.06);color:var(--t2);border:1px solid var(--bd)}
 .mono,.sk{font-family:'DM Mono',ui-monospace,SFMono-Regular,monospace;letter-spacing:-.02em}
-.pdk{color:var(--t3);font-size:.72rem;font-weight:500}
+.pdk{color:var(--t3);font-size:.72rem;font-weight:500;white-space:nowrap;flex-shrink:0;min-width:3.2em}
 .pdv{font-size:.82rem;font-weight:600;letter-spacing:-.01em}
 .pdl{display:flex;gap:.35rem;align-items:baseline;line-height:1.65}
 .pimg{
@@ -1108,19 +1108,19 @@ input[id^="lp_"]{
 <div class="fgm"><label data-t="bagCaseSpec">包/箱规格</label>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.3rem">
   <div style="display:flex;align-items:center;gap:.4rem">
-    <label style="display:flex;align-items:center;gap:.3rem;cursor:pointer;margin:0"><input type="checkbox" id="pmHasBag" onchange="toggleSpecFields()"> ' + t('bag') + '</label>
+    <label style="display:flex;align-items:center;gap:.3rem;cursor:pointer;margin:0"><input type="checkbox" id="pmHasBag" onchange="toggleSpecFields()"><span data-t="bag">包</span></label>
     <input type="number" id="pmBagPrice" data-t-ph="bagPrice" placeholder="包价" style="flex:1;min-width:0" disabled>
   </div>
   <div style="display:flex;align-items:center;gap:.4rem">
-    <label style="display:flex;align-items:center;gap:.3rem;cursor:pointer;margin:0"><input type="checkbox" id="pmHasCase" onchange="toggleSpecFields()"> ' + t('case') + '</label>
+    <label style="display:flex;align-items:center;gap:.3rem;cursor:pointer;margin:0"><input type="checkbox" id="pmHasCase" onchange="toggleSpecFields()"><span data-t="case">箱</span></label>
     <input type="number" id="pmCasePrice" data-t-ph="casePrice" placeholder="箱价" style="flex:1;min-width:0" disabled>
   </div>
 </div>
-<div style="font-size:.6rem;color:var(--t3)">' + t('bagCaseHint') + '</div></div>
-<div class="fr"><div class="fgm"><label data-t="sellPrice">销售单价 (¥)</label><input type="number" id="pmP" placeholder="0.00" min="0" step="0.01" /></div><div class="fgm" id="pmCw"><label data-t="costPrice">进货成本 (¥)</label><input type="number" id="pmC" placeholder="0.00" min="0" step="0.01" /></div></div><div class="fgm"><label data-t="remarks">备注</label><textarea id="pmNt" data-t-ph="optionalNote" placeholder="可选备注..."></textarea></div><div class="fgm"><label>标签</label><select id="pmLabel"><option value="normal">Normal</option><option value="novo">Novo</option><option value="oferta">Oferta</option><option value="promocao">Promoção</option></select></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('pmo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="saveProd()" data-t="saveProduct">保存商品</button></div></div></div>
+<div style="font-size:.6rem;color:var(--t3)" data-t="bagCaseHint">包：仅小批发客和大批发客可见 · 箱：仅大批发客可见</div></div>
+<div class="fr"><div class="fgm"><label data-t="sellPrice">销售单价 (¥)</label><input type="number" id="pmP" placeholder="0.00" min="0" step="0.01" /></div><div class="fgm" id="pmCw"><label data-t="costPrice">进货成本 (¥)</label><input type="number" id="pmC" placeholder="0.00" min="0" step="0.01" /></div></div><div class="fgm"><label data-t="remarks">备注</label><textarea id="pmNt" data-t-ph="optionalNote" placeholder="可选备注..."></textarea></div><div class="fgm"><label data-t="labelTag">标签</label><select id="pmLabel"><option value="normal">Normal</option><option value="novo">Novo</option><option value="oferta">Oferta</option><option value="promocao">Promoção</option></select></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('pmo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="saveProd()" data-t="saveProduct">保存商品</button></div></div></div>
 
 <!-- IO Modal -->
-<div class="mo" id="imo"><div class="mdl"><div class="mh"><span class="mt" id="ioT">入库</span><button class="mx" onclick="cMo('imo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="ioTp" /><div class="fgm"><label data-t="selectProduct">商品 *</label><div style="position:relative"><input type="text" id="ioPrSearch" placeholder="' + t('searchProductIO') + '" style="width:100%;padding:.5rem .7rem;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1);font-size:.82rem" oninput="filterIOProducts(this.value)" onfocus="filterIOProducts(this.value)" /><input type="hidden" id="ioPr" /><div id="ioPrDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:200px;overflow-y:auto;background:var(--s2);border:1px solid var(--bd);border-radius:0 0 var(--r) var(--r);z-index:10"></div></div></div><div class="fgm"><label data-t="quantity">数量 *</label><input type="number" id="ioQ" placeholder="0" min="1" /></div><div class="fgm"><label data-t="remarks">备注</label><input type="text" id="ioN" data-t-ph="reasonPH" placeholder="原因..." /></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('imo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="doIO()" data-t="confirm">确认</button></div></div></div>
+<div class="mo" id="imo"><div class="mdl"><div class="mh"><span class="mt" id="ioT">入库</span><button class="mx" onclick="cMo('imo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="ioTp" /><div class="fgm"><label data-t="selectProduct">商品 *</label><div style="position:relative"><input type="text" id="ioPrSearch" data-t-ph="searchProductIO" placeholder="搜索商品或SKU..." style="width:100%;padding:.5rem .7rem;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1);font-size:.82rem" oninput="filterIOProducts(this.value)" onfocus="filterIOProducts(this.value)" /><input type="hidden" id="ioPr" /><div id="ioPrDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:200px;overflow-y:auto;background:var(--s2);border:1px solid var(--bd);border-radius:0 0 var(--r) var(--r);z-index:10"></div></div></div><div class="fgm"><label data-t="quantity">数量 *</label><input type="number" id="ioQ" placeholder="0" min="1" /></div><div class="fgm"><label data-t="remarks">备注</label><input type="text" id="ioN" data-t-ph="reasonPH" placeholder="原因..." /></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('imo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="doIO()" data-t="confirm">确认</button></div></div></div>
 
 <!-- Account Modal -->
 <div class="mo" id="amo"><div class="mdl"><div class="mh"><span class="mt" id="amT">新增账号</span><button class="mx" onclick="cMo('amo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="amId" /><div class="fgm"><label data-t="username">用户名 *</label><input type="text" id="amU" data-t-ph="enterUsername" placeholder="登录用户名" /></div><div class="fgm"><label data-t="displayName">姓名 *</label><input type="text" id="amN" data-t-ph="enterDisplayName" placeholder="显示名称" /></div><div class="fgm"><label data-t="password">密码 *</label><input type="password" id="amP" data-t-ph="enterPassword" placeholder="登录密码" /></div><div class="fgm"><label data-t="role">角色</label><select id="amR"><option value="wh_staff" data-t="roleWhStaff">仓库员工</option><option value="sales" data-t="roleSales">销售人员</option><option value="wh_admin" data-t="roleWhAdmin">仓库管理员</option></select></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('amo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="saveAcct()" data-t="save">保存</button></div></div></div>
@@ -1328,7 +1328,7 @@ const T = {
     searchCats:'搜索分类...', moveTo:'移动到', selectTarget:'选择目标分类',
     catMoved:'分类已移动', cantMoveToDescendant:'不能移到自己的子分类下',
     cascadeSelect:'点击选择分类', selectedCats:'已选分类', catPath:'分类路径',
-    productLabels:'商品标签', customerMgmtNav:'顾客管理', financeMgmtNav:'财务管理', labelPrice:'折扣价管理', labelPriceHint:'仅对 Novo / Oferta / Promoção 标签商品生效', bulkPrice:'统一价格', applyBulk:'应用到该标签', perItemPrice:'单价', savePrices:'保存价格', priceUpdated:'价格已更新', labelFilterAll:'全部', labelPriceEmpty:'未设折扣价', labelPriceKeep:'折扣价，保留原价', selectAll:'全选', selectedCount:'已选 {0} 项', applySelected:'应用到已选', discountPrice:'折扣价', noMatchProduct:'无匹配商品', allSubCats:'-- 全部 --', searchProductIO:'搜索商品名称或SKU...', labelTag:'标签', prodDetail:'商品详情', cName:'名字', cSku:'sku', version:'版本', feats:'特征点', cPrice:'价格', cStock:'库存',
+    productLabels:'商品标签', customerMgmtNav:'顾客管理', financeMgmtNav:'财务管理', labelPrice:'折扣价管理', labelPriceHint:'仅对 Novo / Oferta / Promoção 标签商品生效', bulkPrice:'统一价格', applyBulk:'应用到该标签', perItemPrice:'单价', savePrices:'保存价格', priceUpdated:'价格已更新', labelFilterAll:'全部', labelPriceEmpty:'未设折扣价', labelPriceKeep:'折扣价，保留原价', selectAll:'全选', selectedCount:'已选 {0} 项', applySelected:'应用到已选', discountPrice:'折扣价', noMatchProduct:'无匹配商品', allSubCats:'-- 全部 --', searchProductIO:'搜索商品名称或SKU...', labelTag:'标签', busImgRequired:'请在打包时上传班次图片', noExtraShipInfo:'此发货方式无需额外信息', orderCancelledRestocked:'订单已取消，库存已回补', packDoneReadyShip:'打包完成，可进行发货', prodDetail:'商品详情', cName:'名字', cSku:'sku', version:'版本', feats:'特征点', cPrice:'价格', cStock:'库存',
   },
   pt: {
     warehouse:'Armazém', sales:'Vendas', whDesc:'Estoque · Entrada/Saída · Pedidos', slDesc:'Criar pedido · Consultar estoque',
@@ -1471,7 +1471,7 @@ const T = {
     searchCats:'Buscar categorias...', moveTo:'Mover para', selectTarget:'Selecionar destino',
     catMoved:'Categoria movida', cantMoveToDescendant:'Não pode mover para subcategoria',
     cascadeSelect:'Clique para selecionar', selectedCats:'Selecionadas', catPath:'Caminho',
-    productLabels:'Etiquetas', customerMgmtNav:'Clientes', financeMgmtNav:'Finanças', noMatchProduct:'Nenhum produto', allSubCats:'-- Todos --', searchProductIO:'Buscar produto ou SKU...', labelTag:'Etiqueta', prodDetail:'Detalhes do Produto', cName:'Nome', cSku:'SKU', version:'Versão', feats:'Características', cPrice:'Preço', cStock:'Estoque',
+    productLabels:'Etiquetas', customerMgmtNav:'Clientes', financeMgmtNav:'Finanças', noMatchProduct:'Nenhum produto', allSubCats:'-- Todos --', searchProductIO:'Buscar produto ou SKU...', labelTag:'Etiqueta', busImgRequired:'Envie a foto do ônibus ao embalar', noExtraShipInfo:'Este método de envio não precisa de dados extras', orderCancelledRestocked:'Pedido cancelado, estoque devolvido', packDoneReadyShip:'Embalagem concluída, pronto para envio', prodDetail:'Detalhes do Produto', cName:'Nome', cSku:'SKU', version:'Versão', feats:'Características', cPrice:'Preço', cStock:'Estoque',
   }
 };
 function t(k, ...args) {
@@ -2148,15 +2148,15 @@ function rInv() {
         + '<div class="pimg" style="width:56px;height:56px">' + (p.img ? '<img src="' + safeUrl(p.img) + '" alt="" onerror="this.remove()">' : '') + '</div>'
         + '</div>'
         + '<div style="flex:1;min-width:0">'
-        + '<div class="pdl"><span class="pdk" style="width:3.2em">' + t('cName') + '：</span><span class="pdv">' + esc(p.name) + '</span></div>'
-        + '<div class="pdl"><span class="pdk" style="width:3.2em">' + t('cSku') + '：</span><span class="pdv mono">' + esc(p.sku) + '</span></div>'
-        + '<div class="pdl"><span class="pdk" style="width:3.2em">' + t('cPrice') + '：</span><span class="pdv mono" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:.35rem;line-height:1.2">'
+        + '<div class="pdl"><span class="pdk" style="min-width:3.2em">' + t('cName') + '：</span><span class="pdv">' + esc(p.name) + '</span></div>'
+        + '<div class="pdl"><span class="pdk" style="min-width:3.2em">' + t('cSku') + '：</span><span class="pdv mono">' + esc(p.sku) + '</span></div>'
+        + '<div class="pdl"><span class="pdk" style="min-width:3.2em">' + t('cPrice') + '：</span><span class="pdv mono" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:.35rem;line-height:1.2">'
         + '<span>¥' + Number(p.price||0).toLocaleString() + '</span>'
         + (p.lp != null ? '<span style="color:var(--ac)">' + t('discountPrice') + ' ¥' + Number(p.lp).toLocaleString() + '</span>' : '')
         + '<span class="badge ' + (p.ml ? 'b-novo' : 'b-normal') + '" style="font-size:.55rem;padding:.08rem .35rem">' + t('mall') + (p.ml ? '✓' : '·') + '</span>'
         + '<span class="badge ' + (p.gl ? 'b-novo' : 'b-normal') + '" style="font-size:.55rem;padding:.08rem .35rem">' + t('gallery') + (p.gl ? '✓' : '·') + '</span>'
         + '</span></div>'
-        + '<div class="pdl"><span class="pdk" style="width:3.2em">' + t('cStock') + '：</span><span class="pdv mono" style="color:var(--' + lvC + ')">' + p.stock + '</span></div>'
+        + '<div class="pdl"><span class="pdk" style="min-width:3.2em">' + t('cStock') + '：</span><span class="pdv mono" style="color:var(--' + lvC + ')">' + p.stock + '</span></div>'
         + '</div>'
         + '</div>'
         + '</button>';
@@ -2616,7 +2616,7 @@ function filterIOProducts(q) {
   var ql = q.toLowerCase().trim();
   var matches = DB.prods.filter(function(p){ return p.name.toLowerCase().includes(ql) || p.sku.toLowerCase().includes(ql); }).slice(0, 20);
   if (!matches.length) { dd.innerHTML = '<div style="padding:.5rem;color:var(--t3);font-size:.75rem">' + t('noMatchProduct') + '</div>'; dd.style.display = ''; return; }
-  dd.innerHTML = matches.map(function(p) { return '<div style="padding:.45rem .7rem;cursor:pointer;font-size:.78rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bd)" onmousedown="selectIOProduct(' + p.id + ',this)"><span>' + esc(p.name) + ' <span style="color:var(--t3);font-size:.65rem">' + esc(p.sku) + '</span></span><span style="color:var(--t3);font-size:.65rem">库存:' + p.stock + '</span></div>'; }).join('');
+  dd.innerHTML = matches.map(function(p) { return '<div style="padding:.45rem .7rem;cursor:pointer;font-size:.78rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bd)" onmousedown="selectIOProduct(' + p.id + ',this)"><span>' + esc(p.name) + ' <span style="color:var(--t3);font-size:.65rem">' + esc(p.sku) + '</span></span><span style="color:var(--t3);font-size:.65rem">' + t('stock') + ':' + p.stock + '</span></div>'; }).join('');
   dd.style.display = '';
 }
 function selectIOProduct(pid, name) {
@@ -3344,7 +3344,7 @@ function editOrdShipInfo(id) {
       adminFrom('orders').update({ onibus_name: name.trim() }).eq('id', id).then(() => {
         // If schedule image not set, prompt upload
         if (!o.onibusImg) {
-          toast('请在打包时上传班次图片', 'inf');
+          toast(t('busImgRequired'), 'inf');
         }
         loadAllData().then(() => viewOrd(id));
       });
@@ -3357,7 +3357,7 @@ function editOrdShipInfo(id) {
       });
     }
   } else {
-    toast('此发货方式无需额外信息', 'inf');
+    toast(t('noExtraShipInfo'), 'inf');
   }
 }
 
@@ -3468,7 +3468,7 @@ async function cancelOrd(id) {
     }
     await adminFrom('orders').update({ status: 'cancel', processed_by: user.u }).eq('id', id);
     await loadAllData();
-    toast('订单已取消，库存已回补', 'ok');
+    toast(t('orderCancelledRestocked'), 'ok');
     render(curP);
   } catch (err) { toast(t('opFailed') + ': ' + err.message, 'er'); }
 }
@@ -3527,7 +3527,7 @@ async function confirmPack() {
     // Status stays 'picking' - ship separately after validating shipping info
     await loadAllData();
     cMo('pkmo');
-    toast('打包完成，可进行发货', 'ok');
+    toast(t('packDoneReadyShip'), 'ok');
     render(curP);
   } catch (err) { toast(t('opFailed') + ': ' + err.message, 'er'); }
 }
@@ -3818,14 +3818,14 @@ function loadLabelPrices() {
       + '<input type="checkbox" ' + (sel ? 'checked' : '') + ' style="flex-shrink:0;cursor:pointer" onchange="toggleLabelSelect(' + p.id + ', this.checked)" />'
       + '<div class="pimg" style="width:56px;height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:center">' + (p.img ? '<img src="' + safeUrl(p.img) + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:10px" onerror="this.remove()">' : '') + '</div>'
       + '<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:.28rem">'
-      + '<div class="pdl"><span class="pdk" style="width:3.2em;flex-shrink:0">' + t('cName') + '：</span><span class="pdv" style="flex:1;min-width:0">' + esc(p.name) + ' ' + labelBadge(p.label) + '</span></div>'
-      + '<div class="pdl"><span class="pdk" style="width:3.2em;flex-shrink:0">' + t('cSku') + '：</span><span class="pdv mono">' + esc(p.sku) + '</span></div>'
-      + '<div class="pdl" style="align-items:center"><span class="pdk" style="width:3.2em;flex-shrink:0">' + t('cPrice') + '：</span><span class="pdv mono">¥' + Number(p.price || 0).toLocaleString() + '</span>'
+      + '<div class="pdl"><span class="pdk" style="min-width:3.2em;flex-shrink:0">' + t('cName') + '：</span><span class="pdv" style="flex:1;min-width:0">' + esc(p.name) + ' ' + labelBadge(p.label) + '</span></div>'
+      + '<div class="pdl"><span class="pdk" style="min-width:3.2em;flex-shrink:0">' + t('cSku') + '：</span><span class="pdv mono">' + esc(p.sku) + '</span></div>'
+      + '<div class="pdl" style="align-items:center"><span class="pdk" style="min-width:3.2em;flex-shrink:0">' + t('cPrice') + '：</span><span class="pdv mono">¥' + Number(p.price || 0).toLocaleString() + '</span>'
       + '<span style="font-size:.68rem;color:var(--t3);margin-left:.55rem">' + t('discountPrice') + '</span>'
       + '<input type="number" min="0" step="0.01" id="lp_' + p.id + '" value="' + (p.lp == null ? '' : p.lp) + '" placeholder="—" style="width:104px;margin-left:.35rem" />'
       + '<span style="font-size:.62rem;color:var(--t3);margin-left:.35rem">' + (p.lp == null ? t('labelPriceEmpty') : t('labelPriceKeep')) + '</span>'
       + '</div>'
-      + '<div class="pdl"><span class="pdk" style="width:3.2em;flex-shrink:0">' + t('cStock') + '：</span><span class="pdv mono" style="color:var(--' + lvC + ')">' + p.stock + '</span></div>'
+      + '<div class="pdl"><span class="pdk" style="min-width:3.2em;flex-shrink:0">' + t('cStock') + '：</span><span class="pdv mono" style="color:var(--' + lvC + ')">' + p.stock + '</span></div>'
       + '</div></div>';
   });
   if (!shown.length) html += '<div class="empty"><p>' + t('noMatchProduct') + '</p></div>';
