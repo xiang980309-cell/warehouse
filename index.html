@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" integrity="sha384-dl/4LkSyQ4uEucc48NM6VDZLAjLLq9yMzZ5JLXumBq7Ld33XBof73hseOqPhO89+" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js" integrity="sha384-TcHRA3zBbn+Lexh5n+Oil4guNPOS3rjNDpGRAN46u/s/mB2IZ50ceC6TYDU2yvgK" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
 /* === RESET === */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -1163,6 +1163,11 @@ let ADMIN_TOKEN = '';
 function initSb(token) {
   ADMIN_TOKEN = token || '';
   try {
+    if (typeof supabase === 'undefined' || !supabase || typeof supabase.createClient !== 'function') {
+      console.error('SB init failed: supabase-js CDN not loaded');
+      sb = null;
+      return;
+    }
     sb = supabase.createClient(SB_URL, SB_KEY, {
       global: { headers: ADMIN_TOKEN ? { 'X-Admin-Token': ADMIN_TOKEN } : {} }
     });
@@ -1857,6 +1862,12 @@ function selPortal(p) {
 function doLogin() {
   const u = document.getElementById('lU').value.trim(), p = document.getElementById('lP').value, e = document.getElementById('le');
   if (!u || !p) { e.textContent = t('enterBoth'); e.classList.add('show'); return; }
+  if (!sb || typeof sb.rpc !== 'function') {
+    e.textContent = t('notConnected');
+    e.classList.add('show');
+    console.error('doLogin: supabase client is not ready', { hasSupabase: typeof supabase, sb });
+    return;
+  }
   e.classList.remove('show');
   e.textContent = '';
   sb.rpc('app_login', { p_username: u, p_password: p }).then(({ data, error }) => {
