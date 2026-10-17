@@ -1093,7 +1093,7 @@ input[id^="lp_"]{
 <aside class="sb" id="sidebar">
   <div class="sbh"><i>C</i><b>Cloud<span>Stock</span></b></div>
   <nav class="sbnav" id="sbNav"></nav>
-  <div class="sbf"><button type="button" class="sb-btn" onclick="openProfile()" title="个人信息"><div class="sba" id="uA">A</div><div class="sbinfo"><div class="sbname" id="uN">Admin</div><div class="sbrole" id="uR">管理员</div></div><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="opacity:.45;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></button><button class="bl" onclick="doLogout()" style="margin-left:.35rem"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button></div></div>
+  <div class="sbf"><button type="button" class="sb-btn" onclick="openProfile()" title="个人信息"><div class="sba" id="uA">A</div><div class="sbinfo"><div class="sbname" id="uN">Admin</div><div class="sbrole" id="uR">管理员</div></div><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="opacity:.45;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></button><button class="bl" onclick="doLogout()" style="margin-left:.35rem"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button></div>
 </aside>
 <div class="mn">
   <header class="top">
@@ -1922,8 +1922,8 @@ async function enterApp() {
   document.getElementById('appPage').style.display = 'block';
   const sl = user.r==='sales';
   document.body.classList.toggle('mode-sale', sl);
-  document.getElementById('uN').textContent = user.n;
-  document.getElementById('uA').textContent = user.n.charAt(0);
+  document.getElementById('uN').textContent = user.n || user.u || '';
+  document.getElementById('uA').textContent = (user.n || user.u || '?').charAt(0).toUpperCase();
   document.getElementById('uR').textContent = t(ROLES[user.r]||user.r);
   document.getElementById('tM').textContent = sl ? t('sales') : t('warehouse');
   document.getElementById('tM').style.cssText = sl ? 'background:var(--ig);color:var(--in)' : 'background:var(--ag);color:var(--ac)';
