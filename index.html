@@ -91,6 +91,21 @@ input,button,select,textarea{font-family:inherit;font-size:inherit;border:none;o
 .sbu{display:flex;align-items:center;gap:.5rem}
 .sba{width:30px;height:30px;border-radius:50%;background:var(--s3);border:2px solid var(--bl);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:.72rem;color:var(--ac);font-family:'Syne',sans-serif}
 .sbinfo{flex:1;min-width:0}.sbname{font-size:.75rem;font-weight:500}.sbrole{font-size:.62rem;color:var(--t3);font-weight:500}
+.sb-btn{flex:1;min-width:0;display:flex;align-items:center;gap:.55rem;background:var(--s2);border:1px solid var(--bd);border-radius:12px;padding:.55rem .65rem;cursor:pointer;transition:all var(--tr);text-align:left;color:inherit;font:inherit}
+.sb-btn:hover{border-color:var(--ac);background:var(--ag);transform:translateY(-1px)}
+.sb-btn .sba{width:38px;height:38px;font-size:.95rem;flex-shrink:0}
+.sb-btn .sbname{font-size:.82rem;font-weight:600}
+.sb-btn .sbrole{font-size:.62rem}
+.profile-hero{display:flex;flex-direction:column;align-items:center;gap:.65rem;padding:1.1rem .8rem 1rem;background:linear-gradient(180deg,var(--ag),transparent);border-bottom:1px solid var(--bd);margin:-1.2rem -1.2rem 1rem;border-radius:var(--rl) var(--rl) 0 0}
+.profile-av{width:76px;height:76px;border-radius:50%;background:var(--s3);border:2px solid var(--ac);display:flex;align-items:center;justify-content:center;font-size:1.85rem;font-weight:700;color:var(--ac);font-family:'Syne',sans-serif}
+.profile-name{font-size:1.05rem;font-weight:700}
+.profile-sub{display:flex;flex-wrap:wrap;gap:.35rem;justify-content:center}
+.acct-row{cursor:pointer}
+.acct-row:hover td{background:var(--s2)}
+.req-card{border:1px solid var(--bd);border-radius:10px;padding:.75rem .85rem;margin-bottom:.55rem;background:var(--s2)}
+.req-card.pending{border-color:var(--wa)}
+.acct-hero{display:flex;align-items:center;gap:.85rem;padding:.85rem 0 1rem;border-bottom:1px solid var(--bd);margin-bottom:.85rem}
+.acct-hero .profile-av{width:56px;height:56px;font-size:1.25rem}
 .bl{background:none;border:none;color:var(--t3);cursor:pointer;padding:.2rem;border-radius:4px;transition:all var(--tr);display:flex}.bl:hover{color:var(--dg);background:var(--dgg)}.bl svg{width:16px;height:16px}
 .mn{margin-left:250px;display:flex;flex-direction:column;min-height:100vh}
 .top{display:flex;align-items:center;gap:.6rem;padding:.75rem 1.5rem;border-bottom:1px solid var(--bd);background:var(--s1);position:sticky;top:0;z-index:50}
@@ -1078,7 +1093,7 @@ input[id^="lp_"]{
 <aside class="sb" id="sidebar">
   <div class="sbh"><i>C</i><b>Cloud<span>Stock</span></b></div>
   <nav class="sbnav" id="sbNav"></nav>
-  <div class="sbf"><div class="sbu"><div class="sba" id="uA">A</div><div class="sbinfo"><div class="sbname" id="uN">Admin</div><div class="sbrole" id="uR">管理员</div></div><button class="bl" onclick="doLogout()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button></div></div>
+  <div class="sbf"><button type="button" class="sb-btn" onclick="openProfile()" title="个人信息"><div class="sba" id="uA">A</div><div class="sbinfo"><div class="sbname" id="uN">Admin</div><div class="sbrole" id="uR">管理员</div></div><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="opacity:.45;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></button><button class="bl" onclick="doLogout()" style="margin-left:.35rem"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button></div></div>
 </aside>
 <div class="mn">
   <header class="top">
@@ -1127,6 +1142,12 @@ input[id^="lp_"]{
 
 <!-- Permissions Modal -->
 <div class="mo" id="prmo"><div class="mdl"><div class="mh"><span class="mt" data-t="permissionSettings">权限设置</span><button class="mx" onclick="cMo('prmo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="prId" /><div id="prL"></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('prmo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="savePerms()" data-t="savePerms">保存权限</button></div></div></div>
+
+<!-- Account Detail Modal -->
+<div class="mo" id="acdmo"><div class="mdl"><div class="mh"><span class="mt" data-t="accountDetail">账号详情</span><button class="mx" onclick="cMo('acdmo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb" id="acdBody"></div><div class="mf" id="acdFoot"></div></div></div>
+
+<!-- Profile Modal -->
+<div class="mo" id="pfmo"><div class="mdl"><div class="mh"><span class="mt" data-t="myProfile">个人信息</span><button class="mx" onclick="cMo('pfmo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb" id="pfBody"></div><div class="mf" id="pfFoot"></div></div></div>
 
 <!-- Product Detail Modal -->
 <div class="mo" id="pdm"><div class="mdl"><div class="mh"><span class="mt" id="pdT">商品详情</span><button class="mx" onclick="cMo('pdm')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb" id="pdB"></div><div class="mf" id="pdF"></div></div></div>
@@ -1328,7 +1349,7 @@ const T = {
     searchCats:'搜索分类...', moveTo:'移动到', selectTarget:'选择目标分类',
     catMoved:'分类已移动', cantMoveToDescendant:'不能移到自己的子分类下',
     cascadeSelect:'点击选择分类', selectedCats:'已选分类', catPath:'分类路径',
-    productLabels:'商品标签', customerMgmtNav:'顾客管理', financeMgmtNav:'财务管理', labelPrice:'折扣价管理', labelPriceHint:'仅对 Novo / Oferta / Promoção 标签商品生效', bulkPrice:'统一价格', applyBulk:'应用到该标签', perItemPrice:'单价', savePrices:'保存价格', priceUpdated:'价格已更新', labelFilterAll:'全部', labelPriceEmpty:'未设折扣价', labelPriceKeep:'折扣价，保留原价', selectAll:'全选', selectedCount:'已选 {0} 项', applySelected:'应用到已选', discountPrice:'折扣价', noMatchProduct:'无匹配商品', allSubCats:'-- 全部 --', searchProductIO:'搜索商品名称或SKU...', labelTag:'标签', busImgRequired:'请在打包时上传班次图片', noExtraShipInfo:'此发货方式无需额外信息', orderCancelledRestocked:'订单已取消，库存已回补', packDoneReadyShip:'打包完成，可进行发货', prodDetail:'商品详情', cName:'名字', cSku:'sku', version:'版本', feats:'特征点', cPrice:'价格', cStock:'库存',
+    productLabels:'商品标签', customerMgmtNav:'顾客管理', financeMgmtNav:'财务管理', labelPrice:'折扣价管理', labelPriceHint:'仅对 Novo / Oferta / Promoção 标签商品生效', bulkPrice:'统一价格', applyBulk:'应用到该标签', perItemPrice:'单价', savePrices:'保存价格', priceUpdated:'价格已更新', labelFilterAll:'全部', labelPriceEmpty:'未设折扣价', labelPriceKeep:'折扣价，保留原价', selectAll:'全选', selectedCount:'已选 {0} 项', applySelected:'应用到已选', discountPrice:'折扣价', noMatchProduct:'无匹配商品', allSubCats:'-- 全部 --', searchProductIO:'搜索商品名称或SKU...', labelTag:'标签', busImgRequired:'请在打包时上传班次图片', noExtraShipInfo:'此发货方式无需额外信息', orderCancelledRestocked:'订单已取消，库存已回补', packDoneReadyShip:'打包完成，可进行发货', accountDetail:'账号详情', myProfile:'个人信息', editProfile:'申请修改资料', profileRequest:'修改申请', profilePending:'待审批', profileApproved:'已通过', profileRejected:'已拒绝', submitRequest:'提交申请', requestSubmitted:'申请已提交，等待管理员审批', newDisplayName:'新显示名称', currentName:'当前名称', noPendingReq:'暂无待审批申请', approve:'通过', reject:'拒绝', reviewNote:'审批备注', reqStatus:'申请状态', permCount:'权限 {0} 项', viewDetail:'查看详情', needAdminApprove:'需管理员同意后生效', prodDetail:'商品详情', cName:'名字', cSku:'sku', version:'版本', feats:'特征点', cPrice:'价格', cStock:'库存',
   },
   pt: {
     warehouse:'Armazém', sales:'Vendas', whDesc:'Estoque · Entrada/Saída · Pedidos', slDesc:'Criar pedido · Consultar estoque',
@@ -1471,7 +1492,7 @@ const T = {
     searchCats:'Buscar categorias...', moveTo:'Mover para', selectTarget:'Selecionar destino',
     catMoved:'Categoria movida', cantMoveToDescendant:'Não pode mover para subcategoria',
     cascadeSelect:'Clique para selecionar', selectedCats:'Selecionadas', catPath:'Caminho',
-    productLabels:'Etiquetas', customerMgmtNav:'Clientes', financeMgmtNav:'Finanças', noMatchProduct:'Nenhum produto', allSubCats:'-- Todos --', searchProductIO:'Buscar produto ou SKU...', labelTag:'Etiqueta', busImgRequired:'Envie a foto do ônibus ao embalar', noExtraShipInfo:'Este método de envio não precisa de dados extras', orderCancelledRestocked:'Pedido cancelado, estoque devolvido', packDoneReadyShip:'Embalagem concluída, pronto para envio', prodDetail:'Detalhes do Produto', cName:'Nome', cSku:'SKU', version:'Versão', feats:'Características', cPrice:'Preço', cStock:'Estoque',
+    productLabels:'Etiquetas', customerMgmtNav:'Clientes', financeMgmtNav:'Finanças', noMatchProduct:'Nenhum produto', allSubCats:'-- Todos --', searchProductIO:'Buscar produto ou SKU...', labelTag:'Etiqueta', busImgRequired:'Envie a foto do ônibus ao embalar', noExtraShipInfo:'Este método de envio não precisa de dados extras', orderCancelledRestocked:'Pedido cancelado, estoque devolvido', packDoneReadyShip:'Embalagem concluída, pronto para envio', accountDetail:'Detalhes da Conta', myProfile:'Meu Perfil', editProfile:'Solicitar alteração', profileRequest:'Solicitações', profilePending:'Pendente', profileApproved:'Aprovado', profileRejected:'Rejeitado', submitRequest:'Enviar solicitação', requestSubmitted:'Solicitação enviada, aguardando aprovação', newDisplayName:'Novo nome', currentName:'Nome atual', noPendingReq:'Nenhuma solicitação pendente', approve:'Aprovar', reject:'Rejeitar', reviewNote:'Nota da revisão', reqStatus:'Status', permCount:'{0} permissões', viewDetail:'Ver detalhes', needAdminApprove:'Só entra em vigor após aprovação', prodDetail:'Detalhes do Produto', cName:'Nome', cSku:'SKU', version:'Versão', feats:'Características', cPrice:'Preço', cStock:'Estoque',
   }
 };
 function t(k, ...args) {
@@ -1536,7 +1557,7 @@ function toggleSizeFields() {
 // ═══════════════════════════════════════
 // JS-4: STATE
 // ═══════════════════════════════════════
-let DB = {cats:[],accts:[],prods:[],ords:[],inb:[],outb:[],cus:[],chgs:[]};
+let DB = {cats:[],accts:[],prods:[],ords:[],inb:[],outb:[],cus:[],chgs:[],profilereqs:[]};
 let user = null, portal = 'wh', curP = '';
 let sF = 'name', sD = 1, fCat = 'all', fLabel = '', iPg = 1, iSq = '', iYq = '', fStock = ''; let PG = 20;
 let pmCats = [], pmSkuManual = false, pmImgData = '';
@@ -1838,6 +1859,8 @@ async function loadAllData() {
     DB.outb = (outbR.data||[]).map(r => ({id:r.id,pid:r.product_id,qty:r.qty,op:r.operator,note:r.note||'',t:fmtDate(r.created_at)}));
     DB.cus = (cusR.data||[]).map(c => ({id:c.id,name:c.name,phone:c.phone||'',motoAddr:c.moto_address||'',corrAddr:c.correio_address||'',creditLimit:Number(c.credit_limit||0),creditUsed:Number(c.credit_used||0),status:c.status,by:c.created_by,apprBy:c.approved_by||'',cr:fmtDate(c.created_at).split(' ')[0]}));
     DB.chgs = (chgR.data||[]).map(c => ({id:c.id,oid:c.order_id,oldM:c.old_method,newM:c.new_method,cost:Number(c.shipping_cost||0),billI:c.bill_image||'',st:c.status,by:c.requested_by,revBy:c.reviewed_by||'',cr:fmtDate(c.created_at)}));
+    const pcrR = await safeQ(ADMIN_TOKEN ? adminSelect('profile_change_requests', { order: { column: 'requested_at', ascending: false }, limit: 200 }) : sb.from('profile_change_requests').select('*').order('requested_at', { ascending: false }).limit(200));
+    DB.profilereqs = (pcrR.data||[]).map(r => ({id:r.id,account_id:r.account_id,field:r.field,old_value:r.old_value,new_value:r.new_value,note:r.note||'',status:r.status,requested_at:r.requested_at,reviewed_by:r.reviewed_by,reviewed_at:r.reviewed_at}));
     // Load member levels
     try {
       const mlR = await sb.from('member_levels').select('*');
@@ -2725,13 +2748,23 @@ function rAna() {
 // ACCOUNTS
 // ═══════════════════════════════════════
 function rAccts() {
+  const reqs = (DB.profilereqs || []).filter(r => r.status === 'pending');
+  let reqHtml = '';
+  if (reqs.length) {
+    reqHtml = '<div class="pnl" style="margin-bottom:1rem"><div class="pnH"><span class="pnT">' + t('profileRequest') + '</span><span style="font-size:.62rem;color:var(--wa)">' + reqs.length + '</span></div><div class="pnB">' + reqs.map(r => {
+      const a = DB.accts.find(x => x.id === r.account_id) || {};
+      return '<div class="req-card pending"><div style="display:flex;justify-content:space-between;gap:.5rem;align-items:flex-start"><div style="min-width:0"><div style="font-size:.82rem;font-weight:600">' + esc(a.n || a.u || ('#' + r.account_id)) + '</div><div style="font-size:.72rem;color:var(--t3);margin-top:.2rem">' + t('currentName') + '：<span style="color:var(--t1)">' + esc(r.old_value || '—') + '</span> → <span style="color:var(--ac);font-weight:600">' + esc(r.new_value) + '</span></div>' + (r.note ? '<div style="font-size:.68rem;color:var(--t3);margin-top:.25rem">' + esc(r.note) + '</div>' : '') + '</div><div style="display:flex;gap:.35rem;flex-shrink:0"><button class="btn bp bs" style="padding:.35rem .7rem;font-size:.72rem" onclick="reviewProfileReq(' + r.id + ',"approved")">' + t('approve') + '</button><button class="btn bg bs" style="padding:.35rem .7rem;font-size:.72rem" onclick="reviewProfileReq(' + r.id + ',"rejected")">' + t('reject') + '</button></div></div></div>';
+    }).join('') + '</div></div>';
+  }
   let rows = DB.accts.map(a => {
-    const pt = PERMS.filter(pd => a.r === 'wh_admin' || a.perm[pd.k]).map(pd => '<span class="ptag on">' + t(pd.l) + '</span>').join('');
+    const onPerms = PERMS.filter(pd => a.r === 'wh_admin' || a.perm[pd.k]);
+    const pt = (a.r === 'wh_admin' ? PERMS : onPerms).map(pd => '<span class="ptag' + (a.r === 'wh_admin' || a.perm[pd.k] ? ' on' : '') + '">' + t(pd.l) + '</span>').join('');
     const rc = a.r === 'wh_admin' ? 'b-ad' : a.r === 'sales' ? 'b-sl' : 'b-st';
     const self = a.id === user.id;
-    return '<tr><td><strong>' + esc(a.u) + '</strong></td><td>' + esc(a.n) + '</td><td><span class="badge ' + rc + '">' + t(ROLES[a.r] || a.r) + '</span></td><td><div class="ptags">' + pt + '</div></td><td><span class="badge ' + (a.s === 'active' ? 'b-on' : 'b-off') + '">' + (a.s === 'active' ? t('enabled') : t('disabled')) + '</span></td><td><div class="ac"><button class="bi" title="' + t('permissions') + '" onclick="openPerm(' + a.id + ')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></button><button class="bi" title="' + (a.s === 'active' ? t('disabled') : t('enabled')) + '" onclick="togAcct(' + a.id + ')" style="color:var(--' + (a.s === 'active' ? 'wa' : 'sf') + ')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg></button>' + (!self ? '<button class="bi" title="' + t('delete') + '" onclick="delAcct(' + a.id + ')" style="color:var(--dg)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>' : '') + '</div></td></tr>';
+    const pc = a.r === 'wh_admin' ? PERMS.length : onPerms.length;
+    return '<tr class="acct-row" onclick="openAcctDetail(' + a.id + ')"><td><strong>' + esc(a.u) + '</strong>' + (self ? ' <span class="badge b-on" style="font-size:.55rem">' + t('myProfile') + '</span>' : '') + '</td><td>' + esc(a.n) + '</td><td><span class="badge ' + rc + '">' + t(ROLES[a.r] || a.r) + '</span></td><td><div class="ptags">' + pt + '</div><div style="font-size:.62rem;color:var(--t3);margin-top:.25rem">' + t('permCount', pc) + '</div></td><td><span class="badge ' + (a.s === 'active' ? 'b-on' : 'b-off') + '">' + (a.s === 'active' ? t('enabled') : t('disabled')) + '</span></td><td onclick="event.stopPropagation()"><div class="ac"><button class="bi" title="' + t('viewDetail') + '" onclick="openAcctDetail(' + a.id + ')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button><button class="bi" title="' + t('permissions') + '" onclick="openPerm(' + a.id + ')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></button><button class="bi" title="' + (a.s === 'active' ? t('disabled') : t('enabled')) + '" onclick="togAcct(' + a.id + ')" style="color:var(--' + (a.s === 'active' ? 'wa' : 'sf') + ')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg></button>' + (!self ? '<button class="bi" title="' + t('delete') + '" onclick="delAcct(' + a.id + ')" style="color:var(--dg)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>' : '') + '</div></td></tr>';
   }).join('');
-  return '<div class="tb"><span class="tbsp"></span><button class="btn bp bs aw" onclick="openAddAcct()">' + t('addUser') + '</button></div><div class="tw"><div class="ts"><table><thead><tr><th>' + t('username') + '</th><th>' + t('displayName') + '</th><th>' + t('role') + '</th><th>' + t('permissions') + '</th><th>' + t('status') + '</th><th>' + t('action') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
+  return reqHtml + '<div class="tb"><span class="tbsp"></span><button class="btn bp bs aw" onclick="openAddAcct()">' + t('addUser') + '</button></div><div class="tw"><div class="ts"><table><thead><tr><th>' + t('username') + '</th><th>' + t('displayName') + '</th><th>' + t('role') + '</th><th>' + t('permissions') + '</th><th>' + t('status') + '</th><th>' + t('action') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
 }
 
 function openAddAcct() {
@@ -2819,6 +2852,106 @@ async function savePerms() {
     toast(t('permUpdated'), 'ok');
     render('accts');
     buildNav();
+  } catch (err) { toast(t('saveFailed') + ': ' + err.message, 'er'); }
+}
+
+function permListHtml(perm, role) {
+  return '<div class="ptags" style="margin-top:.45rem">' + PERMS.map(pd => {
+    const on = role === 'wh_admin' || (perm && perm[pd.k]);
+    return '<span class="ptag' + (on ? ' on' : '') + '">' + t(pd.l) + '</span>';
+  }).join('') + '</div>';
+}
+
+function openAcctDetail(id) {
+  const a = DB.accts.find(x => x.id === id);
+  if (!a) return;
+  const rc = a.r === 'wh_admin' ? 'b-ad' : a.r === 'sales' ? 'b-sl' : 'b-st';
+  const self = a.id === user.id;
+  const reqs = (DB.profilereqs || []).filter(r => r.account_id === a.id).slice(0, 5);
+  document.getElementById('acdBody').innerHTML =
+    '<div class="acct-hero"><div class="profile-av">' + esc((a.n || a.u || '?').charAt(0).toUpperCase()) + '</div><div style="flex:1;min-width:0"><div style="font-size:1.05rem;font-weight:700">' + esc(a.n || a.u) + '</div><div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.35rem"><span class="badge ' + rc + '">' + t(ROLES[a.r] || a.r) + '</span><span class="badge ' + (a.s === 'active' ? 'b-on' : 'b-off') + '">' + (a.s === 'active' ? t('enabled') : t('disabled')) + '</span><span class="badge b-normal">' + esc(a.u) + '</span></div></div></div>'
+    + '<div class="pd-row"><div class="pd-k">' + t('permissions') + '</div><div class="pd-v">' + (a.r === 'wh_admin' ? t('allPerms') : '') + permListHtml(a.perm, a.r) + '</div></div>'
+    + '<div class="pd-row"><div class="pd-k">' + t('createdAt') + '</div><div class="pd-v">' + esc(a.c || '—') + '</div></div>'
+    + '<div style="margin-top:1rem"><div style="font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--t3);margin-bottom:.45rem">' + t('profileRequest') + '</div>'
+    + (reqs.length ? reqs.map(r => {
+        const st = r.status === 'pending' ? 'b-on' : r.status === 'approved' ? 'b-novo' : 'b-off';
+        const stl = r.status === 'pending' ? t('profilePending') : r.status === 'approved' ? t('profileApproved') : t('profileRejected');
+        return '<div class="req-card"><div style="display:flex;justify-content:space-between;gap:.5rem"><div style="font-size:.75rem">' + esc(r.old_value || '—') + ' → <strong style="color:var(--ac)">' + esc(r.new_value) + '</strong></div><span class="badge ' + st + '">' + stl + '</span></div></div>';
+      }).join('') : '<div style="font-size:.75rem;color:var(--t3)">' + t('noPendingReq') + '</div>')
+    + '</div>';
+  document.getElementById('acdFoot').innerHTML =
+    (self ? '<button class="btn bg bs" onclick="cMo(\'acdmo\');openProfile()">' + t('myProfile') + '</button>' : '')
+    + (!self && a.r !== 'wh_admin' ? '<button class="btn bg bs" onclick="cMo(\'acdmo\');openPerm(' + a.id + ')">' + t('permissions') + '</button>' : '')
+    + '<button class="btn bp bs aw" onclick="cMo(\'acdmo\')">' + t('close') + '</button>';
+  oMo('acdmo');
+}
+
+function openProfile() {
+  if (!user) return;
+  const a = DB.accts.find(x => x.id === user.id) || { id: user.id, u: user.u, n: user.n, r: user.r, s: user.s, perm: user.perm, c: user.c };
+  const pending = (DB.profilereqs || []).filter(r => r.account_id === user.id && r.status === 'pending');
+  const history = (DB.profilereqs || []).filter(r => r.account_id === user.id).slice(0, 5);
+  document.getElementById('pfBody').innerHTML =
+    '<div class="profile-hero"><div class="profile-av">' + esc((a.n || a.u || '?').charAt(0).toUpperCase()) + '</div><div class="profile-name">' + esc(a.n || a.u) + '</div><div class="profile-sub"><span class="badge ' + (a.r === 'wh_admin' ? 'b-ad' : a.r === 'sales' ? 'b-sl' : 'b-st') + '">' + t(ROLES[a.r] || a.r) + '</span><span class="badge ' + (a.s === 'active' ? 'b-on' : 'b-off') + '">' + (a.s === 'active' ? t('enabled') : t('disabled')) + '</span></div><div style="font-size:.75rem;color:var(--t3)">' + esc(a.u) + '</div></div>'
+    + '<div class="pd-row"><div class="pd-k">' + t('displayName') + '</div><div class="pd-v">' + esc(a.n || '—') + '</div></div>'
+    + '<div class="pd-row"><div class="pd-k">' + t('permissions') + '</div><div class="pd-v">' + (a.r === 'wh_admin' ? t('allPerms') : '') + permListHtml(a.perm, a.r) + '</div></div>'
+    + '<div class="pd-row"><div class="pd-k">' + t('createdAt') + '</div><div class="pd-v">' + esc(a.c || '—') + '</div></div>'
+    + '<div style="margin-top:1rem"><div style="font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--t3);margin-bottom:.45rem">' + t('editProfile') + '</div>'
+    + (pending.length ? '<div class="req-card pending"><div style="font-size:.75rem">' + t('profilePending') + '：' + esc(pending[0].new_value) + '</div><div style="font-size:.68rem;color:var(--t3);margin-top:.25rem">' + t('needAdminApprove') + '</div></div>' :
+      '<div class="fgm"><label>' + t('newDisplayName') + '</label><input type="text" id="pfName" maxlength="40" placeholder="' + esc(a.n || '') + '" /></div><div class="fgm"><label>' + t('reviewNote') + '</label><input type="text" id="pfNote" maxlength="120" placeholder="..." /></div>')
+    + (history.length ? '<div style="margin-top:.75rem"><div style="font-size:.68rem;color:var(--t3);margin-bottom:.35rem">' + t('profileRequest') + '</div>' + history.map(r => {
+        const st = r.status === 'pending' ? 'b-on' : r.status === 'approved' ? 'b-novo' : 'b-off';
+        const stl = r.status === 'pending' ? t('profilePending') : r.status === 'approved' ? t('profileApproved') : t('profileRejected');
+        return '<div class="req-card"><div style="display:flex;justify-content:space-between;gap:.5rem;font-size:.75rem"><span>' + esc(r.old_value || '—') + ' → <strong>' + esc(r.new_value) + '</strong></span><span class="badge ' + st + '">' + stl + '</span></div></div>';
+      }).join('') + '</div>' : '')
+    + '</div>';
+  document.getElementById('pfFoot').innerHTML = (pending.length ? '' : '<button class="btn bp bs aw" onclick="submitProfileReq()">' + t('submitRequest') + '</button>') + '<button class="btn bg bs" onclick="cMo(\'pfmo\')">' + t('close') + '</button>';
+  oMo('pfmo');
+}
+
+async function submitProfileReq() {
+  const el = document.getElementById('pfName');
+  if (!el) return;
+  const nv = el.value.trim();
+  const note = (document.getElementById('pfNote') || {}).value || '';
+  if (!nv) { toast(t('enterNameErr') || t('displayName'), 'er'); return; }
+  if (nv === user.n) { toast(t('newDisplayName'), 'er'); return; }
+  try {
+    await adminFrom('profile_change_requests').insert({
+      account_id: user.id,
+      field: 'display_name',
+      old_value: user.n || '',
+      new_value: nv,
+      note: note.trim() || null,
+      status: 'pending'
+    });
+    await loadAllData();
+    cMo('pfmo');
+    toast(t('requestSubmitted'), 'ok');
+  } catch (err) { toast(t('saveFailed') + ': ' + err.message, 'er'); }
+}
+
+async function reviewProfileReq(id, decision) {
+  const r = (DB.profilereqs || []).find(x => x.id === id);
+  if (!r) return;
+  try {
+    await adminFrom('profile_change_requests').update({
+      status: decision,
+      reviewed_by: user.id,
+      reviewed_at: new Date().toISOString(),
+      review_note: null
+    }).eq('id', id);
+    if (decision === 'approved' && r.field === 'display_name') {
+      await adminFrom('accounts').update({ display_name: r.new_value }).eq('id', r.account_id);
+      if (user && user.id === r.account_id) {
+        user.n = r.new_value;
+        document.getElementById('uN').textContent = r.new_value;
+        document.getElementById('uA').textContent = (r.new_value || '?').charAt(0).toUpperCase();
+      }
+    }
+    await loadAllData();
+    render('accts');
+    toast(decision === 'approved' ? t('profileApproved') : t('profileRejected'), 'ok');
   } catch (err) { toast(t('saveFailed') + ': ' + err.message, 'er'); }
 }
 
