@@ -2757,14 +2757,11 @@ function rAccts() {
     }).join('') + '</div></div>';
   }
   let rows = DB.accts.map(a => {
-    const onPerms = PERMS.filter(pd => a.r === 'wh_admin' || a.perm[pd.k]);
-    const pt = (a.r === 'wh_admin' ? PERMS : onPerms).map(pd => '<span class="ptag' + (a.r === 'wh_admin' || a.perm[pd.k] ? ' on' : '') + '">' + t(pd.l) + '</span>').join('');
     const rc = a.r === 'wh_admin' ? 'b-ad' : a.r === 'sales' ? 'b-sl' : 'b-st';
     const self = a.id === user.id;
-    const pc = a.r === 'wh_admin' ? PERMS.length : onPerms.length;
-    return '<tr class="acct-row" onclick="openAcctDetail(' + a.id + ')"><td><strong>' + esc(a.u) + '</strong>' + (self ? ' <span class="badge b-on" style="font-size:.55rem">' + t('myProfile') + '</span>' : '') + '</td><td>' + esc(a.n) + '</td><td><span class="badge ' + rc + '">' + t(ROLES[a.r] || a.r) + '</span></td><td><div class="ptags">' + pt + '</div><div style="font-size:.62rem;color:var(--t3);margin-top:.25rem">' + t('permCount', pc) + '</div></td><td><span class="badge ' + (a.s === 'active' ? 'b-on' : 'b-off') + '">' + (a.s === 'active' ? t('enabled') : t('disabled')) + '</span></td><td onclick="event.stopPropagation()"><div class="ac"><button class="bi" title="' + t('viewDetail') + '" onclick="openAcctDetail(' + a.id + ')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button><button class="bi" title="' + t('permissions') + '" onclick="openPerm(' + a.id + ')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></button><button class="bi" title="' + (a.s === 'active' ? t('disabled') : t('enabled')) + '" onclick="togAcct(' + a.id + ')" style="color:var(--' + (a.s === 'active' ? 'wa' : 'sf') + ')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg></button>' + (!self ? '<button class="bi" title="' + t('delete') + '" onclick="delAcct(' + a.id + ')" style="color:var(--dg)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>' : '') + '</div></td></tr>';
+    return '<tr class="acct-row" onclick="openAcctDetail(' + a.id + ')"><td><strong>' + esc(a.u) + '</strong>' + (self ? ' <span class="badge b-on" style="font-size:.55rem">' + t('myProfile') + '</span>' : '') + '</td><td>' + esc(a.n) + '</td><td><span class="badge ' + rc + '">' + t(ROLES[a.r] || a.r) + '</span></td><td><span class="badge ' + (a.s === 'active' ? 'b-on' : 'b-off') + '">' + (a.s === 'active' ? t('enabled') : t('disabled')) + '</span></td><td onclick="event.stopPropagation()"><div class="ac"><button class="bi" title="' + t('viewDetail') + '" onclick="openAcctDetail(' + a.id + ')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button><button class="bi" title="' + t('permissions') + '" onclick="openPerm(' + a.id + ')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></button><button class="bi" title="' + (a.s === 'active' ? t('disabled') : t('enabled')) + '" onclick="togAcct(' + a.id + ')" style="color:var(--' + (a.s === 'active' ? 'wa' : 'sf') + ')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg></button>' + (!self ? '<button class="bi" title="' + t('delete') + '" onclick="delAcct(' + a.id + ')" style="color:var(--dg)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>' : '') + '</div></td></tr>';
   }).join('');
-  return reqHtml + '<div class="tb"><span class="tbsp"></span><button class="btn bp bs aw" onclick="openAddAcct()">' + t('addUser') + '</button></div><div class="tw"><div class="ts"><table><thead><tr><th>' + t('username') + '</th><th>' + t('displayName') + '</th><th>' + t('role') + '</th><th>' + t('permissions') + '</th><th>' + t('status') + '</th><th>' + t('action') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
+  return reqHtml + '<div class="tb"><span class="tbsp"></span><button class="btn bp bs aw" onclick="openAddAcct()">' + t('addUser') + '</button></div><div class="tw"><div class="ts"><table><thead><tr><th>' + t('username') + '</th><th>' + t('displayName') + '</th><th>' + t('role') + '</th><th>' + t('status') + '</th><th>' + t('action') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
 }
 
 function openAddAcct() {
@@ -2856,10 +2853,9 @@ async function savePerms() {
 }
 
 function permListHtml(perm, role) {
-  return '<div class="ptags" style="margin-top:.45rem">' + PERMS.map(pd => {
-    const on = role === 'wh_admin' || (perm && perm[pd.k]);
-    return '<span class="ptag' + (on ? ' on' : '') + '">' + t(pd.l) + '</span>';
-  }).join('') + '</div>';
+  const granted = PERMS.filter(pd => role === 'wh_admin' || (perm && perm[pd.k]));
+  if (!granted.length) return '<span style="color:var(--t3);font-size:.75rem">—</span>';
+  return '<div class="ptags" style="margin-top:.25rem">' + granted.map(pd => '<span class="ptag on">' + t(pd.l) + '</span>').join('') + '</div>';
 }
 
 function openAcctDetail(id) {
