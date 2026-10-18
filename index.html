@@ -1219,7 +1219,7 @@ const T = {
     analytics:'数据分析', accounts:'账号管理', categories:'分类管理', orderProcess:'订单处理',
     salesWorkspace:'工作台', newOrder:'新建订单', orderList:'订单列表', customerMgmt:'客户管理',
     productQuery:'商品查询', approvalCenter:'审批中心',
-    overview:'概览', management:'管理', orders:'订单', analysis:'分析', approval:'审核', system:'系统',
+    overview:'概览', management:'管理', orders:'订单', analysis:'分析', approval:'审核', system:'系统管理',
     searchPH:'搜索商品、SKU...', year:'年份',
     productTypes:'商品种类', totalStock:'总库存量', pendingOrders:'待处理订单', alertProducts:'预警商品',
     running:'运营中', sufficient:'种充足', needProcess:'需处理', recentOps:'最近操作', lowStockAlert:'低库存预警',
@@ -1299,7 +1299,7 @@ const T = {
     paySettingsInfo:'客户在下单付款时会看到这些信息', pixAccount:'PIX 账号',
     bankName:'银行名称', bankAccount:'银行账号', accountHolder:'户名',
     wechatPay:'微信收款', alipayPay:'支付宝收款', paymentNote:'付款备注说明',
-    defaultAccount:'默认账户（未匹配额度时显示）', amountTiers:'按额度显示不同账户', addTier:'添加额度档',
+    shipAddrSettings:'默认发货地址', shipAddrInfo:'销售端下单时按发货方式自动填入', addrMotoboy:'Motoboy 默认地址', addrCorreios:'Correios 默认地址', addrMotoboyPH:'同城配送默认地址...', addrCorreiosPH:'邮寄默认地址 (含CEP)...', shipAddrSaved:'默认发货地址已保存', defaultAccount:'默认账户（未匹配额度时显示）', amountTiers:'按额度显示不同账户', addTier:'添加额度档',
     noTiers:'暂无额度档，将只显示默认账户', minAmount:'额度下限', maxAmount:'额度上限（可空）',
     pixPH:'输入 PIX key...', bankNamePH:'如 Banco do Brasil...', bankAccountPH:'输入银行账号...',
     accountHolderPH:'输入户名...', wechatPH:'微信号或收款码链接...', alipayPH:'支付宝账号或收款码链接...',
@@ -1362,7 +1362,7 @@ const T = {
     analytics:'Análises', accounts:'Contas', categories:'Categorias', orderProcess:'Pedidos',
     salesWorkspace:'Área de Trabalho', newOrder:'Novo Pedido', orderList:'Lista de Pedidos', customerMgmt:'Clientes',
     productQuery:'Consultar Produtos', approvalCenter:'Aprovações',
-    overview:'Visão Geral', management:'Gestão', orders:'Pedidos', analysis:'Análises', approval:'Aprovações', system:'Sistema',
+    overview:'Visão Geral', management:'Gestão', orders:'Pedidos', analysis:'Análises', approval:'Aprovações', system:'Gestão do Sistema',
     searchPH:'Buscar produtos, SKU...', year:'Ano',
     productTypes:'Tipos de Produtos', totalStock:'Estoque Total', pendingOrders:'Pedidos Pendentes', alertProducts:'Alertas',
     running:'Em operação', sufficient:'abastecidos', needProcess:'A processar', recentOps:'Operações Recentes', lowStockAlert:'Estoque Baixo',
@@ -1442,7 +1442,7 @@ const T = {
     paySettingsInfo:'O cliente verá essas informações ao fazer o pedido', pixAccount:'Conta PIX',
     bankName:'Nome do Banco', bankAccount:'Conta Bancária', accountHolder:'Titular',
     wechatPay:'WeChat Pay', alipayPay:'Alipay', paymentNote:'Nota de Pagamento',
-    defaultAccount:'Conta padrão (sem faixa)', amountTiers:'Contas por faixa de valor', addTier:'Adicionar faixa',
+    shipAddrSettings:'Endereços de envio padrão', shipAddrInfo:'Preenchido automaticamente no pedido conforme o método', addrMotoboy:'Endereço padrão Motoboy', addrCorreios:'Endereço padrão Correios', addrMotoboyPH:'Endereço padrão de entrega...', addrCorreiosPH:'Endereço postal padrão (com CEP)...', shipAddrSaved:'Endereços de envio salvos', defaultAccount:'Conta padrão (sem faixa)', amountTiers:'Contas por faixa de valor', addTier:'Adicionar faixa',
     noTiers:'Sem faixas; só conta padrão', minAmount:'Valor mínimo', maxAmount:'Valor máximo (opcional)',
     pixPH:'Chave PIX...', bankNamePH:'Ex: Banco do Brasil...', bankAccountPH:'Número da conta...',
     accountHolderPH:'Nome do titular...', wechatPH:'ID WeChat ou link...', alipayPH:'Conta ou link Alipay...',
@@ -1977,22 +1977,21 @@ function buildNav() {
     if (has('inbound')) h += '<div class="ni" data-p="inb" onclick="goPage(\'inb\',this)">'+sv.inn+' '+t('inboundRecord')+'</div>';
     if (has('outbound')) h += '<div class="ni" data-p="outb" onclick="goPage(\'outb\',this)">'+sv.out+' '+t('outboundRecord')+'</div>';
     h += '<div class="nl">'+t('orders')+'</div><div class="ni" data-p="whOrd" onclick="goPage(\'whOrd\',this)">'+sv.ord+' '+t('orderProcess')+'</div>';
-    if (has('viewAnalytics')) h += '<div class="nl">'+t('analysis')+'</div><div class="ni" data-p="ana" onclick="goPage(\'ana\',this)">'+sv.ana+' '+t('analytics')+'</div>';
-    if (user.r==='wh_admin') h += '<div class="nl">'+t('approval')+'</div><div class="ni" data-p="approvals" onclick="goPage(\'approvals\',this)">'+sv.chk+' '+t('approvalCenter')+'</div>';
-    if (has('manageAccounts')||has('manageCategories')) {
-      h += '<div class="nl">'+t('system')+'</div>';
-      if (has('manageAccounts')) h += '<div class="ni" data-p="accts" onclick="goPage(\'accts\',this)">'+sv.usr+' '+t('accounts')+'</div>';
-      if (has('manageCategories')) h += '<div class="ni" data-p="cats" onclick="goPage(\'cats\',this)">'+sv.cat+' '+t('categories')+'</div>';
-    }
     h += '<div class="nl">'+t('productLabels')+'</div>';
     h += '<div class="ni" data-p="inv" onclick="goPageLabel(\'inv\',\'novo\',this)">Novo</div>';
     h += '<div class="ni" data-p="inv" onclick="goPageLabel(\'inv\',\'oferta\',this)">Oferta</div>';
     h += '<div class="ni" data-p="inv" onclick="goPageLabel(\'inv\',\'promocao\',this)">Promoção</div>';
-    h += '<div class="nl">'+t('customerMgmtNav')+'</div>';
-    if (has('manageAccounts')) h += '<div class="ni" data-p="memberLevels" onclick="goPage(\'memberLevels\',this)">'+sv.cus+' '+t('memberLevel')+'</div>';
-    h += '<div class="nl">'+t('financeMgmtNav')+'</div>';
-    if (user.r==='wh_admin') h += '<div class="ni" data-p="paySettings" onclick="goPage(\'paySettings\',this)">'+'💳'+' '+t('payAccount')+'</div>';
-    if (user.r==='wh_admin') h += '<div class="ni" data-p="labelPrice" onclick="goPage(\'labelPrice\',this)">'+'🏷️'+' '+t('labelPrice')+'</div>';
+    if (user.r==='wh_admin') {
+      h += '<div class="nl">'+t('financeMgmtNav')+'</div>';
+      h += '<div class="ni" data-p="ana" onclick="goPage(\'ana\',this)">'+sv.ana+' '+t('analytics')+'</div>';
+      h += '<div class="ni" data-p="paySettings" onclick="goPage(\'paySettings\',this)">'+'💳'+' '+t('payAccount')+'</div>';
+      h += '<div class="ni" data-p="labelPrice" onclick="goPage(\'labelPrice\',this)">'+'🏷️'+' '+t('labelPrice')+'</div>';
+      h += '<div class="nl">'+t('system')+'</div>';
+      h += '<div class="ni" data-p="approvals" onclick="goPage(\'approvals\',this)">'+sv.chk+' '+t('approvalCenter')+'</div>';
+      h += '<div class="ni" data-p="memberLevels" onclick="goPage(\'memberLevels\',this)">'+sv.cus+' '+t('memberLevel')+'</div>';
+      h += '<div class="ni" data-p="accts" onclick="goPage(\'accts\',this)">'+sv.usr+' '+t('accounts')+'</div>';
+      h += '<div class="ni" data-p="cats" onclick="goPage(\'cats\',this)">'+sv.cat+' '+t('categories')+'</div>';
+    }
   }
   n.innerHTML = h;
 }
@@ -2041,7 +2040,7 @@ function render(p) {
     case 'sProds': c.innerHTML = rSProds(); break;
     case 'sCus': c.innerHTML = rSCus(); break;
     case 'approvals': c.innerHTML = rApprovals(); break;
-    case 'paySettings': c.innerHTML = rPaySettings(); loadPaySettings(); break;
+    case 'paySettings': c.innerHTML = rPaySettings(); loadPaySettings(); loadShipAddrSettings(); break;
     case 'labelPrice': c.innerHTML = rLabelPrice(); loadLabelPrices(); break;
     case 'memberLevels': c.innerHTML = rMemberLevels(); break;
   }
@@ -4046,7 +4045,39 @@ async function saveLabelPrices() {
   }
 }
 function rPaySettings() {
-  return '<div class="pnl"><div class="pnH"><span class="pnT">💳 ' + t('payAccountSettings') + '</span><span style="font-size:.65rem;color:var(--t3)">' + t('paySettingsInfo') + '</span></div><div class="pnB" id="paySettingsArea"><div class="spinner"></div></div></div>';
+  return '<div class="pnl"><div class="pnH"><span class="pnT">💳 ' + t('payAccountSettings') + '</span><span style="font-size:.65rem;color:var(--t3)">' + t('paySettingsInfo') + '</span></div><div class="pnB" id="paySettingsArea"><div class="spinner"></div></div></div>'
+    + '<div class="pnl" style="margin-top:1rem"><div class="pnH"><span class="pnT">📍 ' + t('shipAddrSettings') + '</span><span style="font-size:.65rem;color:var(--t3)">' + t('shipAddrInfo') + '</span></div><div class="pnB" id="shipAddrArea"><div class="spinner"></div></div></div>';
+}
+
+async function loadShipAddrSettings() {
+  try {
+    const { data } = await sb.from('site_settings').select('*').in('key', ['addr_motoboy', 'addr_correios']);
+    const map = {};
+    (data || []).forEach(r => { map[r.key] = r.value || ''; });
+    const area = document.getElementById('shipAddrArea');
+    if (!area) return;
+    area.innerHTML = ''
+      + '<div class="fgm"><label>🏍️ ' + t('addrMotoboy') + '</label><textarea id="ps_addr_motoboy" placeholder="' + t('addrMotoboyPH') + '" style="min-height:52px">' + esc(map.addr_motoboy || '') + '</textarea></div>'
+      + '<div class="fgm"><label>📮 ' + t('addrCorreios') + '</label><textarea id="ps_addr_correios" placeholder="' + t('addrCorreiosPH') + '" style="min-height:52px">' + esc(map.addr_correios || '') + '</textarea></div>'
+      + '<div style="display:flex;justify-content:flex-end;gap:.5rem;margin-top:1rem"><button class="btn bp bs aw" onclick="saveShipAddrSettings()">💾 ' + t('saveSettings') + '</button></div>';
+  } catch (e) { console.error('Load ship addr error:', e); }
+}
+
+async function saveShipAddrSettings() {
+  try {
+    for (const key of ['addr_motoboy', 'addr_correios']) {
+      const el = document.getElementById('ps_' + key);
+      if (!el) continue;
+      const val = el.value.trim();
+      const { data: existing } = await sb.from('site_settings').select('key').eq('key', key).limit(1);
+      if (existing && existing.length) {
+        await adminFrom('site_settings').update({ value: val, updated_at: new Date().toISOString() }).eq('key', key);
+      } else {
+        await adminFrom('site_settings').insert({ key, value: val, label: key });
+      }
+    }
+    toast(t('shipAddrSaved'), 'ok');
+  } catch (e) { toast(t('saveFailed') + ': ' + e.message, 'er'); }
 }
 
 async function loadPaySettings() {
@@ -4608,8 +4639,7 @@ function doSPSearch() {
   if (!rs.length) { el.innerHTML = '<div class="empty"><p>' + t('noMatch') + '</p></div>'; return; }
   el.innerHTML = rs.map(p => {
     const st = p.stock === 0 ? '<span style="color:var(--dg);font-weight:600">' + t('outOfStock') + '</span>' : p.stock <= 10 ? '<span style="color:var(--wa)">' + t('onlyLeft', p.stock) + '</span>' : '<span style="color:var(--sf)">' + t('inStock', p.stock) + '</span>';
-    const icon = (catById((p.catIds || [])[0]) || { icon: '📦' }).icon;
-    return '<div class="pnl" style="margin-bottom:.5rem"><div class="pnB" style="display:flex;align-items:center;gap:.8rem"><div style="width:42px;height:42px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:1.3rem;background:var(--s2);border:1px solid var(--bd);flex-shrink:0">' + icon + '</div><div style="flex:1;min-width:0"><div style="font-weight:500">' + esc(p.name) + '</div><div style="font-size:.68rem;color:var(--t3)">' + esc(p.sku) + ' · ' + catTagsP(p, true) + '</div></div><div style="text-align:right;flex-shrink:0"><div style="font-family:DM Mono,monospace;font-weight:600">¥' + p.price.toLocaleString() + '</div><div style="font-size:.72rem">' + st + '</div></div></div></div>';
+    return '<div class="pnl" style="margin-bottom:.5rem"><div class="pnB" style="display:flex;align-items:center;gap:.8rem"><div class="pimg" style="width:48px;height:48px;flex-shrink:0">' + (p.img ? '<img src="' + safeUrl(p.img) + '" alt="" onerror="this.remove()">' : '') + '</div><div style="flex:1;min-width:0"><div style="font-weight:500">' + esc(p.name) + '</div><div style="font-size:.68rem;color:var(--t3)">' + esc(p.sku) + ' · ' + catTagsP(p, true) + '</div></div><div style="text-align:right;flex-shrink:0"><div style="font-family:DM Mono,monospace;font-weight:600">¥' + p.price.toLocaleString() + '</div><div style="font-size:.72rem">' + st + '</div></div></div></div>';
   }).join('');
 }
 
