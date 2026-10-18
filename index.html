@@ -1299,7 +1299,7 @@ const T = {
     paySettingsInfo:'客户在下单付款时会看到这些信息', pixAccount:'PIX 账号',
     bankName:'银行名称', bankAccount:'银行账号', accountHolder:'户名',
     wechatPay:'微信收款', alipayPay:'支付宝收款', paymentNote:'付款备注说明',
-    shipAddrSettings:'默认发货地址', shipAddrInfo:'销售端下单时按发货方式自动填入', addrMotoboy:'Motoboy 默认地址', addrCorreios:'Correios 默认地址', addrMotoboyPH:'同城配送默认地址...', addrCorreiosPH:'邮寄默认地址 (含CEP)...', shipAddrSaved:'默认发货地址已保存', defaultAccount:'默认账户（未匹配额度时显示）', amountTiers:'按额度显示不同账户', addTier:'添加额度档',
+    shipAddrSettings:'发货地址设置', shipAddrInfo:'销售端下单时按发货方式自动填入', addrMotoboy:'Motoboy 默认地址', addrCorreios:'Correios 默认地址', addrMotoboyPH:'同城配送默认地址...', addrCorreiosPH:'邮寄默认地址 (含CEP)...', shipAddrSaved:'默认发货地址已保存', defaultAccount:'默认账户（未匹配额度时显示）', amountTiers:'按额度显示不同账户', addTier:'添加额度档',
     noTiers:'暂无额度档，将只显示默认账户', minAmount:'额度下限', maxAmount:'额度上限（可空）',
     pixPH:'输入 PIX key...', bankNamePH:'如 Banco do Brasil...', bankAccountPH:'输入银行账号...',
     accountHolderPH:'输入户名...', wechatPH:'微信号或收款码链接...', alipayPH:'支付宝账号或收款码链接...',
@@ -1442,7 +1442,7 @@ const T = {
     paySettingsInfo:'O cliente verá essas informações ao fazer o pedido', pixAccount:'Conta PIX',
     bankName:'Nome do Banco', bankAccount:'Conta Bancária', accountHolder:'Titular',
     wechatPay:'WeChat Pay', alipayPay:'Alipay', paymentNote:'Nota de Pagamento',
-    shipAddrSettings:'Endereços de envio padrão', shipAddrInfo:'Preenchido automaticamente no pedido conforme o método', addrMotoboy:'Endereço padrão Motoboy', addrCorreios:'Endereço padrão Correios', addrMotoboyPH:'Endereço padrão de entrega...', addrCorreiosPH:'Endereço postal padrão (com CEP)...', shipAddrSaved:'Endereços de envio salvos', defaultAccount:'Conta padrão (sem faixa)', amountTiers:'Contas por faixa de valor', addTier:'Adicionar faixa',
+    shipAddrSettings:'Configurar Endereços de Envio', shipAddrInfo:'Preenchido automaticamente no pedido conforme o método', addrMotoboy:'Endereço padrão Motoboy', addrCorreios:'Endereço padrão Correios', addrMotoboyPH:'Endereço padrão de entrega...', addrCorreiosPH:'Endereço postal padrão (com CEP)...', shipAddrSaved:'Endereços de envio salvos', defaultAccount:'Conta padrão (sem faixa)', amountTiers:'Contas por faixa de valor', addTier:'Adicionar faixa',
     noTiers:'Sem faixas; só conta padrão', minAmount:'Valor mínimo', maxAmount:'Valor máximo (opcional)',
     pixPH:'Chave PIX...', bankNamePH:'Ex: Banco do Brasil...', bankAccountPH:'Número da conta...',
     accountHolderPH:'Nome do titular...', wechatPH:'ID WeChat ou link...', alipayPH:'Conta ou link Alipay...',
@@ -1831,7 +1831,10 @@ async function adminApi(action, payload) {
   return data.data;
 }
 function safeQ(p) {
-  return Promise.resolve(p).then(r => ({ data: (r && r.data) || [], error: (r && r.error) || null }))
+  return Promise.resolve(p).then(r => {
+    if (Array.isArray(r)) return { data: r, error: null };
+    return { data: (r && r.data) || [], error: (r && r.error) || null };
+  })
     .catch(() => ({ data: [], error: { message: 'denied' } }));
 }
 async function loadAllData() {
@@ -1846,8 +1849,8 @@ async function loadAllData() {
       safeQ(ADMIN_TOKEN ? adminSelect('order_items', { limit: 5000 }) : sb.from('order_items').select('*')),
       safeQ(ADMIN_TOKEN ? adminSelect('inbound_records', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : sb.from('inbound_records').select('*').order('created_at',{ascending:false})),
       safeQ(ADMIN_TOKEN ? adminSelect('outbound_records', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : sb.from('outbound_records').select('*').order('created_at',{ascending:false})),
-      safeQ(ADMIN_TOKEN ? adminSelect('customers', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : fetchPaged(function() { return sb.from('customers').select('*').order('created_at',{ascending:false}).order('id', { ascending: false }); })),
-      safeQ(ADMIN_TOKEN ? adminSelect('order_changes', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : sb.from('order_changes').select('*').order('created_at',{ascending:false}))
+      safeQ(ADMIN_TOKEN ? adminSelect('customers', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : Promise.resolve({ data: [], error: null })),
+      safeQ(ADMIN_TOKEN ? adminSelect('order_changes', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : Promise.resolve({ data: [], error: null }))
     ]);
     DB.cats = (catR.data||[]).map(c => ({id:Number(c.id),name:c.name,code:c.code,icon:c.icon,order:c.order_num,parent_id:c.parent_id!=null?Number(c.parent_id):null,depth:Number(c.depth||0),visible:c.visible!==false,image:c.image||'',description:c.description||'',locked:c.locked||false,product_count:Number(c.product_count||0)}));
     DB.accts = (acctR.data||[]).map(a => ({id:a.id,u:a.username,n:a.display_name,r:a.role,s:a.status,c:fmtDate(a.created_at).split(' ')[0],perm:a.perms||{}}));
@@ -1985,6 +1988,7 @@ function buildNav() {
       h += '<div class="nl">'+t('financeMgmtNav')+'</div>';
       h += '<div class="ni" data-p="ana" onclick="goPage(\'ana\',this)">'+sv.ana+' '+t('analytics')+'</div>';
       h += '<div class="ni" data-p="paySettings" onclick="goPage(\'paySettings\',this)">'+'💳'+' '+t('payAccount')+'</div>';
+      h += '<div class="ni" data-p="shipAddr" onclick="goPage(\'shipAddr\',this)">'+'📍'+' '+t('shipAddrSettings')+'</div>';
       h += '<div class="ni" data-p="labelPrice" onclick="goPage(\'labelPrice\',this)">'+'🏷️'+' '+t('labelPrice')+'</div>';
       h += '<div class="nl">'+t('system')+'</div>';
       h += '<div class="ni" data-p="approvals" onclick="goPage(\'approvals\',this)">'+sv.chk+' '+t('approvalCenter')+'</div>';
@@ -2003,7 +2007,7 @@ function goPage(p, el, keepLabel) {
   if (el) el.classList.add('on');
   else { const e = document.querySelector('[data-p="'+p+'"]'); if (e) e.classList.add('on'); }
   curP = p;
-  const ts = {dash:t('dashboard'),inv:t('inventory'),inb:t('inboundRecord'),outb:t('outboundRecord'),ana:t('analytics'),accts:t('accounts'),cats:t('categories'),whOrd:t('orderProcess'),sWork:t('salesWorkspace'),sNewOrd:t('newOrder'),sOrds:t('orderList'),sProds:t('productQuery'),sCus:t('customerMgmt'),approvals:t('approvalCenter'),paySettings:t('payAccountSettings'),labelPrice:t('labelPrice'),memberLevels:t('memberLevel')};
+  const ts = {dash:t('dashboard'),inv:t('inventory'),inb:t('inboundRecord'),outb:t('outboundRecord'),ana:t('analytics'),accts:t('accounts'),cats:t('categories'),whOrd:t('orderProcess'),sWork:t('salesWorkspace'),sNewOrd:t('newOrder'),sOrds:t('orderList'),sProds:t('productQuery'),sCus:t('customerMgmt'),approvals:t('approvalCenter'),paySettings:t('payAccountSettings'),shipAddr:t('shipAddrSettings'),labelPrice:t('labelPrice'),memberLevels:t('memberLevel')};
   document.getElementById('tT').textContent = ts[p]||'';
   render(p);
   document.getElementById('sidebar').classList.remove('open');
@@ -2039,8 +2043,14 @@ function render(p) {
     case 'sOrds': c.innerHTML = rSOrds(); break;
     case 'sProds': c.innerHTML = rSProds(); break;
     case 'sCus': c.innerHTML = rSCus(); break;
-    case 'approvals': c.innerHTML = rApprovals(); break;
-    case 'paySettings': c.innerHTML = rPaySettings(); loadPaySettings(); loadShipAddrSettings(); break;
+    case 'approvals':
+      c.innerHTML = rApprovals();
+      if (ADMIN_TOKEN) loadAllData().then(() => {
+        if (curP === 'approvals') document.getElementById('mc').innerHTML = rApprovals();
+      });
+      break;
+    case 'paySettings': c.innerHTML = rPaySettings(); loadPaySettings(); break;
+    case 'shipAddr': c.innerHTML = rShipAddr(); loadShipAddrSettings(); break;
     case 'labelPrice': c.innerHTML = rLabelPrice(); loadLabelPrices(); break;
     case 'memberLevels': c.innerHTML = rMemberLevels(); break;
   }
@@ -4045,8 +4055,11 @@ async function saveLabelPrices() {
   }
 }
 function rPaySettings() {
-  return '<div class="pnl"><div class="pnH"><span class="pnT">💳 ' + t('payAccountSettings') + '</span><span style="font-size:.65rem;color:var(--t3)">' + t('paySettingsInfo') + '</span></div><div class="pnB" id="paySettingsArea"><div class="spinner"></div></div></div>'
-    + '<div class="pnl" style="margin-top:1rem"><div class="pnH"><span class="pnT">📍 ' + t('shipAddrSettings') + '</span><span style="font-size:.65rem;color:var(--t3)">' + t('shipAddrInfo') + '</span></div><div class="pnB" id="shipAddrArea"><div class="spinner"></div></div></div>';
+  return '<div class="pnl"><div class="pnH"><span class="pnT">💳 ' + t('payAccountSettings') + '</span><span style="font-size:.65rem;color:var(--t3)">' + t('paySettingsInfo') + '</span></div><div class="pnB" id="paySettingsArea"><div class="spinner"></div></div></div>';
+}
+
+function rShipAddr() {
+  return '<div class="pnl"><div class="pnH"><span class="pnT">📍 ' + t('shipAddrSettings') + '</span><span style="font-size:.65rem;color:var(--t3)">' + t('shipAddrInfo') + '</span></div><div class="pnB" id="shipAddrArea"><div class="spinner"></div></div></div>';
 }
 
 async function loadShipAddrSettings() {
@@ -4278,7 +4291,7 @@ async function saveMemberLevel() {
 }
 
 function rApprovals() {
-  const pCus = DB.cus.filter(c => c.status === 'pending');
+  const pCus = DB.cus.filter(c => String(c.status || '').toLowerCase() === 'pending');
   const pChgs = DB.chgs.filter(c => c.st === 'pending');
   const pPays = DB.ords.filter(o => o.st === 'done' && o.payS === 'pending' && o.payU === 'no');
 
@@ -4356,8 +4369,14 @@ function rSW() {
 // NEW ORDER (Sales)
 // ═══════════════════════════════════════
 function rNewOrd() {
-  const approvedCus = DB.cus.filter(c => c.status === 'approved');
-  const cusOpts = approvedCus.map(c => '<option value="' + c.id + '">' + esc(c.name) + ' (' + t('available') + ' ¥' + (c.creditLimit - c.creditUsed).toLocaleString() + ')</option>').join('');
+  const approvedCus = salesCusPool();
+  const cusOpts = approvedCus.map(c => {
+    const ok = String(c.status || '').toLowerCase() === 'approved';
+    const stC = CUSTAT[c.status] || {};
+    const avail = (c.creditLimit - c.creditUsed).toLocaleString();
+    const label = esc(c.name) + ' · ' + esc(c.phone || '') + ' · ' + t('available') + ' ¥' + avail + (ok ? '' : ' · ' + t(stC.l || c.status));
+    return '<option value="' + c.id + '"' + (ok ? '' : ' disabled') + '>' + label + '</option>';
+  }).join('');
 
   return '<div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1rem"><h3 style="font-family:Inter,sans-serif;font-weight:600;font-size:1rem">' + t('newOrder') + '</h3><span class="badge b-dr" id="drBadge" style="display:none">' + t('draft') + '</span></div>'
     // Customer
@@ -4405,7 +4424,11 @@ function onCusChange() {
   const c = cusById(dCustId);
   if (!c) return;
   const avail = c.creditLimit - c.creditUsed;
-  info.innerHTML = '<strong>' + esc(c.name) + '</strong> · ' + esc(c.phone) + '<br>' + t('creditLimit') + ': ¥' + c.creditLimit.toLocaleString() + ' · ' + t('creditUsed') + ': ¥' + c.creditUsed.toLocaleString() + ' · <span style="color:' + (avail > 0 ? 'var(--sf)' : 'var(--dg)') + '">' + t('available') + ': ¥' + avail.toLocaleString() + '</span>';
+  const stC = CUSTAT[c.status] || {};
+  info.innerHTML = '<strong>' + esc(c.name) + '</strong> · ' + esc(c.phone)
+    + ' <span class="badge ' + stC.c + '">' + t(stC.l || c.status) + '</span><br>'
+    + t('creditLimit') + ': ¥' + c.creditLimit.toLocaleString() + ' · ' + t('creditUsed') + ': ¥' + c.creditUsed.toLocaleString() + ' · <span style="color:' + (avail > 0 ? 'var(--sf)' : 'var(--dg)') + '">' + t('available') + ': ¥' + avail.toLocaleString() + '</span>'
+    + ((c.motoAddr || c.corrAddr) ? '<br><span style="color:var(--t3)">🏍️ ' + esc(c.motoAddr || '-') + ' · 📮 ' + esc(c.corrAddr || '-') + '</span>' : '');
   updateCreditInfo();
 }
 
@@ -4646,8 +4669,11 @@ function doSPSearch() {
 // ═══════════════════════════════════════
 // CUSTOMER MANAGEMENT
 // ═══════════════════════════════════════
+function salesCusPool() {
+  return DB.cus.filter(c => c.by === user.u || String(c.status || '').toLowerCase() === 'approved');
+}
 function rSCus() {
-  const myCus = DB.cus.filter(c => c.by === user.u);
+  const myCus = salesCusPool();
   let rows = myCus.map(c => {
     const stC = CUSTAT[c.status] || {};
     const avail = c.creditLimit - c.creditUsed;
@@ -4672,15 +4698,27 @@ async function saveCus() {
   const corrAddr = document.getElementById('cusCA').value.trim();
   const creditLimit = parseFloat(document.getElementById('cusCL').value) || 0;
   try {
-    await adminFrom('customers').insert({
-      name, phone, moto_address: motoAddr, correio_address: corrAddr,
-      credit_limit: creditLimit, credit_used: 0, status: 'pending', created_by: user.u
+    if (!ADMIN_TOKEN) throw new Error('no_token');
+    await adminApi('insert', {
+      table: 'customers',
+      row: {
+        name, phone, moto_address: motoAddr, correio_address: corrAddr,
+        credit_limit: creditLimit, credit_used: 0, status: 'pending', created_by: user.u
+      }
     });
     await loadAllData();
     cMo('cusmo');
     toast(t('customerCreated'), 'ok');
     render('sCus');
-  } catch (err) { toast(t('submitFailed') + ': ' + err.message, 'er'); }
+  } catch (err) {
+    const msg = String(err && err.message || err);
+    if (msg === 'no_token' || msg === 'bad_token' || /admin_api_401/.test(msg)) {
+      toast((t('wrongCreds') || '登录已失效') + ' / session expired', 'er');
+      try { doLogout(); } catch (_) {}
+      return;
+    }
+    toast(t('submitFailed') + ': ' + msg, 'er');
+  }
 }
 
 // ═══════════════════════════════════════
@@ -4702,29 +4740,38 @@ function gSearch(q) {
 (async () => {
   console.log('[CloudStock] 初始化...');
   applyLang();
-  await loadAllData();
-  console.log('[CloudStock] 账号:', DB.accts.length, '商品:', DB.prods.length, '客户:', DB.cus.length);
   const s = sessionStorage.getItem('cs4');
   if (s) {
     try {
       const { id, pl, tk } = JSON.parse(s);
       if (tk) {
         initSb(tk);
-        sb.rpc('app_list_accounts').then(({ data }) => {
-          const list = Array.isArray(data) ? data : [];
-          const a = list.find(x => x.id === id && x.status === 'active');
-          if (a && (a.role==='wh_admin' || a.role==='wh_staff')) {
-            user = {
-              id: a.id, u: a.username, n: a.display_name || '',
-              r: a.role, s: a.status, perm: a.perms || {}, c: ''
-            };
-            portal = 'wh';
-            enterApp();
-          }
-        }).catch(() => {});
+        try {
+          await adminApi('select', { table: 'products', limit: 1 });
+        } catch (e) {
+          sessionStorage.removeItem('cs4');
+          initSb('');
+        }
+        if (ADMIN_TOKEN) {
+          try {
+            const { data } = await sb.rpc('app_list_accounts');
+            const list = Array.isArray(data) ? data : [];
+            const a = list.find(x => x.id === id && x.status === 'active');
+            if (a && (a.role === 'wh_admin' || a.role === 'wh_staff')) {
+              user = {
+                id: a.id, u: a.username, n: a.display_name || '',
+                r: a.role, s: a.status, perm: a.perms || {}, c: ''
+              };
+              portal = 'wh';
+            }
+          } catch (e) {}
+        }
       }
     } catch (e) { }
   }
+  await loadAllData();
+  console.log('[CloudStock] 账号:', DB.accts.length, '商品:', DB.prods.length, '客户:', DB.cus.length);
+  if (user) enterApp();
 })();
 
 </script>
