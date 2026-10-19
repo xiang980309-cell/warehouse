@@ -4951,7 +4951,7 @@ async function saveDraft() {
     let ordId;
     if (dEditId) { await adminFrom('orders').update(row).eq('id', dEditId); ordId = dEditId; await adminFrom('order_items').delete().eq('order_id', dEditId); }
     else { const { data, error } = await adminFrom('orders').insert(row).select().single(); if (error) throw error; ordId = data.id; }
-    if (dItems.length) await adminFrom('order_items').insert(dItems.map(i => ({ order_id: ordId, product_id: i.pid, qty: i.qty })));
+    if (dItems.length) await adminFrom('order_items').insert(dItems.map(i => ({ order_id: ordId, product_id: i.pid, qty: i.qty, price: Number((prodById(i.pid) || {}).price) || 0, original_price: Number((prodById(i.pid) || {}).price) || 0 })));
     await loadAllData();
     toast(t('draftSaved'), 'ok');
     clearDraft();
@@ -4982,7 +4982,7 @@ async function submitOrd() {
     let ordId;
     if (dEditId) { await adminFrom('orders').update(row).eq('id', dEditId); ordId = dEditId; await adminFrom('order_items').delete().eq('order_id', dEditId); }
     else { const { data, error } = await adminFrom('orders').insert(row).select().single(); if (error) throw error; ordId = data.id; }
-    if (dItems.length) await adminFrom('order_items').insert(dItems.map(i => ({ order_id: ordId, product_id: i.pid, qty: i.qty })));
+    if (dItems.length) await adminFrom('order_items').insert(dItems.map(i => ({ order_id: ordId, product_id: i.pid, qty: i.qty, price: Number((prodById(i.pid) || {}).price) || 0, original_price: Number((prodById(i.pid) || {}).price) || 0 })));
     // Lock stock immediately
     for (const it of dItems) {
       await adminFrom('products').update({ stock: (prodById(it.pid)?.stock || 0) - it.qty }).eq('id', it.pid);
