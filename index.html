@@ -1236,7 +1236,7 @@ const T = {
     productImage:'商品图片', productName:'商品名称 *', productCategory:'商品分类 *', skuCode:'SKU 编码',
     switchManual:'切换手动', switchAuto:'自动', stockQty:'库存数量', position:'存放位置',
     sellPrice:'销售单价 (¥)', costPrice:'进货成本 (¥)', remarks:'备注',
-    saveProduct:'保存商品', enterProductName:'输入商品名称', positionPH:'如 A区-3层-2号', optionalNote:'可选备注...',
+    selectSize:'选择尺码',selectSizeHint:'括号内为该尺码剩余库存，点选加入订单',saveProduct:'保存商品', enterProductName:'输入商品名称', positionPH:'如 A区-3层-2号', optionalNote:'可选备注...',
     enterNameErr:'请输入商品名称', selectCatErr:'请至少选择一个分类', selectLeafCat:'请选择叶子分类', productUpdated:'商品已更新', productAdded:'商品已添加', shelf:'上下架', mall:'商城', gallery:'相册', mallList:'商城上下架', galleryList:'相册上下架', mallOn:'商城上架', mallOff:'商城下架', galleryOn:'相册上架', galleryOff:'相册下架', onShelf:'已上架', offShelf:'未上架',
     productDeleted:'已删除', saveFailed:'保存失败', deleteFailed:'删除失败', confirmDelete:'确定删除「{0}」？',
     addInbound:'新增入库', addOutbound:'新增出库', selectProduct:'商品 *', quantity:'数量 *',
@@ -1383,6 +1383,7 @@ const T = {
     productImage:'Imagem do Produto', productName:'Nome do Produto *', productCategory:'Categoria *', skuCode:'Código SKU',
     switchManual:'Manual', switchAuto:'Automático', stockQty:'Quantidade', position:'Localização',
     sellPrice:'Preço de Venda (¥)', costPrice:'Custo (¥)', remarks:'Observações',
+    selectSize:'Selecionar tamanho',selectSizeHint:'Estoque entre parênteses',
     saveProduct:'Salvar Produto', enterProductName:'Nome do produto', positionPH:'Ex: Setor A-3-2', optionalNote:'Observação opcional...',
     enterNameErr:'Digite o nome do produto', selectCatErr:'Selecione pelo menos uma categoria', selectLeafCat:'Selecione uma categoria folha', shelf:'Vitrine', mall:'Loja', gallery:'Galeria', mallList:'Loja online', galleryList:'Galeria', mallOn:'Publicar na loja', mallOff:'Remover da loja', galleryOn:'Publicar na galeria', galleryOff:'Remover da galeria', onShelf:'Publicado', offShelf:'Não publicado', productUpdated:'Produto atualizado', productAdded:'Produto adicionado',
     productDeleted:'Excluído', saveFailed:'Falha ao salvar', deleteFailed:'Falha ao excluir', confirmDelete:'Excluir「{0}」?',
@@ -1872,7 +1873,7 @@ async function loadAllData() {
     DB.cats = (catR.data||[]).map(c => ({id:Number(c.id),name:c.name,code:c.code,icon:c.icon,order:c.order_num,parent_id:c.parent_id!=null?Number(c.parent_id):null,depth:Number(c.depth||0),visible:c.visible!==false,image:c.image||'',description:c.description||'',locked:c.locked||false,product_count:Number(c.product_count||0)}));
     DB.accts = (acctR.data||[]).map(a => ({id:a.id,u:a.username,n:a.display_name,r:a.role,s:a.status,c:fmtDate(a.created_at).split(' ')[0],perm:a.perms||{}}));
     const pc = pcR.data||[];
-    DB.prods = (prodR.data||[]).map(p => ({id:p.id,name:p.name,catIds:(function(){const ids=pc.filter(x=>x.product_id===p.id).map(x=>x.category_id);const d=deepestCatId(ids);return d?[d]:[]})(),sku:p.sku,skuManual:p.sku_manual?1:0,stock:p.stock,price:Number(p.price),cost:Number(p.cost),loc:p.location||'',note:p.note||'',cr:fmtDate(p.created_at).split(' ')[0],img:p.image||'',category_type:p.category_type||'general',sizes:p.sizes||[],size_stock:p.size_stock||{},has_bag:p.has_bag||false,bag_price:Number(p.bag_price||0),has_case:p.has_case||false,case_price:Number(p.case_price||0),label:p.label||'',lp:(p.label_price==null?null:Number(p.label_price)),lp:(p.label_price==null?null:Number(p.label_price)),yr:p.release_year||'',ver:p.release_version||'',tg:p.tags||[],ml:!!p.mall_listed,gl:p.gallery_listed!==false}));
+    DB.prods = (prodR.data||[]).map(p => ({id:p.id,name:p.name,catIds:(function(){const ids=pc.filter(x=>x.product_id===p.id).map(x=>x.category_id);const d=deepestCatId(ids);return d?[d]:[]})(),sku:p.sku,skuManual:p.sku_manual?1:0,stock:(function(){let st=Number(p.stock)||0;try{if(!st&&p.size_stock){const ss=typeof p.size_stock==='string'?JSON.parse(p.size_stock):p.size_stock;if(ss&&typeof ss==='object')st=Object.values(ss).reduce((a,b)=>a+(Number(b)||0),0);}}catch(_){}if(st<=0&&p.size_stock){try{const ss=typeof p.size_stock==='string'?JSON.parse(p.size_stock):p.size_stock;if(ss&&typeof ss==='object'){const sm=Object.values(ss).reduce((a,b)=>a+(Number(b)||0),0);if(sm>st)st=sm;}}catch(_){}}return st;})(),price:Number(p.price),cost:Number(p.cost),loc:p.location||'',note:p.note||'',cr:fmtDate(p.created_at).split(' ')[0],img:p.image||'',category_type:p.category_type||'general',sizes:p.sizes||[],size_stock:p.size_stock||{},has_bag:p.has_bag||false,bag_price:Number(p.bag_price||0),has_case:p.has_case||false,case_price:Number(p.case_price||0),label:p.label||'',lp:(p.label_price==null?null:Number(p.label_price)),lp:(p.label_price==null?null:Number(p.label_price)),yr:p.release_year||'',ver:p.release_version||'',tg:p.tags||[],ml:!!p.mall_listed,gl:p.gallery_listed!==false}));
     const oi = oiR.data||[];
     DB.ords = (ordR.data||[]).map(o => ({id:o.id,no:o.order_no,items:oi.filter(x=>x.order_id===o.id).map(x=>({pid:x.product_id,qty:x.qty,price:Number(x.price||0),original_price:Number(x.original_price||0),unit_price:Number(x.unit_price||0)})),pk:o.pickup_method,st:o.status,oi:o.order_image||'',bi:o.bill_image||'',note:o.note||'',cr:fmtDate(o.created_at),by:o.created_by,pb:o.processed_by||'',payM:o.payment_method||'cash',payS:o.payment_status||'pending',payI:o.payment_image||'',payU:o.payment_upload||'yes',pacI:o.packing_image||'',supI:o.supplementary_image||'',supT:o.supplementary_type||'',custId:o.customer_id||'',shipAddr:o.shipping_address||'',shipCost:Number(o.shipping_cost||0),billDeadline:o.bill_deadline||null,origTotal:Number(o.original_total||0),priceModified:o.price_modified||false,onibusName:o.onibus_name||'',onibusImg:o.onibus_schedule_img||'',billUploadedAt:o.bill_uploaded_at||null,adminConfirmedShip:o.admin_confirmed_ship||false,adminShipBy:o.admin_ship_confirmed_by||''}));
     (function(){
@@ -4841,8 +4842,61 @@ function ordSearch() {
 }
 
 function addOrdItem(pid) {
-  const ex = dItems.find(i => i.pid === pid);
-  if (ex) ex.qty++; else dItems.push({ pid, qty: 1 });
+  const p = prodById(pid);
+  if (!p) return;
+  if (p.sizes && p.sizes.length) {
+    openSizePicker(pid);
+    return;
+  }
+  const ex = dItems.find(i => i.pid === pid && !i.size);
+  if (ex) ex.qty++; else dItems.push({ pid, qty: 1, size: '' });
+  renderOrdItems();
+  document.getElementById('ordS').value = '';
+  document.getElementById('ordSR').innerHTML = '';
+  updateCreditInfo();
+}
+
+function openSizePicker(pid) {
+  const p = prodById(pid);
+  if (!p) return;
+  let el = document.getElementById('sizePickerModal');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'sizePickerModal';
+    el.className = 'mo';
+    el.style.display = 'none';
+    document.body.appendChild(el);
+  }
+  const ss = p.sizeStock || p.size_stock || {};
+  const sizes = (p.sizes || []).slice();
+  const chips = sizes.map(sz => {
+    const left = Number(ss[sz] || 0);
+    const disabled = left <= 0;
+    return '<button type="button" class="btn bs" '
+      + 'style="margin:.25rem;min-width:3rem;'
+      + (disabled ? 'opacity:.4;cursor:not-allowed;' : 'cursor:pointer;')
+      + '" '
+      + (disabled ? 'disabled' : 'onclick="pickOrdSize(' + pid + ',\'' + String(sz).replace(/'/g, "\\'") + '\')"')
+      + '>' + esc(String(sz)) + ' (' + left + ')</button>';
+  }).join('');
+  el.innerHTML = '<div class="mdl" style="max-width:420px"><div class="mh"><span class="mt">'
+    + esc(p.name) + ' · ' + t('selectSize') + '</span>'
+    + '<button class="mx" onclick="closeSizePicker()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>'
+    + '<div class="mb">' + chips
+    + '<div style="font-size:.7rem;color:var(--t3);margin-top:.6rem">' + t('selectSizeHint') + '</div>'
+    + '</div><div class="mf"><button class="btn bg bs" onclick="closeSizePicker()">' + t('close') + '</button></div></div>';
+  el.style.display = 'flex';
+}
+
+function closeSizePicker() {
+  const el = document.getElementById('sizePickerModal');
+  if (el) el.style.display = 'none';
+}
+
+function pickOrdSize(pid, size) {
+  const ex = dItems.find(i => i.pid === pid && i.size === size);
+  if (ex) ex.qty++; else dItems.push({ pid, qty: 1, size: size || '' });
+  closeSizePicker();
   renderOrdItems();
   document.getElementById('ordS').value = '';
   document.getElementById('ordSR').innerHTML = '';
@@ -4858,7 +4912,7 @@ function renderOrdItems() {
     if (!p) return '';
     const sc = p.stock === 0 ? 'var(--dg)' : p.stock <= 10 ? 'var(--wa)' : 'var(--sf)';
     const icon = (catById((p.catIds || [])[0]) || { icon: '📦' }).icon;
-    return '<div class="oi-row"><span>' + icon + '</span><span class="oin">' + esc(p.name) + '</span><span class="oisk">' + esc(p.sku) + '</span><span class="oist" style="color:' + sc + '">' + t('stock') + ':' + p.stock + '</span><input type="number" value="' + it.qty + '" min="1" onchange="updOQ(' + idx + ',this.value)" /><button class="oid" onclick="rmOI(' + idx + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';
+    return '<div class="oi-row"><span>' + icon + '</span><span class="oin">' + esc(p.name) + (it.size ? ' (' + esc(it.size) + ')' : '') + '</span><span class="oisk">' + esc(p.sku) + '</span><span class="oist" style="color:' + sc + '">' + t('stock') + ':' + p.stock + '</span><input type="number" value="' + it.qty + '" min="1" onchange="updOQ(' + idx + ',this.value)" /><button class="oid" onclick="rmOI(' + idx + ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';
   }).join('');
 }
 
