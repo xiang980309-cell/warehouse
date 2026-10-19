@@ -1156,13 +1156,19 @@ input[id^="lp_"]{
 <div class="mo" id="odmo"><div class="mdl xw"><div class="mh"><span class="mt" id="odT">订单详情</span><button class="mx" onclick="cMo('odmo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb" id="odB"></div><div class="mf" id="odF"></div></div></div>
 
 <!-- Customer Modal -->
-<div class="mo" id="cusmo"><div class="mdl"><div class="mh"><span class="mt" id="cusT">新建客户</span><button class="mx" onclick="cMo('cusmo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="cusId" /><div class="fgm"><label data-t="customerName">客户姓名 *</label><input type="text" id="cusNm" data-t-ph="enterCustomerName" placeholder="客户名称" /></div><div class="fgm"><label data-t="phone">联系电话</label><input type="text" id="cusPh" data-t-ph="phonePH" placeholder="电话号码" /></div><div class="fgm"><label data-t="motoAddr">🏍️ Motoboy 地址</label><textarea id="cusMA" data-t-ph="motoAddrPH" placeholder="同城配送地址..." style="min-height:40px"></textarea></div><div class="fgm"><label data-t="corrAddr">📮 Correios 地址</label><textarea id="cusCA" data-t-ph="corrAddrPH" placeholder="邮寄地址 (含CEP)..." style="min-height:40px"></textarea></div><div class="fgm"><label data-t="applyCredit">申请信用额度 (¥)</label><input type="number" id="cusCL" placeholder="0.00" min="0" step="0.01" /><div style="font-size:.6rem;color:var(--t3);margin-top:.2rem" data-t="needApproval">需管理员审核通过后生效</div></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('cusmo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="saveCus()" data-t="submit">提交</button></div></div></div>
+<div class="mo" id="cusmo"><div class="mdl"><div class="mh"><span class="mt" id="cusT">新建客户</span><button class="mx" onclick="cMo('cusmo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="cusId" /><div class="fgm"><label data-t="customerName">客户姓名 *</label><input type="text" id="cusNm" data-t-ph="enterCustomerName" placeholder="客户名称" /></div><div class="fgm"><label data-t="phone">联系电话</label><input type="text" id="cusPh" data-t-ph="phonePH" placeholder="电话号码" /></div><div class="fgm"><label data-t="motoAddr">🏍️ Motoboy 地址</label><textarea id="cusMA" data-t-ph="motoAddrPH" placeholder="同城配送地址..." style="min-height:40px"></textarea></div><div class="fgm"><label data-t="corrAddr">📮 Correios 地址</label><textarea id="cusCA" data-t-ph="corrAddrPH" placeholder="邮寄地址 (含CEP)..." style="min-height:40px"></textarea></div><div class="fgm"><label data-t="applyCredit">申请信用额度 (¥)</label><input type="text" inputmode="decimal" id="cusCL" placeholder="0.00" /><div style="font-size:.6rem;color:var(--t3);margin-top:.2rem" data-t="needApproval">需管理员审核通过后生效</div></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('cusmo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="saveCus()" data-t="submit">提交</button></div></div></div>
+
+<!-- Customer Detail Modal -->
+<div class="mo" id="cusDmo"><div class="mdl"><div class="mh"><span class="mt" id="cusDT">客户详情</span><button class="mx" onclick="cMo('cusDmo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="cusDId" /><div class="fgm"><label data-t="customerName">客户姓名</label><input type="text" id="cusDNm" /></div><div class="fgm"><label data-t="phone">联系电话</label><input type="text" id="cusDPh" /></div><div class="fgm"><label data-t="motoAddr">🏍️ Motoboy 地址</label><textarea id="cusDMA" style="min-height:40px"></textarea></div><div class="fgm"><label data-t="corrAddr">📮 Correios 地址</label><textarea id="cusDCA" style="min-height:40px"></textarea></div><div class="fgm"><label data-t="creditLimit">信用额度 (¥)</label><input type="text" inputmode="decimal" id="cusDCL" /><div style="font-size:.6rem;color:var(--t3);margin-top:.2rem" data-t="needAdminApprove2">修改需管理员审核通过后生效</div></div><div id="cusDReq"></div></div><div class="mf" id="cusDFoot"></div></div></div>
 
 <!-- Change Request Modal -->
 <div class="mo" id="chmo"><div class="mdl"><div class="mh"><span class="mt" data-t="changeMethod">申请修改发货方式</span><button class="mx" onclick="cMo('chmo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="chOid" /><div class="fgm"><label data-t="oldMethod">原发货方式</label><input type="text" id="chOld" readonly style="background:var(--s3)" /></div><div class="fgm"><label data-t="newMethod">新发货方式 *</label><select id="chNew"><option value="motoboy">🏍️ Motoboy</option><option value="correios">📮 Correios</option><option value="pickup">🏪 到店自取</option><option value="onibus">🚌 Ônibus</option></select></div><div class="fgm"><label data-t="shippingCost">物流费用 (¥)</label><input type="number" id="chCost" placeholder="0.00" min="0" step="0.01" /></div><div class="fgm"><label data-t="shippingBill">物流费用账单 *</label><div class="iu"><div class="ib" id="chIB" onclick="document.getElementById('chIF').click()"><span class="ia">+</span><input type="file" id="chIF" accept="image/*" onchange="hImg(this,'chIB','chImg')" /></div></div></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('chmo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="submitChange()" data-t="submitRequest">提交申请</button></div></div></div>
 
 <!-- Packing Modal -->
-<div class="mo" id="pkmo"><div class="mdl wide"><div class="mh"><span class="mt" data-t="packShip">打包发货</span><button class="mx" onclick="cMo('pkmo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="pkOid" /><div id="pkInfo" style="margin-bottom:1rem"></div><div class="fgm"><label>📷 <span data-t="packingPhoto">实际打包商品照片</span> *</label><div class="iu"><div class="ib" id="pkPacIB" onclick="document.getElementById('pkPacIF').click()"><span class="ia">+</span><input type="file" id="pkPacIF" accept="image/*" onchange="hImg(this,'pkPacIB','pkPacImg')" /></div></div></div><div class="fgm"><label>📷 <span data-t="suppPhoto">补充信息照片</span> *</label><div style="font-size:.68rem;color:var(--t2);margin-bottom:.4rem" id="pkSupDesc">根据发货方式拍摄对应照片</div><div class="iu"><div class="ib" id="pkSupIB" onclick="document.getElementById('pkSupIF').click()"><span class="ia">+</span><input type="file" id="pkSupIF" accept="image/*" onchange="hImg(this,'pkSupIB','pkSupImg')" /></div></div></div><div class="fgm"><label data-t="remarks">备注</label><input type="text" id="pkNote" data-t-ph="optionalNote" placeholder="可选备注..." /></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('pkmo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="confirmPack()" data-t="confirmComplete">✓ 确认完成</button></div></div></div>
+<div class="mo" id="pkmo"><div class="mdl wide"><div class="mh"><span class="mt" id="pkTitle">发货</span><button class="mx" onclick="cMo('pkmo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="pkOid" /><div id="pkInfo" style="margin-bottom:1rem"></div>
+<div class="fgm"><label>📦 <span id="pkSupDesc">包裹标签/快递面单</span> *</label><div class="iu"><div class="ib" id="pkSupIB" onclick="document.getElementById('pkSupIF').click()"><span class="ia">+</span><input type="file" id="pkSupIF" accept="image/*" onchange="hImg(this,'pkSupIB','pkSupImg')" /></div></div></div>
+<div class="fgm"><label>📷 <span data-t="prodPhotos">实际发货商品图</span> * <span style="font-size:.65rem;color:var(--t3)" data-t="prodPhotosHint">可上传多张，至少一张</span></label><div class="iu" id="pkProdList"></div><div class="iu" style="margin-top:.5rem"><div class="ib" id="pkProdIB" onclick="document.getElementById('pkProdIF').click()"><span class="ia">+</span><input type="file" id="pkProdIF" accept="image/*" multiple onchange="addShipProdImgs(this)" /></div></div></div>
+<div class="fgm"><label data-t="remarks">备注</label><input type="text" id="pkNote" data-t-ph="optionalNote" /></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('pkmo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="confirmPack()" data-t="shipBtn">发货</button></div></div></div>
 
 <!-- Payment Modal -->
 <div class="mo" id="paymo"><div class="mdl"><div class="mh"><span class="mt" data-t="confirmPayment">确认收款</span><button class="mx" onclick="cMo('paymo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="payOid" /><div id="payInfo" style="margin-bottom:1rem"></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('paymo')" data-t="cancel">取消</button><button class="btn bs aw" style="background:var(--dg);color:#fff" onclick="rejectPay()" data-t="reject">拒绝</button><button class="btn bp bs aw" onclick="confirmPay()" data-t="confirmPayBtn">✓ 确认收款</button></div></div></div>
@@ -1257,7 +1263,7 @@ const T = {
     changeMethod:'申请修改发货方式', oldMethod:'原发货方式', newMethod:'新发货方式 *',
     shippingBill:'物流费用账单 *', submitRequest:'提交申请', sameMethodErr:'新方式不能与原方式相同',
     uploadBillErr:'请上传物流费用账单', changeSubmitted:'变更申请已提交',
-    packingPhoto:'实际打包商品照片', suppPhoto:'补充信息照片', bagLabel:'袋子标签', waybill:'包裹面单',
+    packingPhoto:'实际打包商品照片',billReview:'账单审核',billPendingReview:'待审核',billReviewed:'已审核',viewBill:'查看账单',billAmount:'账单实收金额',billAmountHint:'请填写与账单一致的实收金额后再确认',billAmountRequired:'请填写账单实收金额',orderAmount:'订单金额',creator:'创建人',billReviewHint:'管理员审核付款账单',billImage:'账单/付款截图',shipBtn:'发货',shipTitle:'发货',labelPhoto:'包裹标签/快递面单',prodPhotos:'实际发货商品图',prodPhotosHint:'可上传多张，至少一张',needLabelPhoto:'请上传包裹标签或面单',needProdPhoto:'请至少上传一张商品图',shippedOk:'发货完成', suppPhoto:'补充信息照片', bagLabel:'袋子标签', waybill:'包裹面单',
     confirmComplete:'✓ 确认完成', uploadPackingErr:'请上传打包商品照片', uploadSuppErr:'请上传补充信息照片',
     orderCompleted:'订单已完成',
     confirmPayment:'确认收款', reject:'拒绝', confirmPayBtn:'✓ 确认收款',
@@ -1281,6 +1287,10 @@ const T = {
     applyCredit:'申请信用额度 (¥)', needApproval:'需管理员审核通过后生效',
     enterCustomerName:'客户名称', phonePH:'电话号码', motoAddrPH:'同城配送地址...', corrAddrPH:'邮寄地址 (含CEP)...',
     customerCreated:'客户已创建，等待管理员审核', noCustomers:'暂无客户',
+    cusDetail:'客户详情', editCusInfo:'修改信息', submitCusChange:'提交修改申请', cusChangeSubmitted:'修改申请已提交，等待管理员审核',
+    cusChangePending:'已有待审核的修改申请', cusChangeLog:'修改申请', oldVal:'原值', newVal:'新值',
+    cusChangeApplied:'修改已生效', cusChangeRejected:'修改申请已拒绝', cusChangeReview:'客户信息修改',
+    needAdminApprove2:'修改需管理员审核通过后生效',
     pendingReview:'待审核', approved:'已通过',
     creditLimit:'信用额度', creditUsed:'已用', available:'可用', createdDate:'创建日期',
     searchProduct:'搜索商品...', searchPrice:'查看价格和库存', inStock:'有货({0})', outOfStock:'缺货', onlyLeft:'仅剩{0}',
@@ -1400,7 +1410,7 @@ const T = {
     changeMethod:'Solicitar Alteração de Envio', oldMethod:'Método Atual', newMethod:'Novo Método *',
     shippingBill:'Comprovante de Frete *', submitRequest:'Enviar Solicitação', sameMethodErr:'Novo método deve ser diferente',
     uploadBillErr:'Envie o comprovante de frete', changeSubmitted:'Solicitação enviada',
-    packingPhoto:'Foto do Pacote', suppPhoto:'Foto Complementar', bagLabel:'Etiqueta da Sacola', waybill:'Nota de Envio',
+    packingPhoto:'Foto do Pacote',billReview:'Revisar contas',billPendingReview:'Pendente',billReviewed:'Revisados',viewBill:'Ver comprovante',billAmount:'Valor recebido',billAmountHint:'Informe o valor do comprovante',billAmountRequired:'Informe o valor',orderAmount:'Valor do pedido',creator:'Criador',billReviewHint:'Admin aprova comprovantes',billImage:'Comprovante',shipBtn:'Enviar',shipTitle:'Enviar',labelPhoto:'Etiqueta / AWB',prodPhotos:'Fotos dos produtos enviados',prodPhotosHint:'Pode enviar várias, mínimo 1',needLabelPhoto:'Envie a etiqueta ou AWB',needProdPhoto:'Envie ao menos 1 foto',shippedOk:'Envio concluído', suppPhoto:'Foto Complementar', bagLabel:'Etiqueta da Sacola', waybill:'Nota de Envio',
     confirmComplete:'✓ Confirmar Conclusão', uploadPackingErr:'Envie a foto do pacote', uploadSuppErr:'Envie a foto complementar',
     orderCompleted:'Pedido concluído',
     confirmPayment:'Confirmar Pagamento', reject:'Rejeitar', confirmPayBtn:'✓ Confirmar Pagamento',
@@ -1424,6 +1434,10 @@ const T = {
     applyCredit:'Limite de Crédito (¥)', needApproval:'Requer aprovação do administrador',
     enterCustomerName:'Nome do cliente', phonePH:'Número de telefone', motoAddrPH:'Endereço de entrega...', corrAddrPH:'Endereço postal (com CEP)...',
     customerCreated:'Cliente criado, aguardando aprovação', noCustomers:'Sem clientes',
+    cusDetail:'Detalhes do Cliente', editCusInfo:'Editar dados', submitCusChange:'Enviar alteração', cusChangeSubmitted:'Alteração enviada, aguardando aprovação',
+    cusChangePending:'Já existe alteração pendente', cusChangeLog:'Solicitação', oldVal:'Anterior', newVal:'Novo',
+    cusChangeApplied:'Alteração aplicada', cusChangeRejected:'Alteração rejeitada', cusChangeReview:'Alteração de cliente',
+    needAdminApprove2:'Só entra em vigor após aprovação',
     pendingReview:'Pendente', approved:'Aprovado',
     creditLimit:'Limite', creditUsed:'Usado', available:'Disponível', createdDate:'Data de Criação',
     searchProduct:'Buscar produto...', searchPrice:'Ver preço e estoque', inStock:'Disponível({0})', outOfStock:'Esgotado', onlyLeft:'Apenas {0}',
@@ -1563,7 +1577,7 @@ let sF = 'name', sD = 1, fCat = 'all', fLabel = '', iPg = 1, iSq = '', iYq = '',
 let pmCats = [], pmSkuManual = false, pmImgData = '';
 let dItems = [], dPk = '', dOI = '', dBI = '', dNote = '', dEditId = null, dOnibName = '', dOnibusImg = '';
 let dCustId = '', dPayMethod = 'cash', dPayUpload = 'yes', dPayImg = '', dShipAddr = '';
-let pkPacImg = '', pkSupImg = '', chImg = '';
+var pkPacImg = '', pkSupImg = '', chImg = '';
 let dragCid = null;
 let catCollapsed = {}; // category collapse state: {catId: true/false}; missing = collapsed (default)
 
@@ -1717,11 +1731,12 @@ function genOrdNo() {
 function hImg(inp, bid, vn) {
   const f = inp.files[0]; if (!f) return;
   const r = new FileReader();
-  r.onload = function(e) { window[vn] = e.target.result; const b = document.getElementById(bid); b.innerHTML = '<img src="'+e.target.result+'" /><span class="ir" onclick="event.stopPropagation();window[\''+vn+'\']=\'\';rmImg(\''+vn+'\',\''+bid+'\')">×</span>'; };
+  r.onload = function(e) { window[vn] = e.target.result; try { if (vn === 'pkSupImg') pkSupImg = e.target.result; if (vn === 'pkPacImg') pkPacImg = e.target.result; if (vn === 'chImg') chImg = e.target.result; } catch(_){} const b = document.getElementById(bid); b.innerHTML = '<img src="'+e.target.result+'" /><span class="ir" onclick="event.stopPropagation();window[\''+vn+'\']=\'\';rmImg(\''+vn+'\',\''+bid+'\')">×</span>'; };
   r.readAsDataURL(f);
 }
 function rmImg(vn, bid) {
   window[vn] = '';
+  try { if (vn === 'pkSupImg') pkSupImg = ''; if (vn === 'pkPacImg') pkPacImg = ''; if (vn === 'chImg') chImg = ''; } catch(_){}
   const b = document.getElementById(bid);
   const inId = bid.replace('IB','IF');
   b.innerHTML = '<span class="ia">+</span><input type="file" id="'+inId+'" accept="image/*" onchange="hImg(this,\''+bid+'\',\''+vn+'\')" />';
@@ -1840,7 +1855,7 @@ function safeQ(p) {
 async function loadAllData() {
   if (!sb) { console.warn('[CS] No DB connection'); return; }
   try {
-    const [catR,acctR,prodR,pcR,ordR,oiR,inbR,outbR,cusR,chgR] = await Promise.all([
+    const [catR,acctR,prodR,pcR,ordR,oiR,inbR,outbR,cusR,chgR,shopR,shopIR] = await Promise.all([
       safeQ(sb.from('categories').select('*').order('order_num')),
       safeQ(sb.rpc('app_list_accounts')),
       safeQ(fetchPaged(function() { return sb.from('products').select('*').order('id', { ascending: true }); })),
@@ -1850,7 +1865,9 @@ async function loadAllData() {
       safeQ(ADMIN_TOKEN ? adminSelect('inbound_records', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : sb.from('inbound_records').select('*').order('created_at',{ascending:false})),
       safeQ(ADMIN_TOKEN ? adminSelect('outbound_records', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : sb.from('outbound_records').select('*').order('created_at',{ascending:false})),
       safeQ(ADMIN_TOKEN ? adminSelect('customers', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : Promise.resolve({ data: [], error: null })),
-      safeQ(ADMIN_TOKEN ? adminSelect('order_changes', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : Promise.resolve({ data: [], error: null }))
+      safeQ(ADMIN_TOKEN ? adminSelect('order_changes', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : Promise.resolve({ data: [], error: null })),
+      safeQ(ADMIN_TOKEN ? adminSelect('shop_orders', { order: { column: 'created_at', ascending: false }, limit: 1000 }).catch(() => sb.from('shop_orders').select('*').order('created_at', { ascending: false }).limit(1000).then(r => r.data || [])) : sb.from('shop_orders').select('*').order('created_at', { ascending: false }).limit(1000).then(r => r.data || [])),
+      safeQ(ADMIN_TOKEN ? adminSelect('shop_order_items', { limit: 5000 }).catch(() => sb.from('shop_order_items').select('*').limit(5000).then(r => r.data || [])) : sb.from('shop_order_items').select('*').limit(5000).then(r => r.data || []))
     ]);
     DB.cats = (catR.data||[]).map(c => ({id:Number(c.id),name:c.name,code:c.code,icon:c.icon,order:c.order_num,parent_id:c.parent_id!=null?Number(c.parent_id):null,depth:Number(c.depth||0),visible:c.visible!==false,image:c.image||'',description:c.description||'',locked:c.locked||false,product_count:Number(c.product_count||0)}));
     DB.accts = (acctR.data||[]).map(a => ({id:a.id,u:a.username,n:a.display_name,r:a.role,s:a.status,c:fmtDate(a.created_at).split(' ')[0],perm:a.perms||{}}));
@@ -1858,9 +1875,52 @@ async function loadAllData() {
     DB.prods = (prodR.data||[]).map(p => ({id:p.id,name:p.name,catIds:(function(){const ids=pc.filter(x=>x.product_id===p.id).map(x=>x.category_id);const d=deepestCatId(ids);return d?[d]:[]})(),sku:p.sku,skuManual:p.sku_manual?1:0,stock:p.stock,price:Number(p.price),cost:Number(p.cost),loc:p.location||'',note:p.note||'',cr:fmtDate(p.created_at).split(' ')[0],img:p.image||'',category_type:p.category_type||'general',sizes:p.sizes||[],size_stock:p.size_stock||{},has_bag:p.has_bag||false,bag_price:Number(p.bag_price||0),has_case:p.has_case||false,case_price:Number(p.case_price||0),label:p.label||'',lp:(p.label_price==null?null:Number(p.label_price)),lp:(p.label_price==null?null:Number(p.label_price)),yr:p.release_year||'',ver:p.release_version||'',tg:p.tags||[],ml:!!p.mall_listed,gl:p.gallery_listed!==false}));
     const oi = oiR.data||[];
     DB.ords = (ordR.data||[]).map(o => ({id:o.id,no:o.order_no,items:oi.filter(x=>x.order_id===o.id).map(x=>({pid:x.product_id,qty:x.qty,price:Number(x.price||0),original_price:Number(x.original_price||0),unit_price:Number(x.unit_price||0)})),pk:o.pickup_method,st:o.status,oi:o.order_image||'',bi:o.bill_image||'',note:o.note||'',cr:fmtDate(o.created_at),by:o.created_by,pb:o.processed_by||'',payM:o.payment_method||'cash',payS:o.payment_status||'pending',payI:o.payment_image||'',payU:o.payment_upload||'yes',pacI:o.packing_image||'',supI:o.supplementary_image||'',supT:o.supplementary_type||'',custId:o.customer_id||'',shipAddr:o.shipping_address||'',shipCost:Number(o.shipping_cost||0),billDeadline:o.bill_deadline||null,origTotal:Number(o.original_total||0),priceModified:o.price_modified||false,onibusName:o.onibus_name||'',onibusImg:o.onibus_schedule_img||'',billUploadedAt:o.bill_uploaded_at||null,adminConfirmedShip:o.admin_confirmed_ship||false,adminShipBy:o.admin_ship_confirmed_by||''}));
+    (function(){
+      const sItems = shopIR.data || [];
+      const stMap = { cancelled:'cancel', canceled:'cancel', shipped:'done', delivered:'done', completed:'done', confirmed:'pending', picking:'picking', pending:'pending' };
+      const shopMapped = (shopR.data || []).map(o => ({
+        id: 1000000000 + Number(o.id),
+        shopId: o.id,
+        src: 'shop',
+        no: o.order_no || ('SHOP-' + o.id),
+        items: sItems.filter(x => x.order_id === o.id).map(x => ({ pid: x.product_id, qty: x.qty, price: Number(x.price || 0), original_price: Number(x.original_price || 0), unit_price: Number(x.price || x.unit_price || 0) })),
+        pk: o.pickup_method || 'motoboy',
+        st: stMap[o.status] || 'pending',
+        rawSt: o.status,
+        oi: '', bi: '',
+        note: o.note || '',
+        cr: fmtDate(o.created_at),
+        by: '商城',
+        pb: '',
+        payM: o.payment_method || 'cash',
+        payS: o.payment_status || 'pending_bill',
+        payI: o.payment_image || '',
+        payU: o.payment_image ? 'yes' : 'no',
+        pacI: '', supI: '', supT: '',
+        custId: o.customer_id || '',
+        shipAddr: o.shipping_address || '',
+        shipName: o.shipping_name || '',
+        shipPhone: o.shipping_phone || '',
+        shipCost: Number(o.shipping_cost || 0),
+        billDeadline: o.bill_deadline || null,
+        origTotal: Number(o.original_total || o.total || 0),
+        priceModified: false,
+        onibusName: o.onibus_name || '',
+        onibusImg: o.onibus_schedule_img || '',
+        billUploadedAt: o.payment_image ? o.created_at : null,
+        adminConfirmedShip: false,
+        adminShipBy: ''
+      }));
+      DB.ords = (DB.ords || []).concat(shopMapped);
+    })();
     DB.inb = (inbR.data||[]).map(r => ({id:r.id,pid:r.product_id,qty:r.qty,op:r.operator,note:r.note||'',t:fmtDate(r.created_at)}));
     DB.outb = (outbR.data||[]).map(r => ({id:r.id,pid:r.product_id,qty:r.qty,op:r.operator,note:r.note||'',t:fmtDate(r.created_at)}));
     DB.cus = (cusR.data||[]).map(c => ({id:c.id,name:c.name,phone:c.phone||'',motoAddr:c.moto_address||'',corrAddr:c.correio_address||'',creditLimit:Number(c.credit_limit||0),creditUsed:Number(c.credit_used||0),status:c.status,by:c.created_by,apprBy:c.approved_by||'',cr:fmtDate(c.created_at).split(' ')[0]}));
+    try {
+      const { data: reqRow } = await sb.from('site_settings').select('value').eq('key', 'cus_change_reqs').limit(1);
+      DB.cusReqs = (reqRow && reqRow[0] && reqRow[0].value) ? JSON.parse(reqRow[0].value) : [];
+      if (!Array.isArray(DB.cusReqs)) DB.cusReqs = [];
+    } catch (_) { DB.cusReqs = []; }
     DB.chgs = (chgR.data||[]).map(c => ({id:c.id,oid:c.order_id,oldM:c.old_method,newM:c.new_method,cost:Number(c.shipping_cost||0),billI:c.bill_image||'',st:c.status,by:c.requested_by,revBy:c.reviewed_by||'',cr:fmtDate(c.created_at)}));
     const pcrR = await safeQ(ADMIN_TOKEN ? adminSelect('profile_change_requests', { order: { column: 'requested_at', ascending: false }, limit: 200 }) : sb.from('profile_change_requests').select('*').order('requested_at', { ascending: false }).limit(200));
     DB.profilereqs = (pcrR.data||[]).map(r => ({id:r.id,account_id:r.account_id,field:r.field,old_value:r.old_value,new_value:r.new_value,note:r.note||'',status:r.status,requested_at:r.requested_at,reviewed_by:r.reviewed_by,reviewed_at:r.reviewed_at}));
@@ -1989,6 +2049,7 @@ function buildNav() {
       h += '<div class="ni" data-p="ana" onclick="goPage(\'ana\',this)">'+sv.ana+' '+t('analytics')+'</div>';
       h += '<div class="ni" data-p="paySettings" onclick="goPage(\'paySettings\',this)">'+'💳'+' '+t('payAccount')+'</div>';
       h += '<div class="ni" data-p="shipAddr" onclick="goPage(\'shipAddr\',this)">'+'📍'+' '+t('shipAddrSettings')+'</div>';
+      h += '<div class="ni" data-p="billReview" onclick="goPage(\'billReview\',this)">'+'🧾'+' '+t('billReview')+'</div>';
       h += '<div class="ni" data-p="labelPrice" onclick="goPage(\'labelPrice\',this)">'+'🏷️'+' '+t('labelPrice')+'</div>';
       h += '<div class="nl">'+t('system')+'</div>';
       h += '<div class="ni" data-p="approvals" onclick="goPage(\'approvals\',this)">'+sv.chk+' '+t('approvalCenter')+'</div>';
@@ -2007,7 +2068,7 @@ function goPage(p, el, keepLabel) {
   if (el) el.classList.add('on');
   else { const e = document.querySelector('[data-p="'+p+'"]'); if (e) e.classList.add('on'); }
   curP = p;
-  const ts = {dash:t('dashboard'),inv:t('inventory'),inb:t('inboundRecord'),outb:t('outboundRecord'),ana:t('analytics'),accts:t('accounts'),cats:t('categories'),whOrd:t('orderProcess'),sWork:t('salesWorkspace'),sNewOrd:t('newOrder'),sOrds:t('orderList'),sProds:t('productQuery'),sCus:t('customerMgmt'),approvals:t('approvalCenter'),paySettings:t('payAccountSettings'),shipAddr:t('shipAddrSettings'),labelPrice:t('labelPrice'),memberLevels:t('memberLevel')};
+  const ts = {dash:t('dashboard'),inv:t('inventory'),inb:t('inboundRecord'),outb:t('outboundRecord'),ana:t('analytics'),accts:t('accounts'),cats:t('categories'),whOrd:t('orderProcess'),sWork:t('salesWorkspace'),sNewOrd:t('newOrder'),sOrds:t('orderList'),sProds:t('productQuery'),sCus:t('customerMgmt'),approvals:t('approvalCenter'),paySettings:t('payAccountSettings'),billReview:t('billReview'),shipAddr:t('shipAddrSettings'),labelPrice:t('labelPrice'),memberLevels:t('memberLevel')};
   document.getElementById('tT').textContent = ts[p]||'';
   render(p);
   document.getElementById('sidebar').classList.remove('open');
@@ -2050,6 +2111,7 @@ function render(p) {
       });
       break;
     case 'paySettings': c.innerHTML = rPaySettings(); loadPaySettings(); break;
+    case 'billReview': c.innerHTML = rBillReview(); break;
     case 'shipAddr': c.innerHTML = rShipAddr(); loadShipAddrSettings(); break;
     case 'labelPrice': c.innerHTML = rLabelPrice(); loadLabelPrices(); break;
     case 'memberLevels': c.innerHTML = rMemberLevels(); break;
@@ -3398,13 +3460,7 @@ function rWhOrd() {
     tb = '<tr><td colspan="7"><div class="empty"><p>' + t('noOrders') + '</p></div></td></tr>';
   } else {
     tb = ords.map(o => {
-      const its = o.items.map(i => {
-        const p = prodById(i.pid);
-        if (!p) return t('deleted');
-        var label = p.name;
-        if (p.sizes && p.sizes.length > 0) label += ' (' + t('enterBySize') + ')';
-        return label + '×' + i.qty;
-      }).join(', ');
+      const its = ''; // 列表不展示商品明细
       const sc = OSTAT[o.st] || OSTAT.draft;
       const pk = PICKUPS[o.pk] || {};
       const paySc = PSTAT[o.payS] || {};
@@ -3422,6 +3478,12 @@ function rWhOrd() {
 
       let ac = '<button class="bi" title="' + t('view') + '" onclick="viewOrd(' + o.id + ')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>';
 
+      // 商城订单可发货；管理端订单走拣货/打包/发货
+      if (o.src === 'shop') {
+        if ((o.st === 'pending' || o.st === 'picking') && has('processOrder')) {
+          ac += '<button class="bi" title="' + t('shipBtn') + '" onclick="openPack(' + o.id + ')" style="color:var(--sf)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></button>';
+        }
+      } else {
       // Start picking - any pending order can start picking
       if (o.st === 'pending' && has('processOrder')) {
         ac += '<button class="bi" title="' + t('startPicking') + '" onclick="updOrdStatus(' + o.id + ',\'picking\')" style="color:var(--in)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>';
@@ -3447,7 +3509,7 @@ function rWhOrd() {
           }
         }
       }
-      if (o.st === 'done' && o.payS === 'pending' && has('processOrder')) {
+      if ((o.payS === 'pending' || o.payS === 'pending_bill') && has('processOrder') && o.st !== 'cancel') {
         ac += '<button class="bi" title="' + t('confirmPayment') + '" onclick="openPayConf(' + o.id + ')" style="color:var(--wa)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></button>';
       }
       // Edit price for pending_bill orders without bill
@@ -3455,10 +3517,13 @@ function rWhOrd() {
         ac += '<button class="bi" title="' + t('editPrice') + '" onclick="openEditOrdPrice(' + o.id + ')" style="color:var(--wa)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>';
       }
 
+      } // end src !== shop
+
       // Onibus indicator
       const pkExtra = o.pk === 'onibus' ? ' <span style="font-size:.6rem;color:var(--t3)">(' + esc(o.onibusName || '-') + ')</span>' : '';
+      const srcTag = o.src === 'shop' ? ' <span class="badge b-st" style="font-size:.58rem">商城</span>' : '';
 
-      return '<tr><td><strong>' + esc(o.no) + '</strong></td><td style="max-width:180px;white-space:normal;font-size:.72rem">' + esc(its) + '</td><td>' + (pk.i || '') + ' ' + t(OSTAT[o.st]?.l || o.st) + pkExtra + '</td><td><span class="badge ' + sc.c + '">' + t(sc.l) + '</span></td><td><span class="badge ' + payColor + '">' + payLabel + '</span></td><td style="font-family:DM Mono,monospace;font-size:.68rem;color:var(--t3)">' + esc(o.cr) + '</td><td><div class="ac">' + ac + '</div></td></tr>';
+      return '<tr><td><strong>' + esc(o.no) + '</strong>' + srcTag + '</td><td style="max-width:180px;white-space:normal;font-size:.72rem">' + esc(its) + '</td><td>' + (pk.i || '') + ' ' + t(OSTAT[o.st]?.l || o.st) + pkExtra + '</td><td><span class="badge ' + sc.c + '">' + t(sc.l) + '</span></td><td><span class="badge ' + payColor + '">' + payLabel + '</span></td><td style="font-family:DM Mono,monospace;font-size:.68rem;color:var(--t3)">' + esc(o.cr) + '</td><td><div class="ac">' + ac + '</div></td></tr>';
     }).join('');
   }
   return '<div class="tw"><div class="ts"><table><thead><tr><th>' + t('orderNo') + '</th><th>' + t('items') + '</th><th>' + t('pickup') + '</th><th>' + t('status') + '</th><th>' + t('payment') + '</th><th>' + t('createdAt') + '</th><th>' + t('action') + '</th></tr></thead><tbody>' + tb + '</tbody></table></div></div>';
@@ -3502,6 +3567,15 @@ function editOrdShipInfo(id) {
   }
 }
 
+function formatOrdNote(o) {
+  if (!o) return '';
+  if (o.supT) return String(o.supT);
+  let n = String(o.note || '');
+  n = n.replace(/(^|\|\s*)supType:[^|]*/g, ' ').replace(/(^|\|\s*)bill_paid:[^|]*/g, ' ');
+  n = n.replace(/\|+/g, ' ').trim();
+  return n;
+}
+
 function viewOrd(id) {
   const o = DB.ords.find(x => x.id === id);
   if (!o) return;
@@ -3512,9 +3586,25 @@ function viewOrd(id) {
   const total = o.items.reduce((s, i) => { const p = prodById(i.pid); return s + (p ? p.price * i.qty : 0); }, 0);
   const its = o.items.map(i => {
     const p = prodById(i.pid);
-    var itemLabel = p ? esc(p.name) : t('deleted');
-    if (p && p.sizes && p.sizes.length > 0) { itemLabel += ' <span style="font-size:.6rem;color:var(--ac)">(' + t('enterBySize') + ')</span>'; }
-    return '<tr><td>' + itemLabel + '</td><td><span class="sk">' + (p ? esc(p.sku) : '-') + '</span></td><td><div class="ctags">' + (p ? catTagsP(p, true) : '') + '</div></td><td>' + (p ? p.loc : '-') + '</td><td style="font-weight:500">' + i.qty + '</td><td>' + (p ? '¥' + p.price.toLocaleString() : '-') + '</td><td style="font-weight:500">' + (p ? '¥' + (p.price * i.qty).toLocaleString() : '-') + '</td></tr>';
+    const name = p ? esc(p.name) : t('deleted');
+    const sku = p ? esc(p.sku) : '-';
+    const img = '<div class="pimg" style="width:44px;height:44px;flex-shrink:0">' + (p && p.img ? '<img src="' + safeUrl(p.img) + '" alt="" onerror="this.remove()">' : '') + '</div>';
+    const cats = p ? catTagsP(p, true) : '';
+    const loc = p && p.loc ? esc(p.loc) : '-';
+    const price = p ? '¥' + Number(p.price).toLocaleString() : '-';
+    const sub = p ? '¥' + (Number(p.price) * i.qty).toLocaleString() : '-';
+    return '<tr>'
+      + '<td><div style="display:flex;align-items:center;gap:.65rem">' + img
+      + '<div style="min-width:0"><div style="font-weight:600;line-height:1.3">' + name
+      + (p && p.sizes && p.sizes.length > 0 ? ' <span style="font-size:.62rem;color:var(--ac)">(' + t('enterBySize') + ')</span>' : '')
+      + '</div>'
+      + (cats ? '<div class="ctags" style="margin-top:.25rem">' + cats + '</div>' : '')
+      + '</div></div></td>'
+      + '<td style="color:var(--t2);font-size:.72rem">' + loc + '</td>'
+      + '<td style="text-align:center;font-weight:600">' + i.qty + '</td>'
+      + '<td style="text-align:right;font-family:DM Mono,monospace">' + price + '</td>'
+      + '<td style="text-align:right;font-family:DM Mono,monospace;font-weight:600;color:var(--ac)">' + sub + '</td>'
+      + '</tr>';
   }).join('');
 
   let imgHtml = '';
@@ -3527,16 +3617,16 @@ function viewOrd(id) {
     imgHtml += '<div style="margin-bottom:.5rem"><div style="font-size:.62rem;color:var(--t3);margin-bottom:.2rem">' + supLabel + '</div><img src="' + o.supI + '" style="max-width:200px;border-radius:var(--r);border:1px solid var(--bd)" /></div>';
   }
   if (o.onibusImg) imgHtml += '<div style="margin-bottom:.5rem"><div style="font-size:.62rem;color:var(--t3);margin-bottom:.2rem">Ônibus ' + t('scheduleImage') + '</div><img src="' + safeUrl(o.onibusImg) + '" style="max-width:200px;border-radius:var(--r);border:1px solid var(--bd)" /></div>';
-  if (o.oi) imgHtml += '<div style="margin-bottom:.5rem"><div style="font-size:.62rem;color:var(--t3);margin-bottom:.2rem">' + t('orderImage') + '</div><img src="' + o.oi + '" style="max-width:200px;border-radius:var(--r);border:1px solid var(--bd)" /></div>';
-  if (o.bi) imgHtml += '<div style="margin-bottom:.5rem"><div style="font-size:.62rem;color:var(--t3);margin-bottom:.2rem">' + t('billImage') + '</div><img src="' + o.bi + '" style="max-width:200px;border-radius:var(--r);border:1px solid var(--bd)" /></div>';
-  if (o.payI) imgHtml += '<div style="margin-bottom:.5rem"><div style="font-size:.62rem;color:var(--t3);margin-bottom:.2rem">Payment</div><img src="' + o.payI + '" style="max-width:200px;border-radius:var(--r);border:1px solid var(--bd)" /></div>';
+  if (o.oi) imgHtml += '<div style="margin-bottom:.5rem"><div style="font-size:.62rem;color:var(--t3);margin-bottom:.2rem">' + t('orderImage') + '</div><img src="' + safeUrl(o.oi) + '" style="max-width:200px;border-radius:var(--r);border:1px solid var(--bd)" /></div>';
 
   document.getElementById('odT').textContent = t('orderNo') + ' ' + esc(o.no);
   document.getElementById('odB').innerHTML =
     '<div class="odS"><div class="odL">' + t('basicInfo') + '</div><div class="odG">'
     + '<div class="odI"><div class="odV"><span class="badge ' + sc.c + '">' + t(sc.l) + '</span></div><div class="odK">' + t('status') + '</div></div>'
     + '<div class="odI"><div class="odV">' + (pk.i || '') + ' ' + esc(pk.l || o.pk) + '</div><div class="odK">' + t('pickup') + '</div></div>'
-    + '<div class="odI"><div class="odV"><span class="badge ' + paySc.c + '">' + t(paySc.l || 'pendingConfirm') + '</span></div><div class="odK">' + t('payment') + '</div></div>'
+    + '<div class="odI"><div class="odV"><span class="badge ' + paySc.c + '">' + t(paySc.l || 'pendingConfirm') + '</span>'
+   
+    + '</div><div class="odK">' + t('payment') + '</div></div>'
     + '<div class="odI"><div class="odV">' + (o.payM === 'credit' ? t('creditPay') : t('cashPay')) + '</div><div class="odK">' + t('paymentMethod') + '</div></div>'
     + '<div class="odI"><div class="odV">' + esc(o.by) + '</div><div class="odK">' + t('creator') + '</div></div>'
     + '<div class="odI"><div class="odV">' + esc(o.cr) + '</div><div class="odK">' + t('createdAt') + '</div></div>'
@@ -3555,9 +3645,9 @@ function viewOrd(id) {
           : ''
     ) : '')
     + '</div></div>'
-    + (o.note ? '<div class="odS"><div class="odL">' + t('remarks') + '</div><div style="font-size:.82rem;color:var(--t2)">' + esc(o.note) + '</div></div>' : '')
+    + ((function(){ var _n = formatOrdNote(o); return _n ? '<div class="odS"><div class="odL">' + t('remarks') + '</div><div style="font-size:.82rem;color:var(--t2)">' + esc(_n) + '</div></div>' : ''; })())
     + (imgHtml ? '<div class="odS"><div class="odL">Images</div><div>' + imgHtml + '</div></div>' : '')
-    + '<div class="odS"><div class="odL">' + t('items') + '</div><div class="tw"><table><thead><tr><th>' + t('name') + '</th><th>' + t('sku') + '</th><th class="hide-md">' + t('category') + '</th><th class="hide-sm">' + t('location') + '</th><th>' + t('quantity') + '</th><th>' + t('price') + '</th><th>Subtotal</th></tr></thead><tbody>' + its + '</tbody></table></div></div>';
+    + '<div class="odS"><div class="odL">' + t('items') + '</div><div class="tw"><table><thead><tr><th>' + t('name') + '</th><th class="hide-sm">' + t('location') + '</th><th>' + t('quantity') + '</th><th>' + t('price') + '</th><th>Subtotal</th></tr></thead><tbody>' + its + '</tbody></table></div></div>';
 
   let ft = '<button class="btn bg bs" onclick="cMo(\'odmo\')">' + t('close') + '</button>';
   if (o.st === 'picking' && has('processOrder')) {
@@ -3617,60 +3707,121 @@ async function cancelOrd(id) {
 // ═══════════════════════════════════════
 // PACKING FLOW
 // ═══════════════════════════════════════
+
+var shipProdImgs = [];
+
+function addShipProdImgs(inp) {
+  const files = Array.from(inp.files || []);
+  if (!files.length) return;
+  files.forEach(f => {
+    const r = new FileReader();
+    r.onload = function(e) {
+      shipProdImgs.push(e.target.result);
+      renderShipProdList();
+    };
+    r.readAsDataURL(f);
+  });
+  inp.value = '';
+}
+
+function renderShipProdList() {
+  const el = document.getElementById('pkProdList');
+  if (!el) return;
+  el.innerHTML = shipProdImgs.map((src, i) =>
+    '<div class="ib" style="position:relative;width:72px;height:72px"><img src="' + src + '" style="width:100%;height:100%;object-fit:cover;border-radius:8px" /><span class="ir" onclick="event.stopPropagation();shipProdImgs.splice(' + i + ',1);renderShipProdList()" style="position:absolute;top:2px;right:2px;z-index:2;width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:12px;line-height:18px;text-align:center;cursor:pointer">×</span></div>'
+  ).join('');
+}
+
 function openPack(id) {
   const o = DB.ords.find(x => x.id === id);
   if (!o) return;
   document.getElementById('pkOid').value = id;
   pkPacImg = '';
   pkSupImg = '';
-  const pk = PICKUPS[o.pk] || {};
-  // Onibus: supplementary = package surface photo
+  shipProdImgs = [];
+  const tEl = document.getElementById('pkTitle');
+  if (tEl) tEl.textContent = t('shipTitle') || '发货';
   let supDesc;
   if (o.pk === 'onibus') supDesc = t('packageSurface') + '（Ônibus）';
-  else if (o.pk === 'pickup') supDesc = t('bagLabel');
-  else supDesc = t('waybill');
+  else if (o.pk === 'pickup') supDesc = t('bagLabel') + ' / ' + t('labelPhoto');
+  else supDesc = t('waybill') + ' / ' + t('labelPhoto');
   document.getElementById('pkSupDesc').textContent = supDesc;
-  const its = o.items.map(i => { const p = prodById(i.pid); return p ? p.name + '×' + i.qty : t('deleted'); }).join(', ');
-  let infoHtml = '<div style="font-size:.78rem"><strong>' + t('orderNo') + ':</strong> ' + esc(o.no) + '<br><strong>' + t('items') + ':</strong> ' + esc(its) + '<br><strong>' + t('pickup') + ':</strong> ' + (pk.i || '') + ' ' + (pk.l || o.pk);
+  const its = o.items.map(i => {
+    const p = prodById(i.pid);
+    return (p ? p.name : t('deleted')) + ' × ' + i.qty;
+  }).join('；');
+  let infoHtml = '<div style="font-size:.78rem;line-height:1.55"><strong>' + t('orderNo') + ':</strong> ' + esc(o.no)
+    + (o.src === 'shop' ? ' <span class="badge b-st">商城</span>' : '')
+    + '<br><strong>' + t('items') + ':</strong> ' + esc(its)
+    + '<br><strong>' + t('pickup') + ':</strong> ' + (pkIcon(o.pk)) + ' ' + esc((PICKUPS[o.pk] || {}).l || o.pk);
   if (o.pk === 'onibus') {
-    infoHtml += '<br><strong>' + t('onibusCustomerName') + ':</strong> ' + esc(o.onibName || o.onibusName || '-');
-    if (o.onibusImg) infoHtml += '<br><strong>' + t('scheduleImage') + ':</strong> <a href="' + o.onibusImg + '" target="_blank">' + t('viewSchedule') + '</a>';
+    infoHtml += '<br><strong>' + t('onibusCustomerName') + ':</strong> ' + esc(o.onibusName || '-');
+    if (o.onibusImg) infoHtml += '<br><strong>' + t('scheduleImage') + ':</strong> <a href="' + safeUrl(o.onibusImg) + '" target="_blank">' + t('viewSchedule') + '</a>';
     else infoHtml += '<br><span style="color:var(--wa)">⚠️ ' + t('scheduleImage') + ' ' + t('pendingUpload') + '</span>';
   }
   if ((o.pk === 'motoboy' || o.pk === 'correios') && !o.shipAddr) {
     infoHtml += '<br><span style="color:var(--wa)">⚠️ ' + t('shippingAddr') + ' ' + t('pendingUpload') + '</span>';
   }
-  infoHtml += '</div>';
+  infoHtml += '<div style="margin-top:.45rem;color:var(--t3)">' + esc(its) + '</div></div>';
   document.getElementById('pkInfo').innerHTML = infoHtml;
-  const pIB = document.getElementById('pkPacIB');
-  pIB.innerHTML = '<span class="ia">+</span><input type="file" id="pkPacIF" accept="image/*" onchange="hImg(this,\'pkPacIB\',\'pkPacImg\')" />';
   const sIB = document.getElementById('pkSupIB');
-  sIB.innerHTML = '<span class="ia">+</span><input type="file" id="pkSupIF" accept="image/*" onchange="hImg(this,\'pkSupIB\',\'pkSupImg\')" />';
-  document.getElementById('pkNote').value = '';
+  if (sIB) sIB.innerHTML = '<span class="ia">+</span><input type="file" id="pkSupIF" accept="image/*" onchange="hImg(this,\'pkSupIB\',\'pkSupImg\')" />';
+  renderShipProdList();
+  const note = document.getElementById('pkNote');
+  if (note) note.value = '';
   oMo('pkmo');
+}
+
+function pkIcon(pk) {
+  return (PICKUPS[pk] || {}).i || '';
 }
 
 async function confirmPack() {
   const id = parseInt(document.getElementById('pkOid').value);
   const o = DB.ords.find(x => x.id === id);
   if (!o) return;
-  if (!pkPacImg) { toast(t('uploadPackingErr'), 'er'); return; }
-  if (!pkSupImg) { toast(t('uploadSuppErr'), 'er'); return; }
+  if (!pkSupImg) { toast(t('needLabelPhoto') || t('uploadSuppErr'), 'er'); return; }
+  if (!shipProdImgs.length) { toast(t('needProdPhoto') || t('uploadPackingErr'), 'er'); return; }
   try {
     let supType = 'waybill';
     if (o.pk === 'pickup') supType = 'label';
     else if (o.pk === 'onibus') supType = 'package_surface';
-    await adminFrom('orders').update({
-      processed_by: user.u,
-      packing_image: pkPacImg, supplementary_image: pkSupImg, supplementary_type: supType
-    }).eq('id', id);
-    // Stock already locked at order creation
-    // Status stays 'picking' - ship separately after validating shipping info
+    const note = (document.getElementById('pkNote') || {}).value || '';
+    const prodJson = JSON.stringify(shipProdImgs);
+    if (o.src === 'shop') {
+      // shop_orders 无 supplementary_type 列，类型信息写入 note 前缀
+      const typeNote = (note ? note + ' | ' : '') + 'supType:' + supType;
+      await adminApi('update', {
+        table: 'shop_orders',
+        patch: {
+          status: 'shipped',
+          shipped_at: new Date().toISOString(),
+          processed_by: user.u,
+          packing_image: prodJson,
+          supplementary_image: pkSupImg,
+          note: typeNote
+        },
+        where: { id: Number(o.shopId) }
+      });
+    } else {
+      await adminApi('update', {
+        table: 'orders',
+        patch: {
+          processed_by: user.u,
+          packing_image: prodJson,
+          supplementary_image: pkSupImg,
+          supplementary_type: supType,
+          status: 'done',
+          note: note || o.note || ''
+        },
+        where: { id: Number(o.id) }
+      });
+    }
     await loadAllData();
     cMo('pkmo');
-    toast(t('packDoneReadyShip'), 'ok');
+    toast(t('shippedOk') || t('packDoneReadyShip'), 'ok');
     render(curP);
-  } catch (err) { toast(t('opFailed') + ': ' + err.message, 'er'); }
+  } catch (err) { toast(t('opFailed') + ': ' + (err && err.message || err), 'er'); }
 }
 
 // ═══════════════════════════════════════
@@ -3731,27 +3882,30 @@ function openPayConf(id) {
   oMo('paymo');
 }
 
-async function confirmPay() {
+async function setPayStatus(status) {
   const id = parseInt(document.getElementById('payOid').value);
+  const o = DB.ords.find(x => x.id === id);
+  if (!o) return;
   try {
-    await adminFrom('orders').update({ payment_status: 'confirmed' }).eq('id', id);
+    if (o.src === 'shop') {
+      await adminApi('update', {
+        table: 'shop_orders',
+        patch: { payment_status: status },
+        where: { id: Number(o.shopId) }
+      });
+    } else {
+      await adminFrom('orders').update({ payment_status: status }).eq('id', id);
+    }
     await loadAllData();
     cMo('paymo');
-    toast(t('confirmed'), 'ok');
+    toast(status === 'confirmed' ? t('confirmed') : t('rejected'), status === 'confirmed' ? 'ok' : 'inf');
     render(curP);
-  } catch (err) { toast(t('opFailed') + ': ' + err.message, 'er'); }
+  } catch (err) { toast(t('opFailed') + ': ' + (err && err.message || err), 'er'); }
 }
 
-async function rejectPay() {
-  const id = parseInt(document.getElementById('payOid').value);
-  try {
-    await adminFrom('orders').update({ payment_status: 'rejected' }).eq('id', id);
-    await loadAllData();
-    cMo('paymo');
-    toast(t('rejected'), 'inf');
-    render(curP);
-  } catch (err) { toast(t('opFailed') + ': ' + err.message, 'er'); }
-}
+async function confirmPay() { await setPayStatus('confirmed'); }
+
+async function rejectPay() { await setPayStatus('rejected'); }
 
 // ═══════════════════════════════════════
 // EDIT ORDER PRICE (for pending_bill orders)
@@ -4054,6 +4208,143 @@ async function saveLabelPrices() {
     toast(t('saveFailed') + ': ' + e.message, 'er');
   }
 }
+function billOrdAmount(o) {
+  if (!o) return '0.00';
+  if (o.origTotal) return Number(o.origTotal).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const goods = (o.items || []).reduce(function(s, i) {
+    const p = prodById(i.pid);
+    return s + (p ? Number(p.price) * Number(i.qty || 0) : 0);
+  }, 0);
+  const total = goods + Number(o.shipCost || 0);
+  return total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function billOrdAmount(o) {
+  if (!o) return 0;
+  if (o.origTotal) return Number(o.origTotal) || 0;
+  const goods = (o.items || []).reduce(function(s, i) {
+    const p = prodById(i.pid);
+    return s + (p ? Number(p.price) * Number(i.qty || 0) : 0);
+  }, 0);
+  return goods + Number(o.shipCost || 0);
+}
+
+function billOrdAmountStr(o) {
+  return billOrdAmount(o).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function rBillReview() {
+  const all = (DB.ords || []).filter(o => o.st !== 'cancel');
+  const pend = all.filter(o => o.payS === 'pending' || o.payS === 'pending_bill');
+  const done = all.filter(o => o.payS === 'confirmed' || o.payS === 'rejected');
+
+  function rowHtml(o) {
+    const paySc = PSTAT[o.payS] || {};
+    const img = o.payI || o.bi || '';
+    const thumb = img
+      ? '<img src="' + safeUrl(img) + '" style="width:56px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--bd);cursor:pointer;flex-shrink:0" />'
+      : '<div style="width:56px;height:56px;border-radius:8px;border:1px dashed var(--bd);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:var(--t3);flex-shrink:0">-</div>';
+    return '<div style="padding:.75rem 0;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:.75rem;cursor:pointer" onclick="openBillDetail(' + o.id + ')">'
+      + thumb
+      + '<div style="flex:1;min-width:0">'
+      + '<div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap"><strong>' + esc(o.no) + '</strong>'
+      + (o.src === 'shop' ? ' <span class="badge b-st">商城</span>' : '')
+      + '<span class="badge ' + paySc.c + '">' + t(paySc.l || 'pendingConfirm') + '</span></div>'
+      + '<div style="font-size:.72rem;color:var(--t2);margin-top:.2rem">' + esc(o.by || '') + ' · ' + esc(o.cr || '') + '</div>'
+      + '<div style="font-family:DM Mono,monospace;font-weight:600;margin-top:.3rem;color:var(--ac)">¥' + billOrdAmountStr(o) + '</div>'
+      + '</div>'
+      + '<div style="color:var(--t3);flex-shrink:0">›</div>'
+      + '</div>';
+  }
+
+  return ''
+    + '<div class="pnl"><div class="pnH"><span class="pnT">🧾 ' + t('billReview') + '</span><span style="font-size:.65rem;color:var(--t3)">' + t('billReviewHint') + '</span></div>'
+    + '<div class="pnB">'
+    + '<div style="font-size:.85rem;font-weight:600;margin:.25rem 0 .55rem">' + t('billPendingReview') + ' <span class="badge b-pd">' + pend.length + '</span></div>'
+    + (pend.length ? pend.map(function(o){ return rowHtml(o); }).join('') : '<div class="empty"><p>' + t('noPendingCus') + '</p></div>')
+    + '<div style="font-size:.85rem;font-weight:600;margin:1.15rem 0 .55rem">' + t('billReviewed') + ' <span class="badge b-dn">' + done.length + '</span></div>'
+    + (done.length ? done.map(function(o){ return rowHtml(o); }).join('') : '<div class="empty"><p>' + t('noPendingCus') + '</p></div>')
+    + '</div></div>';
+}
+
+function openBillImg(src) {
+  if (!src) return;
+  let el = document.getElementById('billLightbox');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'billLightbox';
+    el.style.cssText = 'position:fixed;inset:0;z-index:4000;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;cursor:zoom-out';
+    el.onclick = function() { el.style.display = 'none'; };
+    document.body.appendChild(el);
+  }
+  el.innerHTML = '<img src="' + src + '" style="max-width:92vw;max-height:88vh;border-radius:10px;background:#fff;padding:6px" />';
+  el.style.display = 'flex';
+}
+
+function openBillDetail(id) {
+  const o = DB.ords.find(x => x.id === id);
+  if (!o) return;
+  document.getElementById('payOid').value = id;
+  const img = o.payI || o.bi || '';
+  const paySc = PSTAT[o.payS] || {};
+  const amt = billOrdAmount(o);
+  const reviewed = (o.payS === 'confirmed' || o.payS === 'rejected');
+  let info = '<div style="font-size:.82rem;line-height:1.6">'
+    + '<strong>' + t('orderNo') + ':</strong> ' + esc(o.no)
+    + (o.src === 'shop' ? ' <span class="badge b-st">商城</span>' : '')
+    + '<br><strong>' + t('payment') + ':</strong> <span class="badge ' + paySc.c + '">' + t(paySc.l || 'pendingConfirm') + '</span>'
+    + '<br><strong>' + t('createdAt') + ':</strong> ' + esc(o.cr || '')
+    + '<br><strong>' + t('creator') + ':</strong> ' + esc(o.by || '')
+    + '<br><strong>' + t('orderAmount') + ':</strong> <span style="font-family:DM Mono,monospace;color:var(--ac);font-weight:600">¥' + billOrdAmountStr(o) + '</span>'
+    + '</div>';
+  if (img) {
+    info += '<div style="margin-top:.85rem"><div style="font-size:.68rem;color:var(--t3);margin-bottom:.35rem">' + t('billImage') + '</div>'
+      + '<img src="' + safeUrl(img) + '" style="width:100%;max-height:320px;object-fit:contain;border-radius:8px;border:1px solid var(--bd);cursor:zoom-in;background:var(--bg3)" onclick="openBillImg(\'' + safeUrl(img) + '\')" /></div>';
+  }
+  if (!reviewed) {
+    info += '<div class="fgm" style="margin-top:1rem"><label>💰 ' + t('billAmount') + ' *</label>'
+      + '<input type="text" inputmode="decimal" id="payBillAmt" placeholder="' + amt.toFixed(2) + '" />'
+      + '<div style="font-size:.62rem;color:var(--t3);margin-top:.25rem">' + t('billAmountHint') + '</div></div>';
+  }
+  document.getElementById('payInfo').innerHTML = info;
+  const foot = document.querySelector('#paymo .mf');
+  if (foot) {
+    if (reviewed) {
+      foot.innerHTML = '<button class="btn bg bs" onclick="cMo(\'paymo\')">' + t('close') + '</button>';
+    } else {
+      foot.innerHTML = '<button class="btn bg bs" onclick="cMo(\'paymo\')">' + t('cancel') + '</button>'
+        + '<button class="btn bs aw" style="background:var(--sf);color:#fff" onclick="confirmPayWithAmt()">' + t('confirmPayment') + '</button>';
+    }
+  }
+  oMo('paymo');
+}
+
+async function confirmPayWithAmt() {
+  const id = parseInt(document.getElementById('payOid').value);
+  const el = document.getElementById('payBillAmt');
+  const raw = ((el && el.value) || '').trim().replace(/[¥,\s]/g, '');
+  if (!raw || isNaN(Number(raw)) || Number(raw) <= 0) {
+    toast(t('billAmountRequired') || t('billAmount'), 'er');
+    return;
+  }
+  const o = DB.ords.find(x => x.id === id);
+  if (!o) return;
+  try {
+    const patch = { payment_status: 'confirmed' };
+    const noteAmt = 'bill_paid:' + Number(raw).toFixed(2);
+    patch.note = ((o.note || '') + (o.note ? ' | ' : '') + noteAmt);
+    if (o.src === 'shop') {
+      await adminApi('update', { table: 'shop_orders', patch: patch, where: { id: Number(o.shopId) } });
+    } else {
+      await adminFrom('orders').update(patch).eq('id', id);
+    }
+    await loadAllData();
+    cMo('paymo');
+    toast(t('confirmed'), 'ok');
+    render(curP);
+  } catch (err) { toast(t('opFailed') + ': ' + (err && err.message || err), 'er'); }
+}
+
 function rPaySettings() {
   return '<div class="pnl"><div class="pnH"><span class="pnT">💳 ' + t('payAccountSettings') + '</span><span style="font-size:.65rem;color:var(--t3)">' + t('paySettingsInfo') + '</span></div><div class="pnB" id="paySettingsArea"><div class="spinner"></div></div></div>';
 }
@@ -4294,6 +4585,24 @@ function rApprovals() {
   const pCus = DB.cus.filter(c => String(c.status || '').toLowerCase() === 'pending');
   const pChgs = DB.chgs.filter(c => c.st === 'pending');
   const pPays = DB.ords.filter(o => o.st === 'done' && o.payS === 'pending' && o.payU === 'no');
+  const pCusEdits = (DB.cusReqs || []).filter(r => r.status === 'pending');
+
+  let cusEditHtml = '';
+  if (pCusEdits.length) {
+    cusEditHtml = pCusEdits.map(r => {
+      const fields = Object.keys(r.patch || {}).map(k => {
+        const ov = (r.old || {})[k], nv = (r.patch || {})[k];
+        return '<div style="font-size:.66rem;color:var(--t2)">' + esc(k) + ': <span style="color:var(--t3)">' + esc(String(ov ?? '')) + '</span> → <span style="color:var(--in)">' + esc(String(nv ?? '')) + '</span></div>';
+      }).join('');
+      return '<div style="padding:.55rem 0;border-bottom:1px solid var(--bd)"><div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.25rem"><strong>' + esc(r.customer_name || ('#' + r.customer_id)) + '</strong><span style="font-size:.62rem;color:var(--t3)">' + esc(r.requested_by || '') + ' · ' + esc((r.requested_at || '').slice(0, 16).replace('T', ' ')) + '</span></div>'
+        + fields
+        + '<div style="margin-top:.35rem"><button class="btn bs aw" style="background:var(--sf);color:#fff" onclick="reviewCusChange(\'' + String(r.id) + '\',\'approved\')">' + t('approve') + '</button> <button class="btn bs aw" style="background:var(--dg);color:#fff" onclick="reviewCusChange(\'' + String(r.id) + '\',\'rejected\')">' + t('rejectBtn') + '</button></div></div>';
+    }).join('');
+    window._cusEditView = pCusEdits;
+  } else {
+    cusEditHtml = '<div class="empty"><p>' + t('noPendingCus') + '</p></div>';
+    window._cusEditView = [];
+  }
 
   let cusHtml = '';
   if (pCus.length) {
@@ -4322,6 +4631,7 @@ function rApprovals() {
 
   return '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem">'
     + '<div class="pnl"><div class="pnH"><span class="pnT">👤 ' + t('customerReview') + '</span><span class="badge b-pd">' + pCus.length + '</span></div><div class="pnB">' + cusHtml + '</div></div>'
+    + '<div class="pnl"><div class="pnH"><span class="pnT">✏️ ' + t('cusChangeReview') + '</span><span class="badge b-pd">' + pCusEdits.length + '</span></div><div class="pnB">' + cusEditHtml + '</div></div>'
     + '<div class="pnl"><div class="pnH"><span class="pnT">💰 ' + t('paymentConfirm') + '</span><span class="badge b-pd">' + pPays.length + '</span></div><div class="pnB">' + payHtml + '</div></div>'
     + '<div class="pnl"><div class="pnH"><span class="pnT">🚚 ' + t('changeReview') + '</span><span class="badge b-pd">' + pChgs.length + '</span></div><div class="pnB">' + chgHtml + '</div></div>'
     + '</div>';
@@ -4334,6 +4644,39 @@ async function reviewCus(id, status) {
     toast(t('reviewDone'), 'ok');
     render('approvals');
   } catch (err) { toast(t('opFailed') + ': ' + err.message, 'er'); }
+}
+
+async function reviewCusChange(reqId, decision) {
+  const reqs = (DB.cusReqs || []).slice();
+  const idx = reqs.findIndex(r => String(r.id) === String(reqId));
+  if (idx < 0) return;
+  const r = reqs[idx];
+  try {
+    if (decision === 'approved' && r.patch) {
+      const patch = Object.assign({}, r.patch);
+      await adminApi('update', { table: 'customers', patch: patch, where: { id: Number(r.customer_id) } });
+    }
+    reqs[idx] = Object.assign({}, r, {
+      status: decision === 'approved' ? 'approved' : 'rejected',
+      reviewed_by: user.u,
+      reviewed_at: new Date().toISOString()
+    });
+    await saveCusReqs(reqs);
+    DB.cusReqs = reqs;
+    await loadAllData();
+    toast(decision === 'approved' ? t('cusChangeApplied') : t('cusChangeRejected'), 'ok');
+    render('approvals');
+  } catch (err) { toast(t('opFailed') + ': ' + (err && err.message || err), 'er'); }
+}
+
+async function saveCusReqs(reqs) {
+  const val = JSON.stringify(reqs || []);
+  const { data: existing } = await sb.from('site_settings').select('key').eq('key', 'cus_change_reqs').limit(1);
+  if (existing && existing.length) {
+    await adminFrom('site_settings').update({ value: val, updated_at: new Date().toISOString() }).eq('key', 'cus_change_reqs');
+  } else {
+    await adminFrom('site_settings').insert({ key: 'cus_change_reqs', value: val, label: 'cus_change_reqs' });
+  }
 }
 
 async function reviewChange(id, status, newM, cost, oid) {
@@ -4677,10 +5020,75 @@ function rSCus() {
   let rows = myCus.map(c => {
     const stC = CUSTAT[c.status] || {};
     const avail = c.creditLimit - c.creditUsed;
-    return '<tr><td><strong>' + esc(c.name) + '</strong></td><td>' + esc(c.phone) + '</td><td style="max-width:150px;white-space:normal;font-size:.68rem">' + esc(c.motoAddr || '-') + '</td><td style="max-width:150px;white-space:normal;font-size:.68rem">' + esc(c.corrAddr || '-') + '</td><td style="font-family:DM Mono,monospace">¥' + c.creditLimit.toLocaleString() + '</td><td style="font-family:DM Mono,monospace;color:' + (avail > 0 ? 'var(--sf)' : 'var(--dg)') + '">¥' + avail.toLocaleString() + '</td><td><span class="badge ' + stC.c + '">' + t(stC.l || c.status) + '</span></td><td style="font-size:.68rem;color:var(--t3)">' + esc(c.cr) + '</td></tr>';
+    return '<tr style="cursor:pointer" onclick="openCusDetail(' + c.id + ')"><td><strong>' + esc(c.name) + '</strong></td><td style="font-family:DM Mono,monospace">¥' + c.creditLimit.toLocaleString() + '</td><td style="font-family:DM Mono,monospace;color:' + (avail > 0 ? 'var(--sf)' : 'var(--dg)') + '">¥' + avail.toLocaleString() + '</td><td><span class="badge ' + stC.c + '">' + t(stC.l || c.status) + '</span></td><td style="font-size:.68rem;color:var(--t3)">' + esc(c.cr) + '</td></tr>';
   }).join('');
-  if (!myCus.length) rows = '<tr><td colspan="8"><div class="empty"><p>' + t('noCustomers') + '</p></div></td></tr>';
-  return '<div class="tb"><span class="tbsp"></span><button class="btn bp bs aw" onclick="openAddCus()">+ ' + t('addCustomer') + '</button></div><div class="tw"><div class="ts"><table><thead><tr><th>' + t('customerName') + '</th><th>' + t('phone') + '</th><th>Motoboy</th><th>Correios</th><th>' + t('creditLimit') + '</th><th>' + t('available') + '</th><th>' + t('status') + '</th><th>' + t('createdDate') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
+  if (!myCus.length) rows = '<tr><td colspan="5"><div class="empty"><p>' + t('noCustomers') + '</p></div></td></tr>';
+  return '<div class="tb"><span class="tbsp"></span><button class="btn bp bs aw" onclick="openAddCus()">+ ' + t('addCustomer') + '</button></div><div class="tw"><div class="ts"><table><thead><tr><th>' + t('customerName') + '</th><th>' + t('creditLimit') + '</th><th>' + t('available') + '</th><th>' + t('status') + '</th><th>' + t('createdDate') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
+}
+
+function openCusDetail(id) {
+  const c = cusById(id);
+  if (!c) return;
+  document.getElementById('cusDT').textContent = t('cusDetail') + ' · ' + c.name;
+  document.getElementById('cusDId').value = c.id;
+  document.getElementById('cusDNm').value = c.name || '';
+  document.getElementById('cusDPh').value = c.phone || '';
+  document.getElementById('cusDMA').value = c.motoAddr || '';
+  document.getElementById('cusDCA').value = c.corrAddr || '';
+  document.getElementById('cusDCL').value = c.creditLimit || 0;
+  const reqs = (DB.cusReqs || []).filter(r => Number(r.customer_id) === Number(c.id) && r.status === 'pending');
+  const done = (DB.cusReqs || []).filter(r => Number(r.customer_id) === Number(c.id) && r.status !== 'pending').slice(0, 5);
+  let reqHtml = '';
+  if (reqs.length) reqHtml += '<div style="margin:.6rem 0;padding:.55rem .75rem;border:1px dashed var(--wa);border-radius:var(--r);font-size:.72rem;color:var(--wa)">' + t('cusChangePending') + '</div>';
+  if (done.length) {
+    reqHtml += '<div style="margin:.6rem 0;font-size:.68rem;color:var(--t3)">' + t('cusChangeLog') + '</div>';
+    reqHtml += done.map(r => {
+      const cols = Object.keys(r.patch || {}).map(k => '<div style="font-size:.66rem">' + esc(k) + ': ' + esc(String((r.old || {})[k] ?? '')) + ' → ' + esc(String((r.patch || {})[k] ?? '')) + '</div>').join('');
+      return '<div style="padding:.35rem 0;border-bottom:1px solid var(--bd)"><span class="badge ' + (r.status === 'approved' ? 'b-dn' : 'b-cn') + '">' + t(r.status === 'approved' ? 'approved' : 'rejected') + '</span> ' + esc(r.reviewed_at || r.requested_at || '') + cols + '</div>';
+    }).join('');
+  }
+  document.getElementById('cusDReq').innerHTML = reqHtml;
+  document.getElementById('cusDFoot').innerHTML =
+    (reqs.length ? '' : '<button class="btn bp bs aw" onclick="submitCusChange()">' + t('submitCusChange') + '</button>')
+    + '<button class="btn bg bs" onclick="cMo(\'cusDmo\')">' + t('close') + '</button>';
+  oMo('cusDmo');
+}
+
+async function submitCusChange() {
+  const id = Number(document.getElementById('cusDId').value);
+  const c = cusById(id);
+  if (!c) return;
+  const patch = {
+    name: (document.getElementById('cusDNm').value || '').trim(),
+    phone: (document.getElementById('cusDPh').value || '').trim(),
+    moto_address: (document.getElementById('cusDMA').value || '').trim(),
+    correio_address: (document.getElementById('cusDCA').value || '').trim(),
+    credit_limit: parseFloat(document.getElementById('cusDCL').value) || 0
+  };
+  const old = {
+    name: c.name || '', phone: c.phone || '', moto_address: c.motoAddr || '',
+    correio_address: c.corrAddr || '', credit_limit: c.creditLimit || 0
+  };
+  const changed = Object.keys(patch).some(k => String(patch[k] ?? '') !== String(old[k] ?? ''));
+  if (!changed) { toast(t('editCusInfo'), 'inf'); return; }
+  try {
+    const reqs = (DB.cusReqs || []).slice();
+    reqs.unshift({
+      id: Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+      customer_id: c.id,
+      customer_name: c.name,
+      requested_by: user.u,
+      patch, old,
+      status: 'pending',
+      requested_at: new Date().toISOString(),
+      reviewed_by: '', reviewed_at: '', review_note: ''
+    });
+    await saveCusReqs(reqs);
+    DB.cusReqs = reqs;
+    cMo('cusDmo');
+    toast(t('cusChangeSubmitted'), 'ok');
+    render(curP);
+  } catch (err) { toast(t('saveFailed') + ': ' + (err && err.message || err), 'er'); }
 }
 
 function openAddCus() {
