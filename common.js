@@ -162,6 +162,23 @@ function hasPerm(userObj, k) {
   return userObj.perm && userObj.perm[k] === 1;
 }
 
+// ═══ 全局错误捕获（P3-6）═══
+window._errLog = window._errLog || [];
+window.addEventListener('error', function(e) {
+  var msg = e.message || String(e.error || e);
+  var loc = (e.filename || '') + ':' + (e.lineno || 0);
+  window._errLog.push({ t: Date.now(), msg: msg, loc: loc, type: 'error' });
+  if (window._errLog.length > 50) window._errLog.shift();
+  console.error('[CS GlobalError]', msg, loc);
+});
+window.addEventListener('unhandledrejection', function(e) {
+  var msg = String((e.reason && e.reason.message) || e.reason || 'unknown');
+  window._errLog.push({ t: Date.now(), msg: msg, type: 'unhandled' });
+  if (window._errLog.length > 50) window._errLog.shift();
+  console.error('[CS Unhandled]', msg);
+});
+function getErrorLog() { return window._errLog.slice(); }
+
 // ═══ 多语言（基础） ═══
 var _lang = 'zh';
 function setLang(l) { _lang = l; }
