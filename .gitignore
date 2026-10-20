@@ -1,0 +1,9 @@
+# 历史备份不部署
+index-0*.html
+*.bak-*
+warehouse-001.html
+# 内部文档
+API.md
+CONTEXT.md
+SCHEMA.md
+安全检查报告.md
