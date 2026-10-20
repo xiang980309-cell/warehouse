@@ -1860,86 +1860,132 @@ function safeQ(p) {
   })
     .catch(() => ({ data: [], error: { message: 'denied' } }));
 }
-async function loadAllData() {
-  if (!sb) { console.warn('[CS] No DB connection'); return; }
+// ── 分域加载（P2-4）：核心数据登录必载，业务数据按页懒加载 ──
+async function loadCoreData() {
+  if (!sb) return;
   try {
-    const [catR,acctR,prodR,pcR,ordR,oiR,inbR,outbR,cusR,chgR,shopR,shopIR] = await Promise.all([
+    const [catR,prodR,pcR] = await Promise.all([
       safeQ(sb.from('categories').select('*').order('order_num')),
-      safeQ(sb.rpc('app_list_accounts')),
       safeQ(fetchPaged(function() { return sb.from('products').select('*').order('id', { ascending: true }); })),
-      safeQ(fetchPaged(function() { return sb.from('product_categories').select('*').order('product_id', { ascending: true }).order('category_id', { ascending: true }); })),
-      safeQ(ADMIN_TOKEN ? adminSelect('orders', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : fetchPaged(function() { return sb.from('orders').select('*').order('created_at',{ascending:false}).order('id', { ascending: false }); })),
-      safeQ(ADMIN_TOKEN ? adminSelect('order_items', { limit: 5000 }) : sb.from('order_items').select('*')),
-      safeQ(ADMIN_TOKEN ? adminSelect('inbound_records', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : sb.from('inbound_records').select('*').order('created_at',{ascending:false})),
-      safeQ(ADMIN_TOKEN ? adminSelect('outbound_records', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : sb.from('outbound_records').select('*').order('created_at',{ascending:false})),
-      safeQ(ADMIN_TOKEN ? adminSelect('customers', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : Promise.resolve({ data: [], error: null })),
-      safeQ(ADMIN_TOKEN ? adminSelect('order_changes', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : Promise.resolve({ data: [], error: null })),
-      safeQ(ADMIN_TOKEN ? adminSelect('shop_orders', { order: { column: 'created_at', ascending: false }, limit: 1000 }).catch(() => sb.from('shop_orders').select('*').order('created_at', { ascending: false }).limit(1000).then(r => r.data || [])) : sb.from('shop_orders').select('*').order('created_at', { ascending: false }).limit(1000).then(r => r.data || [])),
-      safeQ(ADMIN_TOKEN ? adminSelect('shop_order_items', { limit: 5000 }).catch(() => sb.from('shop_order_items').select('*').limit(5000).then(r => r.data || [])) : sb.from('shop_order_items').select('*').limit(5000).then(r => r.data || []))
+      safeQ(fetchPaged(function() { return sb.from('product_categories').select('*').order('product_id', { ascending: true }).order('category_id', { ascending: true }); }))
     ]);
     DB.cats = (catR.data||[]).map(c => ({id:Number(c.id),name:c.name,code:c.code,icon:c.icon,order:c.order_num,parent_id:c.parent_id!=null?Number(c.parent_id):null,depth:Number(c.depth||0),visible:c.visible!==false,image:c.image||'',description:c.description||'',locked:c.locked||false,product_count:Number(c.product_count||0)}));
-    DB.accts = (acctR.data||[]).map(a => ({id:a.id,u:a.username,n:a.display_name,r:a.role,s:a.status,c:fmtDate(a.created_at).split(' ')[0],perm:a.perms||{}}));
     const pc = pcR.data||[];
-    DB.prods = (prodR.data||[]).map(p => ({id:p.id,name:p.name,catIds:(function(){const ids=pc.filter(x=>x.product_id===p.id).map(x=>x.category_id);const d=deepestCatId(ids);return d?[d]:[]})(),sku:p.sku,skuManual:p.sku_manual?1:0,stock:(function(){let st=Number(p.stock)||0;try{if(!st&&p.size_stock){const ss=typeof p.size_stock==='string'?JSON.parse(p.size_stock):p.size_stock;if(ss&&typeof ss==='object')st=Object.values(ss).reduce((a,b)=>a+(Number(b)||0),0);}}catch(_){}if(st<=0&&p.size_stock){try{const ss=typeof p.size_stock==='string'?JSON.parse(p.size_stock):p.size_stock;if(ss&&typeof ss==='object'){const sm=Object.values(ss).reduce((a,b)=>a+(Number(b)||0),0);if(sm>st)st=sm;}}catch(_){}}return st;})(),price:Number(p.price),cost:Number(p.cost),loc:p.location||'',note:p.note||'',cr:fmtDate(p.created_at).split(' ')[0],img:p.image||'',category_type:p.category_type||'general',sizes:p.sizes||[],size_stock:p.size_stock||{},has_bag:p.has_bag||false,bag_price:Number(p.bag_price||0),has_case:p.has_case||false,case_price:Number(p.case_price||0),label:p.label||'',lp:(p.label_price==null?null:Number(p.label_price)),lp:(p.label_price==null?null:Number(p.label_price)),yr:p.release_year||'',ver:p.release_version||'',tg:p.tags||[],ml:!!p.mall_listed,gl:p.gallery_listed!==false}));
+    DB.prods = (prodR.data||[]).map(p => ({id:p.id,name:p.name,catIds:(function(){const ids=pc.filter(x=>x.product_id===p.id).map(x=>x.category_id);const d=deepestCatId(ids);return d?[d]:[]})(),sku:p.sku,skuManual:p.sku_manual?1:0,stock:(function(){let st=Number(p.stock)||0;try{if(!st&&p.size_stock){const ss=typeof p.size_stock==='string'?JSON.parse(p.size_stock):p.size_stock;if(ss&&typeof ss==='object')st=Object.values(ss).reduce((a,b)=>a+(Number(b)||0),0);}}catch(_){}if(st<=0&&p.size_stock){try{const ss=typeof p.size_stock==='string'?JSON.parse(p.size_stock):p.size_stock;if(ss&&typeof ss==='object'){const sm=Object.values(ss).reduce((a,b)=>a+(Number(b)||0),0);if(sm>st)st=sm;}}catch(_){}}return st;})(),price:Number(p.price),cost:Number(p.cost),loc:p.location||'',note:p.note||'',cr:fmtDate(p.created_at).split(' ')[0],img:p.image||'',category_type:p.category_type||'general',sizes:p.sizes||[],size_stock:p.size_stock||{},has_bag:p.has_bag||false,bag_price:Number(p.bag_price||0),has_case:p.has_case||false,case_price:Number(p.case_price||0),label:p.label||'',lp:(p.label_price==null?null:Number(p.label_price)),yr:p.release_year||'',ver:p.release_version||'',tg:p.tags||[],ml:!!p.mall_listed,gl:p.gallery_listed!==false}));
+  } catch(e) { console.warn('loadCoreData:', e); }
+}
+
+async function loadOrdersData() {
+  if (!sb) return;
+  try {
+    const [ordR,oiR,shopR,shopIR,chgR] = await Promise.all([
+      safeQ(ADMIN_TOKEN ? adminSelect('orders', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : fetchPaged(function() { return sb.from('orders').select('*').order('created_at',{ascending:false}).order('id', { ascending: false }); })),
+      safeQ(ADMIN_TOKEN ? adminSelect('order_items', { limit: 5000 }) : sb.from('order_items').select('*')),
+      safeQ(ADMIN_TOKEN ? adminSelect('shop_orders', { order: { column: 'created_at', ascending: false }, limit: 1000 }).catch(() => sb.from('shop_orders').select('*').order('created_at', { ascending: false }).limit(1000).then(r => r.data || [])) : sb.from('shop_orders').select('*').order('created_at', { ascending: false }).limit(1000).then(r => r.data || [])),
+      safeQ(ADMIN_TOKEN ? adminSelect('shop_order_items', { limit: 5000 }).catch(() => sb.from('shop_order_items').select('*').limit(5000).then(r => r.data || [])) : sb.from('shop_order_items').select('*').limit(5000).then(r => r.data || [])),
+      safeQ(ADMIN_TOKEN ? adminSelect('order_changes', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : Promise.resolve({ data: [], error: null }))
+    ]);
     const oi = oiR.data||[];
     DB.ords = (ordR.data||[]).map(o => ({id:o.id,no:o.order_no,items:oi.filter(x=>x.order_id===o.id).map(x=>({pid:x.product_id,qty:x.qty,price:Number(x.original_price||x.price||0),original_price:Number(x.original_price||x.price||0),unit_price:Number(x.unit_price||x.original_price||x.price||0)})),pk:o.pickup_method,st:o.status,oi:o.order_image||'',bi:o.bill_image||'',note:o.note||'',cr:fmtDate(o.created_at),by:o.created_by,pb:o.processed_by||'',payM:o.payment_method||'cash',payS:o.payment_status||'pending',payI:o.payment_image||'',payU:o.payment_upload||'yes',pacI:o.packing_image||'',supI:o.supplementary_image||'',supT:o.supplementary_type||'',custId:o.customer_id||'',shipAddr:o.shipping_address||'',shipCost:Number(o.shipping_cost||0),billDeadline:o.bill_deadline||null,origTotal:Number(o.original_total||0),priceModified:o.price_modified||false,onibusName:o.onibus_name||'',onibusImg:o.onibus_schedule_img||'',billUploadedAt:o.bill_uploaded_at||null,adminConfirmedShip:o.admin_confirmed_ship||false,adminShipBy:o.admin_ship_confirmed_by||''}));
     (function(){
       const sItems = shopIR.data || [];
       const stMap = { cancelled:'cancel', canceled:'cancel', shipped:'done', delivered:'done', completed:'done', confirmed:'pending', picking:'picking', pending:'pending' };
       const shopMapped = (shopR.data || []).map(o => ({
-        id: 1000000000 + Number(o.id),
-        shopId: o.id,
-        src: 'shop',
+        id: 1000000000 + Number(o.id), shopId: o.id, src: 'shop',
         no: o.order_no || ('SHOP-' + o.id),
         items: sItems.filter(x => x.order_id === o.id).map(x => ({ pid: x.product_id, qty: x.qty, price: Number(x.price || 0), original_price: Number(x.original_price || 0), unit_price: Number(x.price || x.unit_price || 0) })),
-        pk: o.pickup_method || 'motoboy',
-        st: stMap[o.status] || 'pending',
-        rawSt: o.status,
-        oi: '', bi: '',
-        note: o.note || '',
-        cr: fmtDate(o.created_at),
-        by: '商城',
-        pb: '',
-        payM: o.payment_method || 'cash',
-        payS: o.payment_status || 'pending_bill',
-        payI: o.payment_image || '',
-        payU: o.payment_image ? 'yes' : 'no',
+        pk: o.pickup_method || 'motoboy', st: stMap[o.status] || 'pending', rawSt: o.status,
+        oi: '', bi: '', note: o.note || '', cr: fmtDate(o.created_at), by: '商城', pb: '',
+        payM: o.payment_method || 'cash', payS: o.payment_status || 'pending_bill',
+        payI: o.payment_image || '', payU: o.payment_image ? 'yes' : 'no',
         pacI: '', supI: '', supT: '',
-        custId: o.customer_id || '',
-        shipAddr: o.shipping_address || '',
-        shipName: o.shipping_name || '',
-        shipPhone: o.shipping_phone || '',
-        shipCost: Number(o.shipping_cost || 0),
-        billDeadline: o.bill_deadline || null,
-        origTotal: Number(o.original_total || o.total || 0),
-        priceModified: false,
-        onibusName: o.onibus_name || '',
-        onibusImg: o.onibus_schedule_img || '',
+        custId: o.customer_id || '', shipAddr: o.shipping_address || '',
+        shipName: o.shipping_name || '', shipPhone: o.shipping_phone || '',
+        shipCost: Number(o.shipping_cost || 0), billDeadline: o.bill_deadline || null,
+        origTotal: Number(o.original_total || o.total || 0), priceModified: false,
+        onibusName: o.onibus_name || '', onibusImg: o.onibus_schedule_img || '',
         billUploadedAt: o.payment_image ? o.created_at : null,
-        adminConfirmedShip: false,
-        adminShipBy: ''
+        adminConfirmedShip: false, adminShipBy: ''
       }));
       DB.ords = (DB.ords || []).concat(shopMapped);
     })();
+    DB.chgs = (chgR.data||[]).map(c => ({id:c.id,oid:c.order_id,oldM:c.old_method,newM:c.new_method,cost:Number(c.shipping_cost||0),billI:c.bill_image||'',st:c.status,by:c.requested_by,revBy:c.reviewed_by||'',cr:fmtDate(c.created_at)}));
+  } catch(e) { console.warn('loadOrdersData:', e); }
+}
+
+async function loadStockData() {
+  if (!sb) return;
+  try {
+    const [inbR,outbR] = await Promise.all([
+      safeQ(ADMIN_TOKEN ? adminSelect('inbound_records', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : sb.from('inbound_records').select('*').order('created_at',{ascending:false})),
+      safeQ(ADMIN_TOKEN ? adminSelect('outbound_records', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : sb.from('outbound_records').select('*').order('created_at',{ascending:false}))
+    ]);
     DB.inb = (inbR.data||[]).map(r => ({id:r.id,pid:r.product_id,qty:r.qty,op:r.operator,note:r.note||'',t:fmtDate(r.created_at)}));
     DB.outb = (outbR.data||[]).map(r => ({id:r.id,pid:r.product_id,qty:r.qty,op:r.operator,note:r.note||'',t:fmtDate(r.created_at)}));
+  } catch(e) { console.warn('loadStockData:', e); }
+}
+
+async function loadAdminData() {
+  if (!sb) return;
+  try {
+    const [acctR,cusR] = await Promise.all([
+      safeQ(sb.rpc('app_list_accounts')),
+      safeQ(ADMIN_TOKEN ? adminSelect('customers', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : Promise.resolve({ data: [], error: null }))
+    ]);
+    DB.accts = (acctR.data||[]).map(a => ({id:a.id,u:a.username,n:a.display_name,r:a.role,s:a.status,c:fmtDate(a.created_at).split(' ')[0],perm:a.perms||{}}));
     DB.cus = (cusR.data||[]).map(c => ({id:c.id,name:c.name,phone:c.phone||'',motoAddr:c.moto_address||'',corrAddr:c.correio_address||'',creditLimit:Number(c.credit_limit||0),creditUsed:Number(c.credit_used||0),status:c.status,by:c.created_by,apprBy:c.approved_by||'',cr:fmtDate(c.created_at).split(' ')[0]}));
     try {
       const { data: reqRow } = await sb.from('site_settings').select('value').eq('key', 'cus_change_reqs').limit(1);
       DB.cusReqs = (reqRow && reqRow[0] && reqRow[0].value) ? JSON.parse(reqRow[0].value) : [];
       if (!Array.isArray(DB.cusReqs)) DB.cusReqs = [];
     } catch (_) { DB.cusReqs = []; }
-    DB.chgs = (chgR.data||[]).map(c => ({id:c.id,oid:c.order_id,oldM:c.old_method,newM:c.new_method,cost:Number(c.shipping_cost||0),billI:c.bill_image||'',st:c.status,by:c.requested_by,revBy:c.reviewed_by||'',cr:fmtDate(c.created_at)}));
     const pcrR = await safeQ(ADMIN_TOKEN ? adminSelect('profile_change_requests', { order: { column: 'requested_at', ascending: false }, limit: 200 }) : sb.from('profile_change_requests').select('*').order('requested_at', { ascending: false }).limit(200));
     DB.profilereqs = (pcrR.data||[]).map(r => ({id:r.id,account_id:r.account_id,field:r.field,old_value:r.old_value,new_value:r.new_value,note:r.note||'',status:r.status,requested_at:r.requested_at,reviewed_by:r.reviewed_by,reviewed_at:r.reviewed_at}));
-    // Load member levels
-    try {
-      const mlR = await sb.from('member_levels').select('*');
-      DB.memberLevels = {};
-      (mlR.data||[]).forEach(ml => { DB.memberLevels[ml.level_key] = { name:ml.name, icon:ml.icon, desc:ml.description||'', discount:Number(ml.discount||0), enabled:ml.enabled!==false }; });
-    } catch(e) { DB.memberLevels = {}; }
-    console.log('[CS] Loaded:', {cats:DB.cats.length, accts:DB.accts.length, prods:DB.prods.length, cus:DB.cus.length});
-  } catch(err) { console.error('[CS] Load error:', err); toast(t('loadFailed')+': '+err.message, 'er'); }
+  } catch(e) { console.warn('loadAdminData:', e); }
+}
+
+async function loadSettingsData() {
+  if (!sb) return;
+  try {
+    const mlR = await sb.from('member_levels').select('*');
+    DB.memberLevels = {};
+    (mlR.data||[]).forEach(ml => { DB.memberLevels[ml.level_key] = { name:ml.name, icon:ml.icon, desc:ml.description||'', discount:Number(ml.discount||0), enabled:ml.enabled!==false }; });
+  } catch(e) { DB.memberLevels = {}; }
+}
+
+// 全量刷新（写操作后调用，保证数据一致）
+async function loadAllData() {
+  await Promise.all([loadCoreData(), loadOrdersData(), loadStockData(), loadAdminData(), loadSettingsData()]);
+  DB._loaded = { dash:1, inv:1, inb:1, outb:1, ana:1, whOrd:1, sWork:1, sNewOrd:1, sOrds:1, sProds:1, sCus:1, accts:1, cats:1, approvals:1, paySettings:1, billReview:1, shipAddr:1, labelPrice:1, memberLevels:1 };
+  console.log('[CS] Loaded:', {cats:DB.cats.length, accts:(DB.accts||[]).length, prods:DB.prods.length, cus:(DB.cus||[]).length, ords:(DB.ords||[]).length});
+}
+
+// 按页懒加载路由
+const PAGE_LOADER = {
+  inv: loadStockData,
+  inb: loadStockData,
+  outb: loadStockData,
+  ana: loadStockData,
+  whOrd: loadOrdersData,
+  sOrds: loadOrdersData,
+  sNewOrd: loadOrdersData,
+  billReview: loadOrdersData,
+  accts: loadAdminData,
+  sCus: loadAdminData,
+  approvals: loadAdminData,
+  cats: loadCoreData,
+  sProds: loadCoreData,
+  sWork: loadOrdersData,
+  paySettings: loadSettingsData,
+  memberLevels: loadSettingsData
+};
+async function ensurePageData(p) {
+  const loader = PAGE_LOADER[p];
+  if (loader && (!DB._loaded || !DB._loaded[p])) {
+    await loader();
+    if (!DB._loaded) DB._loaded = {};
+    DB._loaded[p] = true;
+  }
 }
 
 // ═══════════════════════════════════════
@@ -1999,8 +2045,14 @@ async function enterApp() {
   document.getElementById('tM').textContent = sl ? t('sales') : t('warehouse');
   document.getElementById('tM').style.cssText = sl ? 'background:var(--ig);color:var(--in)' : 'background:var(--ag);color:var(--ac)';
   buildNav();
-  goPage(sl ? 'sWork' : 'dash');
-  loadAllData().then(() => { try { render(curP || (sl ? 'sWork' : 'dash')); } catch (_) {} });
+  // 先载核心数据（商品/分类），再进页面（页面内再懒加载）
+  loadCoreData().then(function() {
+    return loadSettingsData();
+  }).then(function() {
+    goPage(sl ? 'sWork' : 'dash');
+    // 后台预热常用业务数据，不阻塞首屏
+    loadOrdersData().then(function() { DB._loaded && (DB._loaded.whOrd = DB._loaded.sOrds = DB._loaded.sWork = true); });
+  });
 }
 function doLogout() {
   const tk = ADMIN_TOKEN;
@@ -2102,7 +2154,12 @@ function goPage(p, el, keepLabel) {
   curP = p;
   const ts = {dash:t('dashboard'),inv:t('inventory'),inb:t('inboundRecord'),outb:t('outboundRecord'),ana:t('analytics'),accts:t('accounts'),cats:t('categories'),whOrd:t('orderProcess'),sWork:t('salesWorkspace'),sNewOrd:t('newOrder'),sOrds:t('orderList'),sProds:t('productQuery'),sCus:t('customerMgmt'),approvals:t('approvalCenter'),paySettings:t('payAccountSettings'),billReview:t('billReview'),shipAddr:t('shipAddrSettings'),labelPrice:t('labelPrice'),memberLevels:t('memberLevel')};
   document.getElementById('tT').textContent = ts[p]||'';
-  render(p);
+  // 按页懒加载后再渲染（P2-4）
+  if (window.ensurePageData) {
+    ensurePageData(p).then(function() { render(p); }).catch(function() { render(p); });
+  } else {
+    render(p);
+  }
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sov').classList.remove('show');
 }
