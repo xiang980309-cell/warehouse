@@ -1842,7 +1842,14 @@ async function adminApi(action, payload) {
   let data = null;
   try { data = await res.json(); } catch (_) {}
   if (!res.ok || !data || data.ok === false) {
-    throw new Error((data && data.error) || ('admin_api_' + res.status));
+    const errCode = (data && data.error) || ('admin_api_' + res.status);
+    // P1-2: 403/401 前端兜底提示
+    if (res.status === 403 || errCode === 'forbidden') {
+      toast(t('noPermission') || '权限不足，操作被拒绝', 'er');
+    } else if (res.status === 401) {
+      toast(t('sessionExpired') || '会话已过期，请重新登录', 'er');
+    }
+    throw new Error(errCode);
   }
   return data.data;
 }
@@ -2061,7 +2068,31 @@ function buildNav() {
   }
   n.innerHTML = h;
 }
+// 页面 → 所需权限（P1-2: goPage 路由权限门）
+const PAGE_PERM = {
+  inv: 'viewInventory',
+  inb: 'inbound',
+  outb: 'outbound',
+  ana: null,          // wh_admin only
+  accts: null,
+  cats: null,
+  paySettings: null,
+  shipAddr: null,
+  billReview: null,
+  labelPrice: null,
+  approvals: null,
+  memberLevels: null
+};
+function canPage(p) {
+  if (user && user.r === 'wh_admin') return true;
+  if (user && user.r === 'sales') return ['sWork','sNewOrd','sOrds','sProds','sCus','dash'].indexOf(p) >= 0;
+  const need = PAGE_PERM[p];
+  if (need === undefined) return true;   // 无限制页面
+  if (need === null) return false;       // 仅 wh_admin
+  return has(need);
+}
 function goPage(p, el, keepLabel) {
+  if (!canPage(p)) { toast(t('noPermission') || '无权限访问', 'er'); return; }
   if (!keepLabel) fLabel = '';
   if (el) fStock = '';
   if (p !== 'inv') fStock = '';
