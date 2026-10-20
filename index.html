@@ -1182,7 +1182,7 @@ input[id^="lp_"]{
 
 <script>
 // ═══════════════════════════════════════
-// JS-1: SUPABASE CONFIG
+// JS-1: Supabase 配置
 // ═══════════════════════════════════════
 const SB_URL = 'https://qpynlblzpmkoovyaxygn.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFweW5sYmx6cG1rb292eWF4eWduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkzMzE4MzIsImV4cCI6MjEwNDkwNzgzMn0.kXn9UjxNYTVZ85kFEdlxIgH5Mw7nESUI9uz37nDrvJ8';
@@ -1211,7 +1211,7 @@ if (window.location.protocol === 'file:') {
 }
 
 // ═══════════════════════════════════════
-// JS-2: i18n 双语系统
+// JS-2: i18n 双语
 // ═══════════════════════════════════════
 let lang = localStorage.getItem('cs-lang') || 'zh';
 const T = {
@@ -1539,7 +1539,7 @@ function toggleLang() {
 }
 
 // ═══════════════════════════════════════
-// JS-3: CONSTANTS
+// JS-3: 常量定义
 // ═══════════════════════════════════════
 const PICKUPS = {motoboy:{l:'Motoboy',i:'🏍️',d:'同城配送'},correios:{l:'Correios',i:'📮',d:'邮政快递'},pickup:{l:'到店自取',i:'🏪',d:'客户上门'},onibus:{l:'Ônibus',i:'🚌',d:'班车托运'}};
 const OSTAT = {draft:{l:'draft',c:'b-dr'},pending:{l:'pending',c:'b-pd'},picking:{l:'picking',c:'b-pk'},done:{l:'done',c:'b-dn'},cancel:{l:'cancel',c:'b-cn'}};
@@ -1571,7 +1571,7 @@ function toggleSizeFields() {
 }
 
 // ═══════════════════════════════════════
-// JS-4: STATE
+// JS-4: 状态管理
 // ═══════════════════════════════════════
 let DB = {cats:[],accts:[],prods:[],ords:[],inb:[],outb:[],cus:[],chgs:[],profilereqs:[]};
 let user = null, portal = 'wh', curP = '';
@@ -1584,7 +1584,7 @@ let dragCid = null;
 let catCollapsed = {}; // category collapse state: {catId: true/false}; missing = collapsed (default)
 
 // ═══════════════════════════════════════
-// JS-5: UTILITIES
+// JS-5: 工具函数
 // ═══════════════════════════════════════
 function fmtDate(iso) {
   if (!iso) return '';
@@ -1748,7 +1748,7 @@ document.querySelectorAll('.mo').forEach(o => o.addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key==='Escape') document.querySelectorAll('.mo.show').forEach(m => { m.classList.remove('show'); document.body.style.overflow=''; }); });
 
 // ═══════════════════════════════════════
-// JS-6: DATA LOADING
+// JS-6: 数据加载
 // ═══════════════════════════════════════
 async function fetchPaged(build) {
   const PAGE = 1000; const out = [];
@@ -1990,7 +1990,7 @@ async function ensurePageData(p) {
 }
 
 // ═══════════════════════════════════════
-// JS-7: AUTH
+// JS-7: 认证登录
 // ═══════════════════════════════════════
 function selPortal(p) {
   portal = p;
@@ -2071,7 +2071,7 @@ document.getElementById('lP').addEventListener('keydown', e => { if (e.key==='En
 document.getElementById('lU').addEventListener('keydown', e => { if (e.key==='Enter') document.getElementById('lP').focus(); });
 
 // ═══════════════════════════════════════
-// JS-8: NAV + ROUTER
+// JS-8: 导航路由
 // ═══════════════════════════════════════
 function buildNav() {
   const n = document.getElementById('sbNav'), sl = user.r==='sales';
