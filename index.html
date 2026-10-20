@@ -2736,7 +2736,6 @@ async function doIO() {
   if (!pid) { toast(t('selectAndEnter'), 'er'); return; }
   const p = prodById(pid);
   if (!p) return;
-  // Check if product has sizes
   var qty = 0;
   var sizeUpdates = {};
   var sizeArea = document.getElementById('ioSizeArea');
@@ -2750,36 +2749,30 @@ async function doIO() {
   }
   if (!qty || qty <= 0) { toast(t('selectAndEnter'), 'er'); return; }
   if (tp === 'out' && qty > p.stock) { toast(t('insufficient', p.stock), 'er'); return; }
+  if (window._ioBusy) return;
+  window._ioBusy = true;
   try {
-    if (tp === 'in') {
-      await adminFrom('inbound_records').insert({ product_id: pid, qty, operator: user.u, note });
-    } else {
-      await adminFrom('outbound_records').insert({ product_id: pid, qty, operator: user.u, note });
-    }
-    // Update size_stock and stock
-    if (p.sizes && p.sizes.length > 0 && Object.keys(sizeUpdates).length > 0) {
-      var newSizeStock = Object.assign({}, p.size_stock || {});
-      p.sizes.forEach(function(s) {
-        var cur = newSizeStock[s] || 0;
-        if (sizeUpdates[s]) {
-          newSizeStock[s] = tp === 'in' ? cur + sizeUpdates[s] : Math.max(0, cur - sizeUpdates[s]);
-        }
-      });
-      var newStock = Object.values(newSizeStock).reduce(function(a,b){return a+b},0);
-      await adminFrom('products').update({ size_stock: newSizeStock, stock: newStock }).eq('id', pid);
-    } else {
-      // Fallback for non-sized products
-      if (tp === 'in') {
-        await adminFrom('products').update({ stock: p.stock + qty }).eq('id', pid);
-      } else {
-        await adminFrom('products').update({ stock: p.stock - qty }).eq('id', pid);
-      }
-    }
+    // 原子出入库: 流水+库存一个事务，DB 侧库存守卫防超卖
+    const sizePayload = Object.keys(sizeUpdates).length > 0 ? sizeUpdates : null;
+    const { data: result, error: ioErr } = await sb.rpc('stock_io', {
+      p_type: tp === 'in' ? 'in' : 'out',
+      p_product_id: pid,
+      p_qty: qty,
+      p_operator: user.u || '',
+      p_note: note,
+      p_size_qty: sizePayload
+    });
+    if (ioErr) throw ioErr;
+    if (result && result.error) throw new Error(result.error);
     await loadAllData();
     cMo('imo');
     toast(t('opSuccess'), 'ok');
     render(curP);
-  } catch (err) { toast(t('opFailed') + ': ' + err.message, 'er'); }
+  } catch (err) {
+    const msg = String(err.message || err);
+    if (msg.indexOf('STOCK_INSUFFICIENT') >= 0) toast(t('insufficient', p.stock), 'er');
+    else toast(t('opFailed') + ': ' + msg, 'er');
+  } finally { window._ioBusy = false; }
 }
 
 // ═══════════════════════════════════════
@@ -3685,24 +3678,31 @@ function updOrdStatus(id, st) {
   }).catch(err => toast(t('opFailed') + ': ' + err.message, 'er'));
 }
 
-// Cancel order and restore stock
+// Cancel order and restore stock (atomic RPC)
 async function cancelOrd(id) {
   const o = DB.ords.find(x => x.id === id);
   if (!o) return;
   if (!confirm(t('confirmCancelOrd'))) return;
+  if (window._cancelBusy) return;
+  window._cancelBusy = true;
   try {
-    // Restore stock
+    // 原子取消: 回补库存 + 状态变更一个事务，幂等状态守卫
+    const { data: result, error: ce } = await sb.rpc('admin_cancel_order', { p_order_id: id });
+    if (ce) throw ce;
+    if (result && result.error) throw new Error(result.error);
+    // 同步本地缓存
     for (const item of o.items) {
       const p = prodById(item.pid);
-      if (p) {
-        await adminFrom('products').update({ stock: p.stock + item.qty }).eq('id', item.pid);
-      }
+      if (p) p.stock = Number(p.stock || 0) + item.qty;
     }
-    await adminFrom('orders').update({ status: 'cancel', processed_by: user.u }).eq('id', id);
     await loadAllData();
     toast(t('orderCancelledRestocked'), 'ok');
     render(curP);
-  } catch (err) { toast(t('opFailed') + ': ' + err.message, 'er'); }
+  } catch (err) {
+    const msg = String(err.message || err);
+    if (msg.indexOf('ORDER_STATE_INVALID') >= 0) toast(t('opFailed') + ': 已取消或已完成', 'er');
+    else toast(t('opFailed') + ': ' + msg, 'er');
+  } finally { window._cancelBusy = false; }
 }
 
 // ═══════════════════════════════════════
@@ -4983,9 +4983,10 @@ async function submitOrd() {
     if (dEditId) { await adminFrom('orders').update(row).eq('id', dEditId); ordId = dEditId; await adminFrom('order_items').delete().eq('order_id', dEditId); }
     else { const { data, error } = await adminFrom('orders').insert(row).select().single(); if (error) throw error; ordId = data.id; }
     if (dItems.length) await adminFrom('order_items').insert(dItems.map(i => ({ order_id: ordId, product_id: i.pid, qty: i.qty, original_price: Number((prodById(i.pid) || {}).price) || 0 })));
-    // Lock stock immediately
+    // Lock stock immediately (atomic, guarded against oversell)
     for (const it of dItems) {
-      await adminFrom('products').update({ stock: (prodById(it.pid)?.stock || 0) - it.qty }).eq('id', it.pid);
+      const { error: dErr } = await sb.rpc('decrement_stock', { pid: it.pid, amount: it.qty });
+      if (dErr) throw new Error('STOCK:' + it.pid + ':' + (dErr.message || dErr));
     }
     await loadAllData();
     toast(t('orderSubmitted'), 'ok');
