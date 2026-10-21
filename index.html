@@ -3776,7 +3776,7 @@ async function cancelOrd(id) {
   window._cancelBusy = true;
   try {
     // 原子取消: 回补库存 + 状态变更一个事务，幂等状态守卫
-    const { data: result, error: ce } = await sb.rpc('admin_cancel_order', { p_order_id: id });
+    const { data: result, error: ce } = await sb.rpc('app_cancel_order', { p_order_id: id });
     if (ce) throw ce;
     if (result && result.error) throw new Error(result.error);
     // 同步本地缓存
