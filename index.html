@@ -51,7 +51,8 @@ input,button,select,textarea{font-family:inherit;font-size:inherit;border:none;o
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bl);border-radius:3px}
 
 /* === LOGIN === */
-#loginPage{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 20% 80%,#1a1206,transparent 50%),radial-gradient(ellipse at 80% 20%,#0a1628,transparent 50%),var(--bg);padding:1.2rem}
+#loginPage{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 20% 80%,#1a1206,transparent 50%),radial-gradient(ellipse at 80% 20%,#0a1628,transparent 50%),var(--bg);padding:1.2rem;position:fixed;inset:0;z-index:50;overflow:auto}
+#appPage{display:none}
 .lbox{width:100%;max-width:440px;animation:fadeUp .5s ease both}
 .logo{display:flex;align-items:center;gap:.6rem;margin-bottom:2rem;justify-content:center}
 .logo i{width:40px;height:40px;background:var(--ac);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--bg);font-size:1.2rem;font-style:normal;box-shadow:0 0 24px var(--ag)}
