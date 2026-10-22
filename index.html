@@ -1184,10 +1184,9 @@ input[id^="lp_"]{
 // ═══════════════════════════════════════
 // JS-1: Supabase 配置
 // ═══════════════════════════════════════
-const SB_URL = 'https://qpynlblzpmkoovyaxygn.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFweW5sYmx6cG1rb292eWF4eWduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkzMzE4MzIsImV4cCI6MjEwNDkwNzgzMn0.kXn9UjxNYTVZ85kFEdlxIgH5Mw7nESUI9uz37nDrvJ8';
-let sb = null;
-let ADMIN_TOKEN = '';
+SB_URL = 'https://qpynlblzpmkoovyaxygn.supabase.co';
+SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFweW5sYmx6cG1rb292eWF4eWduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkzMzE4MzIsImV4cCI6MjEwNDkwNzgzMn0.kXn9UjxNYTVZ85kFEdlxIgH5Mw7nESUI9uz37nDrvJ8';
+var ADMIN_TOKEN = window.ADMIN_TOKEN || '';
 function initSb(token) {
   ADMIN_TOKEN = token || '';
   try {
