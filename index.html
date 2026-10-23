@@ -1075,6 +1075,19 @@ input[id^="lp_"]{
   pointer-events:none
 }
 /* end fix header */
+
+/* 预填可编辑框：字色变浅，聚焦编辑时恢复 */
+input.pre-val, textarea.pre-val { color: var(--txt3, #8b94a4); }
+input.pre-val:focus, textarea.pre-val:focus { color: var(--txt, #121826); }
+.form-group input:not(:placeholder-shown),
+.form-group textarea:not(:placeholder-shown),
+.fgm input:not([type=checkbox]):not([type=radio]):not(:placeholder-shown),
+.fgm textarea:not(:placeholder-shown) { color: var(--txt3, #8b94a4); }
+.form-group input:not(:placeholder-shown):focus,
+.form-group textarea:not(:placeholder-shown):focus,
+.fgm input:not([type=checkbox]):not([type=radio]):not(:placeholder-shown):focus,
+.fgm textarea:not(:placeholder-shown):focus { color: var(--txt, #121826); }
+
 </style>
 </head>
 <body>
@@ -1318,7 +1331,7 @@ const T = {
     paySettingsInfo:'客户在下单付款时会看到这些信息', pixAccount:'PIX 账号',
     bankName:'银行名称', bankAccount:'银行账号', accountHolder:'户名',
     wechatPay:'微信收款', alipayPay:'支付宝收款', paymentNote:'付款备注说明',
-    shipAddrSettings:'发货地址设置', shipAddrInfo:'销售端下单时按发货方式自动填入', addrMotoboy:'Motoboy 默认地址', addrCorreios:'Correios 默认地址', addrMotoboyPH:'同城配送默认地址...', addrCorreiosPH:'邮寄默认地址 (含CEP)...', shipAddrSaved:'默认发货地址已保存', defaultAccount:'默认账户（未匹配额度时显示）', amountTiers:'按额度显示不同账户', addTier:'添加额度档',
+    shipSettings:'发货设置', shipAddrSettings:'发货设置', shipAddrInfo:'自取 / Motoboy / Correios / Ônibus 分方式配置', shipPickup:'自取', shopAddr:'商店地址', shopAddrPH:'门店地址...', pickupSlots:'分时段取货', pickupSlotsPH:'如: 09:00-12:00, 14:00-18:00', pickupSlotsHint:'每行或逗号分隔一个时间段', motoboyFee:'Motoboy 运费', returnAddr:'退货地址', returnAddrPH:'退货地址...', onibusPriceLg:'大包裹价格', onibusPriceSm:'小包裹价格', addrMotoboy:'Motoboy 默认地址', addrCorreios:'Correios 默认地址', addrMotoboyPH:'同城配送默认地址...', addrCorreiosPH:'邮寄默认地址 (含CEP)...', shipAddrSaved:'发货设置已保存', defaultAccount:'默认账户（未匹配额度时显示）', amountTiers:'按额度显示不同账户', addTier:'添加额度档',
     noTiers:'暂无额度档，将只显示默认账户', minAmount:'额度下限', maxAmount:'额度上限（可空）',
     pixPH:'输入 PIX key...', bankNamePH:'如 Banco do Brasil...', bankAccountPH:'输入银行账号...',
     accountHolderPH:'输入户名...', wechatPH:'微信号或收款码链接...', alipayPH:'支付宝账号或收款码链接...',
@@ -1466,7 +1479,7 @@ const T = {
     paySettingsInfo:'O cliente verá essas informações ao fazer o pedido', pixAccount:'Conta PIX',
     bankName:'Nome do Banco', bankAccount:'Conta Bancária', accountHolder:'Titular',
     wechatPay:'WeChat Pay', alipayPay:'Alipay', paymentNote:'Nota de Pagamento',
-    shipAddrSettings:'Configurar Endereços de Envio', shipAddrInfo:'Preenchido automaticamente no pedido conforme o método', addrMotoboy:'Endereço padrão Motoboy', addrCorreios:'Endereço padrão Correios', addrMotoboyPH:'Endereço padrão de entrega...', addrCorreiosPH:'Endereço postal padrão (com CEP)...', shipAddrSaved:'Endereços de envio salvos', defaultAccount:'Conta padrão (sem faixa)', amountTiers:'Contas por faixa de valor', addTier:'Adicionar faixa',
+    shipAddrSettings:'Configurações de Envio de Envio', shipAddrInfo:'Preenchido automaticamente no pedido conforme o método', addrMotoboy:'Endereço padrão Motoboy', addrCorreios:'Endereço padrão Correios', addrMotoboyPH:'Endereço padrão de entrega...', addrCorreiosPH:'Endereço postal padrão (com CEP)...', shipAddrSaved:'Endereços de envio salvos', shipSettings:'Configurações de Envio', shipPickup:'Retirada', shopAddr:'Endereço da loja', shopAddrPH:'Endereço da loja...', pickupSlots:'Horários de retirada', pickupSlotsPH:'ex: 09:00-12:00, 14:00-18:00', pickupSlotsHint:'Um intervalo por linha ou separado por vírgula', motoboyFee:'Taxa Motoboy', returnAddr:'Endereço de devolução', returnAddrPH:'Endereço de devolução...', onibusPriceLg:'Preço pacote grande', onibusPriceSm:'Preço pacote pequeno', defaultAccount:'Conta padrão (sem faixa)', amountTiers:'Contas por faixa de valor', addTier:'Adicionar faixa',
     noTiers:'Sem faixas; só conta padrão', minAmount:'Valor mínimo', maxAmount:'Valor máximo (opcional)',
     pixPH:'Chave PIX...', bankNamePH:'Ex: Banco do Brasil...', bankAccountPH:'Número da conta...',
     accountHolderPH:'Nome do titular...', wechatPH:'ID WeChat ou link...', alipayPH:'Conta ou link Alipay...',
@@ -2196,7 +2209,7 @@ function buildNav() {
       h += '<div class="nl">'+t('financeMgmtNav')+'</div>';
       h += '<div class="ni" data-p="ana" onclick="goPage(\'ana\',this)">'+sv.ana+' '+t('analytics')+'</div>';
       h += '<div class="ni" data-p="paySettings" onclick="goPage(\'paySettings\',this)">'+'💳'+' '+t('payAccount')+'</div>';
-      h += '<div class="ni" data-p="shipAddr" onclick="goPage(\'shipAddr\',this)">'+'📍'+' '+t('shipAddrSettings')+'</div>';
+      h += '<div class="ni" data-p="shipAddr" onclick="goPage(\'shipAddr\',this)">'+'📍'+' '+t('shipSettings')+'</div>';
       h += '<div class="ni" data-p="billReview" onclick="goPage(\'billReview\',this)">'+'🧾'+' '+t('billReview')+'</div>';
       h += '<div class="ni" data-p="labelPrice" onclick="goPage(\'labelPrice\',this)">'+'🏷️'+' '+t('labelPrice')+'</div>';
       h += '<div class="nl">'+t('system')+'</div>';
@@ -2240,11 +2253,11 @@ function goPage(p, el, keepLabel) {
   if (el) el.classList.add('on');
   else { const e = document.querySelector('[data-p="'+p+'"]'); if (e) e.classList.add('on'); }
   curP = p;
-  const ts = {dash:t('dashboard'),inv:t('inventory'),inb:t('inboundRecord'),outb:t('outboundRecord'),ana:t('analytics'),accts:t('accounts'),cats:t('categories'),whOrd:t('orderProcess'),sWork:t('salesWorkspace'),sNewOrd:t('newOrder'),sOrds:t('orderList'),sProds:t('productQuery'),sCus:t('customerMgmt'),approvals:t('approvalCenter'),paySettings:t('payAccountSettings'),billReview:t('billReview'),shipAddr:t('shipAddrSettings'),labelPrice:t('labelPrice'),memberLevels:t('memberLevel')};
+  const ts = {dash:t('dashboard'),inv:t('inventory'),inb:t('inboundRecord'),outb:t('outboundRecord'),ana:t('analytics'),accts:t('accounts'),cats:t('categories'),whOrd:t('orderProcess'),sWork:t('salesWorkspace'),sNewOrd:t('newOrder'),sOrds:t('orderList'),sProds:t('productQuery'),sCus:t('customerMgmt'),approvals:t('approvalCenter'),paySettings:t('payAccountSettings'),billReview:t('billReview'),shipAddr:t('shipSettings'),labelPrice:t('labelPrice'),memberLevels:t('memberLevel')};
   document.getElementById('tT').textContent = ts[p]||'';
   // 切换页面强制拉取该域最新数据
   if (window.ensurePageData) {
-    ensurePageData(p, true).then(function() { render(curP === p ? p : curP); }).catch(function() { render(p); });
+    ensurePageData(p, true).then(function() { render(curP === p ? p : curP); markPreVal(); }).catch(function() { render(p); });
   } else {
     render(p);
   }
@@ -2265,6 +2278,26 @@ function clearLabelFilter() {
 function pgTo(n) { iPg = n; render('inv'); }
 function pgSz(v) { PG = Number(v); iPg = 1; render('inv'); }
 function togSB() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sov').classList.toggle('show'); }
+
+function markPreVal(root) {
+  try {
+    const nodes = (root || document).querySelectorAll('input, textarea');
+    nodes.forEach(function(el) {
+      const ty = String(el.type || '').toLowerCase();
+      if (ty === 'checkbox' || ty === 'radio' || ty === 'file' || ty === 'hidden' || ty === 'button' || ty === 'submit') return;
+      if (el.value && String(el.value).trim()) el.classList.add('pre-val');
+    });
+  } catch (_) {}
+}
+document.addEventListener('focusin', function(e) {
+  const el = e.target;
+  if (el && el.classList) el.classList.remove('pre-val');
+});
+document.addEventListener('focusout', function(e) {
+  const el = e.target;
+  if (el && el.classList && el.value && String(el.value).trim()) el.classList.add('pre-val');
+});
+
 function render(p) {
   const c = document.getElementById('mc');
   switch(p) {
@@ -2289,7 +2322,7 @@ function render(p) {
       break;
     case 'paySettings': c.innerHTML = rPaySettings(); loadPaySettings(); break;
     case 'billReview': c.innerHTML = rBillReview(); break;
-    case 'shipAddr': c.innerHTML = rShipAddr(); loadShipAddrSettings(); break;
+    case 'shipAddr': c.innerHTML = rShipAddr(); renderShipTab(); loadShipAddrSettings(); break;
     case 'labelPrice': c.innerHTML = rLabelPrice(); loadLabelPrices(); break;
     case 'memberLevels': c.innerHTML = rMemberLevels(); break;
   }
@@ -4549,38 +4582,117 @@ function rPaySettings() {
 }
 
 function rShipAddr() {
-  return '<div class="pnl"><div class="pnH"><span class="pnT">📍 ' + t('shipAddrSettings') + '</span><span style="font-size:.65rem;color:var(--t3)">' + t('shipAddrInfo') + '</span></div><div class="pnB" id="shipAddrArea"><div class="spinner"></div></div></div>';
+  return '<div class="pnl"><div class="pnH"><span class="pnT">⚙️ ' + t('shipSettings') + '</span><span style="font-size:.65rem;color:var(--t3)">' + t('shipAddrInfo') + '</span></div>'
+    + '<div class="pnB">'
+    + '<div id="shipTabs" style="display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1rem">'
+    + '<button class="btn bs on" id="sht-pickup" onclick="switchShipTab(\'pickup\')">' + t('shipPickup') + '</button>'
+    + '<button class="btn bs" id="sht-motoboy" onclick="switchShipTab(\'motoboy\')">Motoboy</button>'
+    + '<button class="btn bs" id="sht-correios" onclick="switchShipTab(\'correios\')">Correios</button>'
+    + '<button class="btn bs" id="sht-onibus" onclick="switchShipTab(\'onibus\')">Ônibus</button>'
+    + '</div>'
+    + '<div id="shipTabBody" style="min-height:120px"></div>'
+    + '</div></div>';
+}
+
+let shipTab = 'pickup';
+const SHIP_KEYS = ['shop_addr', 'pickup_slots', 'flexboy_api', 'motoboy_fee', 'motoboy_return', 'correios_api', 'correios_return', 'onibus_price_lg', 'onibus_price_sm'];
+function shipKeyLabel(key) {
+  const m = {
+    shop_addr: 'shopAddr', pickup_slots: 'pickupSlots',
+    flexboy_api: 'Flexboy API', motoboy_fee: 'motoboyFee', motoboy_return: 'returnAddr',
+    correios_api: 'Correios API', correios_return: 'returnAddr',
+    onibus_price_lg: 'onibusPriceLg', onibus_price_sm: 'onibusPriceSm'
+  };
+  const raw = m[key] || key;
+  return raw === 'Flexboy API' || raw === 'Correios API' ? raw : t(raw);
+}
+
+function switchShipTab(tab) {
+  shipTab = tab || 'pickup';
+  ['pickup', 'motoboy', 'correios', 'onibus'].forEach(function(x) {
+    const b = document.getElementById('sht-' + x);
+    if (b) b.classList.toggle('on', x === shipTab);
+  });
+  renderShipTab();
+}
+
+function renderShipTab() {
+  const area = document.getElementById('shipTabBody');
+  if (!area) return;
+  // 必须去掉 spinner 类，否则容器只有 28px 圆，表单被挤没
+  area.className = '';
+  area.style.minHeight = '120px';
+  const m = window._shipCfg || {};
+  const val = function(k) { return esc(m[k] || ''); };
+  let html = '';
+  if (shipTab === 'pickup') {
+    html += '<div class="fgm"><label>🏪 ' + t('shopAddr') + '</label><textarea id="ps_shop_addr" placeholder="' + t('shopAddrPH') + '" style="min-height:56px">' + val('shop_addr') + '</textarea></div>';
+    html += '<div class="fgm"><label>🕐 ' + t('pickupSlots') + '</label><textarea id="ps_pickup_slots" placeholder="' + t('pickupSlotsPH') + '" style="min-height:72px">' + val('pickup_slots') + '</textarea>'
+      + '<div style="font-size:.68rem;color:var(--t3);margin-top:.3rem">' + t('pickupSlotsHint') + '</div></div>';
+  } else if (shipTab === 'motoboy') {
+    html += '<div class="fgm"><label>🔗 Flexboy API</label><input type="text" id="ps_flexboy_api" placeholder="https://..." value="' + val('flexboy_api') + '" /></div>';
+    html += '<div class="fgm"><label>💰 ' + t('motoboyFee') + '</label><input type="number" id="ps_motoboy_fee" min="0" step="0.01" placeholder="0.00" value="' + val('motoboy_fee') + '" /></div>';
+    html += '<div class="fgm"><label>↩️ ' + t('returnAddr') + '</label><textarea id="ps_motoboy_return" placeholder="' + t('returnAddrPH') + '" style="min-height:52px">' + val('motoboy_return') + '</textarea></div>';
+  } else if (shipTab === 'correios') {
+    html += '<div class="fgm"><label>🔗 Correios API</label><input type="text" id="ps_correios_api" placeholder="https://..." value="' + val('correios_api') + '" /></div>';
+    html += '<div class="fgm"><label>↩️ ' + t('returnAddr') + '</label><textarea id="ps_correios_return" placeholder="' + t('returnAddrPH') + '" style="min-height:52px">' + val('correios_return') + '</textarea></div>';
+  } else {
+    html += '<div class="fr"><div class="fgm"><label>📦 ' + t('onibusPriceLg') + '</label><input type="number" id="ps_onibus_price_lg" min="0" step="0.01" placeholder="0.00" value="' + val('onibus_price_lg') + '" /></div>';
+    html += '<div class="fgm"><label>📦 ' + t('onibusPriceSm') + '</label><input type="number" id="ps_onibus_price_sm" min="0" step="0.01" placeholder="0.00" value="' + val('onibus_price_sm') + '" /></div></div>';
+  }
+  html += '<div style="display:flex;justify-content:flex-end;gap:.5rem;margin-top:1rem"><button class="btn bp bs aw" onclick="saveShipAddrSettings()">💾 ' + t('saveSettings') + '</button></div>';
+  area.innerHTML = html;
 }
 
 async function loadShipAddrSettings() {
+  window._shipCfg = window._shipCfg || {};
+  // 先渲染可编辑表单，再回填；加载失败也可保存
+  renderShipTab();
   try {
-    const { data } = await sb.from('site_settings').select('*').in('key', ['addr_motoboy', 'addr_correios']);
+    const { data, error } = await sb.from('site_settings').select('*').in('key', SHIP_KEYS.concat(['addr_motoboy', 'addr_correios']));
+    if (error) throw error;
     const map = {};
     (data || []).forEach(r => { map[r.key] = r.value || ''; });
-    const area = document.getElementById('shipAddrArea');
-    if (!area) return;
-    area.innerHTML = ''
-      + '<div class="fgm"><label>🏍️ ' + t('addrMotoboy') + '</label><textarea id="ps_addr_motoboy" placeholder="' + t('addrMotoboyPH') + '" style="min-height:52px">' + esc(map.addr_motoboy || '') + '</textarea></div>'
-      + '<div class="fgm"><label>📮 ' + t('addrCorreios') + '</label><textarea id="ps_addr_correios" placeholder="' + t('addrCorreiosPH') + '" style="min-height:52px">' + esc(map.addr_correios || '') + '</textarea></div>'
-      + '<div style="display:flex;justify-content:flex-end;gap:.5rem;margin-top:1rem"><button class="btn bp bs aw" onclick="saveShipAddrSettings()">💾 ' + t('saveSettings') + '</button></div>';
-  } catch (e) { console.error('Load ship addr error:', e); }
+    if (!map.motoboy_return && map.addr_motoboy) map.motoboy_return = map.addr_motoboy;
+    if (!map.correios_return && map.addr_correios) map.correios_return = map.addr_correios;
+    window._shipCfg = map;
+    renderShipTab();
+  } catch (e) {
+    console.error('Load ship settings error:', e);
+    renderShipTab();
+  }
 }
 
 async function saveShipAddrSettings() {
   try {
-    for (const key of ['addr_motoboy', 'addr_correios']) {
+    const keys = shipTab === 'pickup' ? ['shop_addr', 'pickup_slots']
+      : shipTab === 'motoboy' ? ['flexboy_api', 'motoboy_fee', 'motoboy_return']
+      : shipTab === 'correios' ? ['correios_api', 'correios_return']
+      : ['onibus_price_lg', 'onibus_price_sm'];
+    for (const key of keys) {
       const el = document.getElementById('ps_' + key);
       if (!el) continue;
       const val = el.value.trim();
-      const { data: existing } = await sb.from('site_settings').select('key').eq('key', key).limit(1);
-      if (existing && existing.length) {
-        await adminFrom('site_settings').update({ value: val, updated_at: new Date().toISOString() }).eq('key', key);
-      } else {
-        await adminFrom('site_settings').insert({ key, value: val, label: key });
+      const label = shipKeyLabel(key);
+      try {
+        const { data: existing } = await sb.from('site_settings').select('key').eq('key', key).limit(1);
+        if (existing && existing.length) {
+          await adminFrom('site_settings').update({ value: val, label: label, updated_at: new Date().toISOString() }).eq('key', key);
+        } else {
+          await adminFrom('site_settings').insert({ key: key, value: val, label: label });
+        }
+      } catch (ek) {
+        console.error('save', key, ek);
+        throw ek;
       }
     }
+    if (!window._shipCfg) window._shipCfg = {};
+    keys.forEach(function(k) {
+      const el = document.getElementById('ps_' + k);
+      if (el) window._shipCfg[k] = el.value.trim();
+    });
     toast(t('shipAddrSaved'), 'ok');
-  } catch (e) { toast(t('saveFailed') + ': ' + e.message, 'er'); }
+  } catch (e) { toast(t('saveFailed') + ': ' + (e.message || e), 'er'); }
 }
 
 async function loadPaySettings() {
