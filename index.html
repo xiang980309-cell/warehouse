@@ -1603,7 +1603,7 @@ function esc(s) { if (!s) return ''; const d = document.createElement('div'); d.
 function safeUrl(u) {
   if (!u) return '';
   const s = String(u).replace(/[\r\n\0"<>]/g, '').trim();
-  if (/^(https?:\/\/|data:image\/(png|jpe?g|gif|webp);base64,)/i.test(s)) return s.replace(/"/g, '%22');
+  if (/^(https?:\/\/|data:image\/)/i.test(s)) return s.replace(/"/g, '%22');
   return '';
 }
 function oMo(id) { document.getElementById(id).classList.add('show'); document.body.style.overflow = 'hidden'; }
@@ -1955,7 +1955,7 @@ async function loadCoreData() {
     ]);
     DB.cats = (catR.data||[]).map(c => ({id:Number(c.id),name:c.name,code:c.code,icon:c.icon,order:c.order_num,parent_id:c.parent_id!=null?Number(c.parent_id):null,depth:Number(c.depth||0),visible:c.visible!==false,image:c.image||'',description:c.description||'',locked:c.locked||false,product_count:Number(c.product_count||0)}));
     const pc = pcR.data||[];
-    DB.prods = (prodR.data||[]).map(p => ({id:p.id,name:p.name,catIds:(function(){const ids=pc.filter(x=>x.product_id===p.id).map(x=>x.category_id);const d=deepestCatId(ids);return d?[d]:[]})(),sku:p.sku,skuManual:p.sku_manual?1:0,stock:(function(){let st=Number(p.stock)||0;try{if(!st&&p.size_stock){const ss=typeof p.size_stock==='string'?JSON.parse(p.size_stock):p.size_stock;if(ss&&typeof ss==='object')st=Object.values(ss).reduce((a,b)=>a+(Number(b)||0),0);}}catch(_){}if(st<=0&&p.size_stock){try{const ss=typeof p.size_stock==='string'?JSON.parse(p.size_stock):p.size_stock;if(ss&&typeof ss==='object'){const sm=Object.values(ss).reduce((a,b)=>a+(Number(b)||0),0);if(sm>st)st=sm;}}catch(_){}}return st;})(),price:Number(p.price),cost:Number(p.cost),loc:p.location||'',note:p.note||'',cr:fmtDate(p.created_at).split(' ')[0],img:p.image||'',category_type:p.category_type||'general',sizes:p.sizes||[],size_stock:p.size_stock||{},has_bag:p.has_bag||false,bag_price:Number(p.bag_price||0),has_case:p.has_case||false,case_price:Number(p.case_price||0),label:p.label||'',lp:(p.label_price==null?null:Number(p.label_price)),yr:p.release_year||'',ver:p.release_version||'',tg:p.tags||[],ml:!!p.mall_listed,gl:p.gallery_listed!==false}));
+    DB.prods = (prodR.data||[]).map(p => ({id:p.id,name:p.name,catIds:(function(){const ids=pc.filter(x=>x.product_id===p.id).map(x=>x.category_id);const d=deepestCatId(ids);return d?[d]:[]})(),sku:p.sku,skuManual:p.sku_manual?1:0,stock:(function(){let st=Number(p.stock)||0;try{if(!st&&p.size_stock){const ss=typeof p.size_stock==='string'?JSON.parse(p.size_stock):p.size_stock;if(ss&&typeof ss==='object')st=Object.values(ss).reduce((a,b)=>a+(Number(b)||0),0);}}catch(_){}if(st<=0&&p.size_stock){try{const ss=typeof p.size_stock==='string'?JSON.parse(p.size_stock):p.size_stock;if(ss&&typeof ss==='object'){const sm=Object.values(ss).reduce((a,b)=>a+(Number(b)||0),0);if(sm>st)st=sm;}}catch(_){}}return st;})(),price:Number(p.price),cost:Number(p.cost),loc:p.location||'',note:p.note||'',cr:fmtDate(p.created_at).split(' ')[0],img:(function(){const raw=p.image||'';if(raw)return raw;const arr=p.images||[];const f=arr[0];if(!f)return '';return typeof f==='string'?f:(f.url||f.image||f.src||'');})(),category_type:p.category_type||'general',sizes:p.sizes||[],size_stock:(function(ss){try{return typeof ss==='string'?JSON.parse(ss):(ss||{});}catch(_){return {};}})(p.size_stock),has_bag:p.has_bag||false,bag_price:Number(p.bag_price||0),has_case:p.has_case||false,case_price:Number(p.case_price||0),label:p.label||'',lp:(p.label_price==null?null:Number(p.label_price)),yr:p.release_year||'',ver:p.release_version||'',tg:p.tags||[],ml:!!p.mall_listed,gl:p.gallery_listed!==false}));
   } catch(e) { console.warn('loadCoreData:', e); }
 }
 
@@ -2412,7 +2412,7 @@ function rInv() {
         + '<div style="display:flex;gap:.75rem;align-items:center">'
         + '<div style="flex-shrink:0;width:56px">'
         + '<div style="margin-bottom:.25rem;text-align:center;line-height:1">' + labelBadge(p.label).replace('margin-left:.3rem', 'margin-left:0') + '</div>'
-        + '<div class="pimg" style="width:56px;height:56px">' + (p.img ? '<img src="' + safeUrl(p.img) + '" alt="" onerror="this.remove()">' : '') + '</div>'
+        + '<div class="pimg" style="width:56px;height:56px">' + (p.img ? '<img src="' + safeUrl(p.img) + '" alt="" onerror="this.style.display='none'">' : '') + '</div>'
         + '</div>'
         + '<div style="flex:1;min-width:0">'
         + '<div class="pdl"><span class="pdk" style="min-width:3.2em">' + t('cName') + '：</span><span class="pdv">' + esc(p.name) + '</span></div>'
@@ -2587,7 +2587,7 @@ function openPDetail(id) {
   rows += pdRow(t('remarks'), p.note ? '<span style="white-space:pre-wrap">' + esc(p.note) + '</span>' : '<span style="color:var(--t3)">-</span>');
   rows += pdRow(t('mallList'), p.ml ? '<span class="badge b-novo">' + t('onShelf') + '</span>' : '<span class="badge b-normal">' + t('offShelf') + '</span>');
   rows += pdRow(t('galleryList'), p.gl ? '<span class="badge b-novo">' + t('onShelf') + '</span>' : '<span class="badge b-normal">' + t('offShelf') + '</span>');
-  const img = p.img ? '<div style="margin-bottom:.85rem;text-align:center"><img src="' + safeUrl(p.img) + '" alt="" style="width:100%;max-height:55vh;object-fit:contain;border-radius:12px;border:1px solid var(--bd);background:var(--s2);cursor:zoom-in" onclick="window.open(this.src)" onerror="this.remove()"></div>' : '<div style="margin-bottom:.85rem;height:180px;display:flex;align-items:center;justify-content:center;background:var(--s2);border:1px dashed var(--bd);border-radius:12px;font-size:2.2rem">👕</div>';
+  const img = p.img ? '<div style="margin-bottom:.85rem;text-align:center"><img src="' + safeUrl(p.img) + '" alt="" style="width:100%;max-height:55vh;object-fit:contain;border-radius:12px;border:1px solid var(--bd);background:var(--s2);cursor:zoom-in" onclick="window.open(this.src)" onerror="this.style.display='none'"></div>' : '<div style="margin-bottom:.85rem;height:180px;display:flex;align-items:center;justify-content:center;background:var(--s2);border:1px dashed var(--bd);border-radius:12px;font-size:2.2rem">👕</div>';
   document.getElementById('pdT').textContent = t('prodDetail');
   document.getElementById('pdB').innerHTML = img + rows;
   let f = '<button class="btn bg bs" onclick="cMo(\'pdm\')">' + t('close') + '</button>';
@@ -2835,7 +2835,7 @@ function rRec(tp) {
   } else {
     tb = recs.map(r => {
       const p = prodById(r.pid);
-      return '<tr><td style="font-family:DM Mono,monospace;font-size:.7rem;color:var(--t3)">' + esc(r.t) + '</td><td><div class="prow"><div class="pimg">' + (p && p.img ? '<img src="' + safeUrl(p.img) + '" alt="" onerror="this.remove()">' : '') + '</div><div class="pinfo"><strong>' + (p ? esc(p.name) : t('deleted')) + '</strong></div></div></td><td class="hide-sm"><span class="sk">' + (p ? esc(p.sku) : '-') + '</span></td><td><span class="qty-pill ' + (isIn ? 'in' : 'out') + '">' + (isIn ? '+' : '-') + r.qty + '</span></td><td class="hide-md">' + esc(r.op) + '</td><td class="hide-sm">' + esc(r.note || '-') + '</td></tr>';
+      return '<tr><td style="font-family:DM Mono,monospace;font-size:.7rem;color:var(--t3)">' + esc(r.t) + '</td><td><div class="prow"><div class="pimg">' + (p && p.img ? '<img src="' + safeUrl(p.img) + '" alt="" onerror="this.style.display='none'">' : '') + '</div><div class="pinfo"><strong>' + (p ? esc(p.name) : t('deleted')) + '</strong></div></div></td><td class="hide-sm"><span class="sk">' + (p ? esc(p.sku) : '-') + '</span></td><td><span class="qty-pill ' + (isIn ? 'in' : 'out') + '">' + (isIn ? '+' : '-') + r.qty + '</span></td><td class="hide-md">' + esc(r.op) + '</td><td class="hide-sm">' + esc(r.note || '-') + '</td></tr>';
     }).join('');
   }
   return '<div class="tb"><span class="tbsp"></span>' + (can ? '<button class="btn bp bs aw" onclick="openIO(\'' + tp + '\')">' + (isIn ? t('addInbound') : t('addOutbound')) + '</button>' : '') + '</div><div class="tw"><div class="ts"><table><thead><tr><th>' + t('createdAt') + '</th><th>' + t('product') + '</th><th class="hide-sm">' + t('sku') + '</th><th>' + t('quantity') + '</th><th class="hide-md">' + t('operator') + '</th><th class="hide-sm">' + t('remarks') + '</th></tr></thead><tbody>' + tb + '</tbody></table></div></div>';
@@ -3769,7 +3769,7 @@ function viewOrd(id) {
     const p = prodById(i.pid);
     const name = p ? esc(p.name) : t('deleted');
     const sku = p ? esc(p.sku) : '-';
-    const img = '<div class="pimg" style="width:44px;height:44px;flex-shrink:0">' + (p && p.img ? '<img src="' + safeUrl(p.img) + '" alt="" onerror="this.remove()">' : '') + '</div>';
+    const img = '<div class="pimg" style="width:44px;height:44px;flex-shrink:0">' + (p && p.img ? '<img src="' + safeUrl(p.img) + '" alt="" onerror="this.style.display='none'">' : '') + '</div>';
     const cats = p ? catTagsP(p, true) : '';
     const loc = p && p.loc ? esc(p.loc) : '-';
     const price = p ? '¥' + Number(p.price).toLocaleString() : '-';
@@ -4299,7 +4299,7 @@ function loadLabelPrices() {
     const sel = labelSelected.has(p.id);
     html += '<div class="pcard" style="cursor:default;display:flex;gap:.75rem;align-items:center;padding:.85rem 1rem">'
       + '<input type="checkbox" ' + (sel ? 'checked' : '') + ' style="flex-shrink:0;cursor:pointer" onchange="toggleLabelSelect(' + p.id + ', this.checked)" />'
-      + '<div class="pimg" style="width:56px;height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:center">' + (p.img ? '<img src="' + safeUrl(p.img) + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:10px" onerror="this.remove()">' : '') + '</div>'
+      + '<div class="pimg" style="width:56px;height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:center">' + (p.img ? '<img src="' + safeUrl(p.img) + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:10px" onerror="this.style.display='none'">' : '') + '</div>'
       + '<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:.28rem">'
       + '<div class="pdl"><span class="pdk" style="min-width:3.2em;flex-shrink:0">' + t('cName') + '：</span><span class="pdv" style="flex:1;min-width:0">' + esc(p.name) + ' ' + labelBadge(p.label) + '</span></div>'
       + '<div class="pdl"><span class="pdk" style="min-width:3.2em;flex-shrink:0">' + t('cSku') + '：</span><span class="pdv mono">' + esc(p.sku) + '</span></div>'
@@ -5247,7 +5247,7 @@ function doSPSearch() {
   if (!rs.length) { el.innerHTML = '<div class="empty"><p>' + t('noMatch') + '</p></div>'; return; }
   el.innerHTML = rs.map(p => {
     const st = p.stock === 0 ? '<span style="color:var(--dg);font-weight:600">' + t('outOfStock') + '</span>' : p.stock <= 10 ? '<span style="color:var(--wa)">' + t('onlyLeft', p.stock) + '</span>' : '<span style="color:var(--sf)">' + t('inStock', p.stock) + '</span>';
-    return '<div class="pnl" style="margin-bottom:.5rem"><div class="pnB" style="display:flex;align-items:center;gap:.8rem"><div class="pimg" style="width:48px;height:48px;flex-shrink:0">' + (p.img ? '<img src="' + safeUrl(p.img) + '" alt="" onerror="this.remove()">' : '') + '</div><div style="flex:1;min-width:0"><div style="font-weight:500">' + esc(p.name) + '</div><div style="font-size:.68rem;color:var(--t3)">' + esc(p.sku) + ' · ' + catTagsP(p, true) + '</div></div><div style="text-align:right;flex-shrink:0"><div style="font-family:DM Mono,monospace;font-weight:600">¥' + p.price.toLocaleString() + '</div><div style="font-size:.72rem">' + st + '</div></div></div></div>';
+    return '<div class="pnl" style="margin-bottom:.5rem"><div class="pnB" style="display:flex;align-items:center;gap:.8rem"><div class="pimg" style="width:48px;height:48px;flex-shrink:0">' + (p.img ? '<img src="' + safeUrl(p.img) + '" alt="" onerror="this.style.display='none'">' : '') + '</div><div style="flex:1;min-width:0"><div style="font-weight:500">' + esc(p.name) + '</div><div style="font-size:.68rem;color:var(--t3)">' + esc(p.sku) + ' · ' + catTagsP(p, true) + '</div></div><div style="text-align:right;flex-shrink:0"><div style="font-family:DM Mono,monospace;font-weight:600">¥' + p.price.toLocaleString() + '</div><div style="font-size:.72rem">' + st + '</div></div></div></div>';
   }).join('');
 }
 
