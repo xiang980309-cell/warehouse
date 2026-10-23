@@ -354,6 +354,14 @@ tbody td:nth-child(5){font-variant-numeric:tabular-nums}
 .sbf2{border-radius:3px}
 .sn{font-size:.82rem;font-weight:600}
 .tb .sbox{width:300px}
+/* 库存搜索栏手机端：搜索独占一行，年份+新增按钮换行 */
+@media(max-width:768px){
+  .tb.inv-bar .sbox{width:100%!important;flex:1 0 100%;max-width:100%;order:1}
+  .tb.inv-bar .sbox input{width:100%}
+  .tb.inv-bar #iY{flex:1;width:auto!important;min-width:0;max-width:140px;order:2}
+  .tb.inv-bar .tbsp{display:none}
+  .tb.inv-bar .btn.bp.bs{order:3;margin-left:auto;flex:0 0 auto}
+}
 /* === PHASE 6: STOCK STATUS + RECORDS === */
 .stb{display:inline-flex;align-items:center;margin-top:.35rem;padding:.14rem .5rem;border-radius:5px;font-size:.58rem;font-weight:600;letter-spacing:.02em}
 .stb-ok{background:var(--sfg);color:var(--sf)}
@@ -2442,7 +2450,7 @@ function rInv() {
     else pg += '<button class="pg ' + (iv === iPg ? 'on' : '') + '" onclick="pgTo(' + iv + ')">' + iv + '</button>';
   });
   pg += '<button class="pg"' + (iPg >= tp ? ' disabled' : ' onclick="pgTo(' + (iPg + 1) + ')"') + '>&rsaquo;</button>';
-  return '<div class="tb"><div class="sbox"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="iS" value="' + av(iSq) + '" placeholder="' + t('searchNameSku') + '" oninput="iSq=this.value;_ic=this.selectionStart;iPg=1;render(\'inv\');rf(\'iS\')" /></div><input type="text" id="iY" value="' + av(iYq) + '" placeholder="' + t('year') + '" oninput="iYq=this.value;_ic=this.selectionStart;iPg=1;render(\'inv\');rf(\'iY\')" style="width:92px;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1);font-size:.78rem" /><span class="tbsp"></span>' + (has('addProduct') ? '<button class="btn bp bs aw" onclick="openAddP()">+ ' + t('addNew') + '</button>' : '') + '</div>' + labelBar + '<div style="margin-bottom:.7rem">' + ch + '</div><div class="tw">' + sortBar + '<div class="pcards">' + tb + '</div><div class="tf"><span>' + t('items') + total + ' · ' + iPg + '/' + tp + '</span>' + pgSizeSel + '<div class="pag">' + pg + '</div></div></div>';
+  return '<div class="tb inv-bar"><div class="sbox"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="iS" value="' + av(iSq) + '" placeholder="' + t('searchNameSku') + '" oninput="iSq=this.value;_ic=this.selectionStart;iPg=1;render(\'inv\');rf(\'iS\')" /></div><input type="text" id="iY" value="' + av(iYq) + '" placeholder="' + t('year') + '" oninput="iYq=this.value;_ic=this.selectionStart;iPg=1;render(\'inv\');rf(\'iY\')" style="width:92px;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1);font-size:.78rem" /><span class="tbsp"></span>' + (has('addProduct') ? '<button class="btn bp bs aw" onclick="openAddP()">+ ' + t('addNew') + '</button>' : '') + '</div>' + labelBar + '<div style="margin-bottom:.7rem">' + ch + '</div><div class="tw">' + sortBar + '<div class="pcards">' + tb + '</div><div class="tf"><span>' + t('items') + total + ' · ' + iPg + '/' + tp + '</span>' + pgSizeSel + '<div class="pag">' + pg + '</div></div></div>';
 }
 
 function getCatParentId(catId) {
@@ -2881,8 +2889,12 @@ function openIO(tp) {
 function filterIOProducts(q) {
   var dd = document.getElementById('ioPrDropdown');
   if (!q || !q.trim()) { dd.style.display = 'none'; return; }
-  var ql = q.toLowerCase().trim();
-  var matches = DB.prods.filter(function(p){ return p.name.toLowerCase().includes(ql) || p.sku.toLowerCase().includes(ql); }).slice(0, 20);
+  var tokens = tokenizeSearch(q);
+  if (!tokens.length) { dd.style.display = 'none'; return; }
+  // 模糊搜索：按空格分词，命中名称/SKU/分类即可（与库存搜索一致）
+  var matches = DB.prods.filter(function(p){ return matchSearch(p, tokens); });
+  matches.sort(function(a, b){ return scoreSearch(b, tokens) - scoreSearch(a, tokens); });
+  matches = matches.slice(0, 20);
   if (!matches.length) { dd.innerHTML = '<div style="padding:.5rem;color:var(--t3);font-size:.75rem">' + t('noMatchProduct') + '</div>'; dd.style.display = ''; return; }
   dd.innerHTML = matches.map(function(p) { return '<div style="padding:.45rem .7rem;cursor:pointer;font-size:.78rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bd)" onmousedown="selectIOProduct(' + p.id + ',this)"><span>' + esc(p.name) + ' <span style="color:var(--t3);font-size:.65rem">' + esc(p.sku) + '</span></span><span style="color:var(--t3);font-size:.65rem">' + t('stock') + ':' + p.stock + '</span></div>'; }).join('');
   dd.style.display = '';
