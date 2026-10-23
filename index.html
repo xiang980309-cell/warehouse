@@ -1137,7 +1137,7 @@ input[id^="lp_"]{
 <div class="fr"><div class="fgm"><label data-t="sellPrice">销售单价 (¥)</label><input type="number" id="pmP" placeholder="0.00" min="0" step="0.01" /></div><div class="fgm" id="pmCw"><label data-t="costPrice">进货成本 (¥)</label><input type="number" id="pmC" placeholder="0.00" min="0" step="0.01" /></div></div><div class="fgm"><label data-t="remarks">备注</label><textarea id="pmNt" data-t-ph="optionalNote" placeholder="可选备注..."></textarea></div><div class="fgm"><label data-t="labelTag">标签</label><select id="pmLabel"><option value="normal">Normal</option><option value="novo">Novo</option><option value="oferta">Oferta</option><option value="promocao">Promoção</option></select></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('pmo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="saveProd()" data-t="saveProduct">保存商品</button></div></div></div>
 
 <!-- IO Modal -->
-<div class="mo" id="imo"><div class="mdl"><div class="mh"><span class="mt" id="ioT">入库</span><button class="mx" onclick="cMo('imo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="ioTp" /><div class="fgm"><label data-t="selectProduct">商品 *</label><div style="position:relative"><input type="text" id="ioPrSearch" data-t-ph="searchProductIO" placeholder="搜索商品或SKU..." style="width:100%;padding:.5rem .7rem;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1);font-size:.82rem" oninput="filterIOProducts(this.value)" onfocus="filterIOProducts(this.value)" /><input type="hidden" id="ioPr" /><div id="ioPrDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:200px;overflow-y:auto;background:var(--s2);border:1px solid var(--bd);border-radius:0 0 var(--r) var(--r);z-index:10"></div></div></div><div class="fgm"><label data-t="quantity">数量 *</label><input type="number" id="ioQ" placeholder="0" min="1" /></div><div class="fgm"><label data-t="remarks">备注</label><input type="text" id="ioN" data-t-ph="reasonPH" placeholder="原因..." /></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('imo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="doIO()" data-t="confirm">确认</button></div></div></div>
+<div class="mo" id="imo"><div class="mdl"><div class="mh"><span class="mt" id="ioT">入库</span><button class="mx" onclick="cMo('imo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="ioTp" /><div class="fgm"><label data-t="selectProduct">商品 *</label><div style="position:relative"><input type="text" id="ioPrSearch" data-t-ph="searchProductIO" placeholder="搜索商品或SKU..." style="width:100%;padding:.5rem .7rem;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1);font-size:.82rem" oninput="filterIOProducts(this.value)" onfocus="filterIOProducts(this.value)" /><input type="hidden" id="ioPr" /><div id="ioPrDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:200px;overflow-y:auto;background:var(--s2);border:1px solid var(--bd);border-radius:0 0 var(--r) var(--r);z-index:10"></div></div></div><div class="fgm"><label data-t="quantity">数量 *</label><input type="number" id="ioQ" placeholder="0" min="1" /></div><div class="fgm" id="ioSizeArea" style="display:none"><label data-t="enterBySize">按尺码输入</label><div id="ioSizeInputs" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.5rem"></div><div style="font-size:.62rem;color:var(--t3)"><span data-t="totalQty">总数量</span>: <span id="ioSizeTotal">0</span></div></div><div class="fgm"><label data-t="remarks">备注</label><input type="text" id="ioN" data-t-ph="reasonPH" placeholder="原因..." /></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('imo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="doIO()" data-t="confirm">确认</button></div></div></div>
 
 <!-- Account Modal -->
 <div class="mo" id="amo"><div class="mdl"><div class="mh"><span class="mt" id="amT">新增账号</span><button class="mx" onclick="cMo('amo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="amId" /><div class="fgm"><label data-t="username">用户名 *</label><input type="text" id="amU" data-t-ph="enterUsername" placeholder="登录用户名" /></div><div class="fgm"><label data-t="displayName">姓名 *</label><input type="text" id="amN" data-t-ph="enterDisplayName" placeholder="显示名称" /></div><div class="fgm"><label data-t="password">密码 *</label><input type="password" id="amP" data-t-ph="enterPassword" placeholder="登录密码" /></div><div class="fgm"><label data-t="role">角色</label><select id="amR"><option value="wh_staff" data-t="roleWhStaff">仓库员工</option><option value="sales" data-t="roleSales">销售人员</option><option value="wh_admin" data-t="roleWhAdmin">仓库管理员</option></select></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('amo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="saveAcct()" data-t="save">保存</button></div></div></div>
@@ -1730,15 +1730,90 @@ function genOrdNo() {
   const cnt = DB.ords.filter(o => o.no && o.no.includes(ds)).length + 1;
   return 'ORD-'+ds+'-'+String(cnt).padStart(3,'0');
 }
+function setImgVar(vn, val) {
+  // let 顶层变量不在 window 上，必须写回词法绑定，否则 save* 读到空串
+  if (vn === 'pmImgData') pmImgData = val;
+  else if (vn === 'pkSupImg') pkSupImg = val;
+  else if (vn === 'pkPacImg') pkPacImg = val;
+  else if (vn === 'chImg') chImg = val;
+  else if (vn === 'dOI') dOI = val;
+  else if (vn === 'dBI') dBI = val;
+  else if (vn === 'dPayImg') dPayImg = val;
+  else if (vn === 'dOnibusImg') dOnibusImg = val;
+  else { try { window[vn] = val; } catch(_){} }
+}
 function hImg(inp, bid, vn) {
   const f = inp.files[0]; if (!f) return;
+  const apply = function(dataUrl) {
+    if (!dataUrl) { toast(t('saveFailed') || '图片处理失败', 'er'); return; }
+    setImgVar(vn, dataUrl);
+    const b = document.getElementById(bid);
+    b.innerHTML = '<img src="'+dataUrl+'" /><span class="ir" onclick="event.stopPropagation();rmImg(\''+vn+'\',\''+bid+'\')">×</span>';
+  };
+  // 商品图：拍摄/相册均压缩后再存，不落原图
+  if (vn === 'pmImgData') {
+    compressImgFile(f, 1280, 0.8, apply);
+    return;
+  }
   const r = new FileReader();
-  r.onload = function(e) { window[vn] = e.target.result; try { if (vn === 'pkSupImg') pkSupImg = e.target.result; if (vn === 'pkPacImg') pkPacImg = e.target.result; if (vn === 'chImg') chImg = e.target.result; } catch(_){} const b = document.getElementById(bid); b.innerHTML = '<img src="'+e.target.result+'" /><span class="ir" onclick="event.stopPropagation();window[\''+vn+'\']=\'\';rmImg(\''+vn+'\',\''+bid+'\')">×</span>'; };
+  r.onload = function(e) { apply(e.target.result); };
   r.readAsDataURL(f);
 }
+function compressImgFile(file, maxEdge, quality, cb) {
+  maxEdge = maxEdge || 1280;
+  if (quality == null) quality = 0.8;
+  let settled = false;
+  const fallback = function() {
+    if (settled) return; settled = true;
+    const r = new FileReader();
+    r.onload = function(e) { cb(e.target.result); };
+    r.onerror = function() { cb(''); };
+    r.readAsDataURL(file);
+  };
+  try {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = function() {
+      if (settled) return;
+      try {
+        const w = img.naturalWidth || img.width;
+        const h = img.naturalHeight || img.height;
+        if (!w || !h) { URL.revokeObjectURL(url); fallback(); return; }
+        const scale = Math.min(1, maxEdge / Math.max(w, h));
+        const cw = Math.max(1, Math.round(w * scale));
+        const ch = Math.max(1, Math.round(h * scale));
+        const canvas = document.createElement('canvas');
+        canvas.width = cw;
+        canvas.height = ch;
+        const ctx = canvas.getContext('2d');
+        // JPEG 无透明，铺白底避免透明图变黑
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, cw, ch);
+        ctx.drawImage(img, 0, 0, cw, ch);
+        const out = canvas.toDataURL('image/jpeg', quality);
+        URL.revokeObjectURL(url);
+        if (out && out.indexOf('data:image/jpeg') === 0) {
+          settled = true;
+          cb(out);
+        } else {
+          fallback();
+        }
+      } catch (err) {
+        try { URL.revokeObjectURL(url); } catch(_){}
+        fallback();
+      }
+    };
+    img.onerror = function() {
+      try { URL.revokeObjectURL(url); } catch(_){}
+      fallback();
+    };
+    img.src = url;
+  } catch (e) {
+    fallback();
+  }
+}
 function rmImg(vn, bid) {
-  window[vn] = '';
-  try { if (vn === 'pkSupImg') pkSupImg = ''; if (vn === 'pkPacImg') pkPacImg = ''; if (vn === 'chImg') chImg = ''; } catch(_){}
+  setImgVar(vn, '');
   const b = document.getElementById(bid);
   const inId = bid.replace('IB','IF');
   b.innerHTML = '<span class="ia">+</span><input type="file" id="'+inId+'" accept="image/*" onchange="hImg(this,\''+bid+'\',\''+vn+'\')" />';
@@ -2758,6 +2833,17 @@ function rRec(tp) {
   return '<div class="tb"><span class="tbsp"></span>' + (can ? '<button class="btn bp bs aw" onclick="openIO(\'' + tp + '\')">' + (isIn ? t('addInbound') : t('addOutbound')) + '</button>' : '') + '</div><div class="tw"><div class="ts"><table><thead><tr><th>' + t('createdAt') + '</th><th>' + t('product') + '</th><th class="hide-sm">' + t('sku') + '</th><th>' + t('quantity') + '</th><th class="hide-md">' + t('operator') + '</th><th class="hide-sm">' + t('remarks') + '</th></tr></thead><tbody>' + tb + '</tbody></table></div></div>';
 }
 
+function productSizeList(p) {
+  if (!p) return [];
+  if (p.sizes && p.sizes.length) return p.sizes.slice();
+  const ss = p.size_stock || {};
+  const keys = Object.keys(ss).filter(function(k) { return ss[k] != null && ss[k] !== ''; });
+  if (keys.length) return keys;
+  const ct = p.category_type || 'general';
+  if (ct === 'clothing') return CLOTHING_SIZES.slice();
+  if (ct === 'shoes') return SHOE_SIZES.slice();
+  return [];
+}
 function openIO(tp) {
   document.getElementById('ioT').textContent = tp === 'in' ? t('addInbound') : t('addOutbound');
   document.getElementById('ioTp').value = tp;
@@ -2765,30 +2851,28 @@ function openIO(tp) {
   document.getElementById('ioPr').value = '';
   document.getElementById('ioQ').value = '';
   document.getElementById('ioN').value = '';
-  // Add size input area
-  var ioSizeArea = document.getElementById('ioSizeArea');
-  if (!ioSizeArea) {
-    var qField = document.getElementById('ioQ').parentNode;
-    var area = document.createElement('div');
-    area.id = 'ioSizeArea';
-    area.style.display = 'none';
-    area.innerHTML = '<label style="display:block;font-size:.65rem;font-weight:500;color:var(--t2);margin-bottom:.25rem;text-transform:uppercase;letter-spacing:.06em;font-family:DM Mono,monospace">' + t('enterBySize') + '</label><div id="ioSizeInputs" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.5rem"></div><div style="font-size:.62rem;color:var(--t3)">' + t('totalQty') + ': <span id="ioSizeTotal">0</span></div>';
-    qField.parentNode.insertBefore(area, qField.nextSibling);
-  }
+  var sizeArea = document.getElementById('ioSizeArea');
+  if (sizeArea) { sizeArea.style.display = 'none'; document.getElementById('ioSizeInputs').innerHTML = ''; calcIOSizeTotal(); }
+  var qWrap = document.getElementById('ioQ').parentNode;
+  if (qWrap) qWrap.style.display = '';
   document.getElementById('ioPr').onchange = function() {
     var pid = parseInt(this.value);
     var p = DB.prods.find(function(x) { return x.id === pid; });
     var sizeArea = document.getElementById('ioSizeArea');
     var qField = document.getElementById('ioQ').parentNode;
-    if (p && p.sizes && p.sizes.length > 0) {
-      sizeArea.style.display = '';
-      qField.style.display = 'none';
-      document.getElementById('ioSizeInputs').innerHTML = p.sizes.map(function(s) {
-        return '<div style="display:flex;align-items:center;gap:.3rem;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:.25rem .4rem"><span style="font-size:.72rem;font-family:DM Mono,monospace;min-width:28px">' + s + '</span><input type="number" data-iosize="' + s + '" value="" min="0" placeholder="0" style="width:55px;padding:.15rem .3rem;background:var(--s3);border:1px solid var(--bd);border-radius:4px;color:var(--t1);font-size:.75rem;font-family:DM Mono,monospace;text-align:center" oninput="calcIOSizeTotal()"></div>';
+    var sizeList = productSizeList(p);
+    if (p && sizeList.length > 0) {
+      if (sizeArea) sizeArea.style.display = '';
+      if (qField) qField.style.display = 'none';
+      const ss = (p && p.size_stock) || {};
+      document.getElementById('ioSizeInputs').innerHTML = sizeList.map(function(s) {
+        const cur = Number(ss[s] || 0);
+        return '<div style="display:flex;flex-direction:column;gap:.15rem;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:.3rem .45rem"><div style="display:flex;align-items:center;gap:.3rem"><span style="font-size:.72rem;font-family:DM Mono,monospace;min-width:28px">' + s + '</span><input type="number" data-iosize="' + s + '" value="" min="0" placeholder="0" style="width:55px;padding:.15rem .3rem;background:var(--s3);border:1px solid var(--bd);border-radius:4px;color:var(--t1);font-size:.75rem;font-family:DM Mono,monospace;text-align:center" oninput="calcIOSizeTotal()"></div><div style="font-size:.58rem;color:var(--t3);font-family:DM Mono,monospace">' + t('stock') + ':' + cur + '</div></div>';
       }).join('');
+      calcIOSizeTotal();
     } else {
-      sizeArea.style.display = 'none';
-      qField.style.display = '';
+      if (sizeArea) sizeArea.style.display = 'none';
+      if (qField) qField.style.display = '';
     }
   };
   document.getElementById('ioPrSearch').addEventListener('blur', function(){ setTimeout(function(){ document.getElementById('ioPrDropdown').style.display='none'; }, 200); });
@@ -2803,9 +2887,10 @@ function filterIOProducts(q) {
   dd.innerHTML = matches.map(function(p) { return '<div style="padding:.45rem .7rem;cursor:pointer;font-size:.78rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bd)" onmousedown="selectIOProduct(' + p.id + ',this)"><span>' + esc(p.name) + ' <span style="color:var(--t3);font-size:.65rem">' + esc(p.sku) + '</span></span><span style="color:var(--t3);font-size:.65rem">' + t('stock') + ':' + p.stock + '</span></div>'; }).join('');
   dd.style.display = '';
 }
-function selectIOProduct(pid, name) {
+function selectIOProduct(pid, nameEl) {
   document.getElementById('ioPr').value = pid;
-  document.getElementById('ioPrSearch').value = name;
+  var label = nameEl && nameEl.querySelector ? (nameEl.querySelector('span') ? nameEl.querySelector('span').textContent : nameEl.textContent) : (nameEl || '');
+  document.getElementById('ioPrSearch').value = String(label || '').trim();
   document.getElementById('ioPrDropdown').style.display = 'none';
   var ioPrEl = document.getElementById('ioPr');
   if (ioPrEl.onchange) ioPrEl.onchange();
@@ -2828,7 +2913,8 @@ async function doIO() {
   var qty = 0;
   var sizeUpdates = {};
   var sizeArea = document.getElementById('ioSizeArea');
-  if (p.sizes && p.sizes.length > 0 && sizeArea && sizeArea.style.display !== 'none') {
+  var sizeList = productSizeList(p);
+  if (sizeList.length > 0 && sizeArea && sizeArea.style.display !== 'none') {
     document.querySelectorAll('#ioSizeInputs input[data-iosize]').forEach(function(inp) {
       var v = parseInt(inp.value) || 0;
       if (v > 0) { sizeUpdates[inp.dataset.iosize] = v; qty += v; }
