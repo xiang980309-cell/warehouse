@@ -1977,7 +1977,7 @@ async function loadOrdersData() {
       const shopMapped = (shopR.data || []).map(o => ({
         id: 1000000000 + Number(o.id), shopId: o.id, src: 'shop',
         no: o.order_no || ('SHOP-' + o.id),
-        items: sItems.filter(x => x.order_id === o.id).map(x => ({ pid: x.product_id, qty: x.qty, price: Number(x.price || 0), original_price: Number(x.original_price || 0), unit_price: Number(x.price || x.unit_price || 0) })),
+        items: sItems.filter(x => x.order_id === o.id).map(x => ({ pid: x.product_id, qty: x.qty, size: x.size || '', price: Number(x.price || 0), original_price: Number(x.original_price || 0), unit_price: Number(x.price || x.unit_price || 0) })),
         pk: o.pickup_method || 'motoboy', st: stMap[o.status] || 'pending', rawSt: o.status,
         oi: '', bi: '', note: o.note || '', cr: fmtDate(o.created_at), by: '商城', pb: '',
         payM: o.payment_method || 'cash', payS: o.payment_status || 'pending_bill',
@@ -2046,6 +2046,7 @@ async function loadAllData() {
 
 // 按页懒加载路由
 const PAGE_LOADER = {
+  dash: loadCoreData,
   inv: loadStockData,
   inb: loadStockData,
   outb: loadStockData,
@@ -2061,11 +2062,14 @@ const PAGE_LOADER = {
   sProds: loadCoreData,
   sWork: loadOrdersData,
   paySettings: loadSettingsData,
-  memberLevels: loadSettingsData
+  memberLevels: loadSettingsData,
+  labelPrice: loadSettingsData,
+  shipAddr: loadSettingsData
 };
-async function ensurePageData(p) {
+async function ensurePageData(p, force) {
   const loader = PAGE_LOADER[p];
-  if (loader && (!DB._loaded || !DB._loaded[p])) {
+  // 切换页面默认强制拉最新；仅登录首屏可跳过
+  if (loader && (force || !DB._loaded || !DB._loaded[p])) {
     await loader();
     if (!DB._loaded) DB._loaded = {};
     DB._loaded[p] = true;
@@ -2238,13 +2242,9 @@ function goPage(p, el, keepLabel) {
   curP = p;
   const ts = {dash:t('dashboard'),inv:t('inventory'),inb:t('inboundRecord'),outb:t('outboundRecord'),ana:t('analytics'),accts:t('accounts'),cats:t('categories'),whOrd:t('orderProcess'),sWork:t('salesWorkspace'),sNewOrd:t('newOrder'),sOrds:t('orderList'),sProds:t('productQuery'),sCus:t('customerMgmt'),approvals:t('approvalCenter'),paySettings:t('payAccountSettings'),billReview:t('billReview'),shipAddr:t('shipAddrSettings'),labelPrice:t('labelPrice'),memberLevels:t('memberLevel')};
   document.getElementById('tT').textContent = ts[p]||'';
-  // 切换页面时自动刷新该域数据
-  if (window.DB) {
-    if (!DB._loaded) DB._loaded = {};
-    DB._loaded[p] = 0;
-  }
+  // 切换页面强制拉取该域最新数据
   if (window.ensurePageData) {
-    ensurePageData(p).then(function() { render(p); }).catch(function() { render(p); });
+    ensurePageData(p, true).then(function() { render(curP === p ? p : curP); }).catch(function() { render(p); });
   } else {
     render(p);
   }
@@ -3878,7 +3878,14 @@ async function cancelOrd(id) {
   window._cancelBusy = true;
   try {
     // 原子取消: 回补库存 + 状态变更一个事务，幂等状态守卫
-    const { data: result, error: ce } = await sb.rpc('app_cancel_order', { p_order_id: id });
+    // 商城单走 cancel_shop_order（真实 shop id），管理端单走 app_cancel_order
+    let result, ce;
+    if (o.src === 'shop' || o.shopId) {
+      const realId = Number(o.shopId || (Number(o.id) - 1000000000));
+      ({ data: result, error: ce } = await sb.rpc('cancel_shop_order', { p_order_id: realId }));
+    } else {
+      ({ data: result, error: ce } = await sb.rpc('app_cancel_order', { p_order_id: Number(o.id) }));
+    }
     if (ce) throw ce;
     if (result && result.error) throw new Error(result.error);
     // 同步本地缓存
@@ -3940,7 +3947,7 @@ function openPack(id) {
   document.getElementById('pkSupDesc').textContent = supDesc;
   const its = o.items.map(i => {
     const p = prodById(i.pid);
-    return (p ? p.name : t('deleted')) + ' × ' + i.qty;
+    return (p ? p.name : t('deleted')) + (i.size ? ' (' + esc(i.size) + ')' : '') + ' × ' + i.qty;
   }).join('；');
   let infoHtml = '<div style="font-size:.78rem;line-height:1.55"><strong>' + t('orderNo') + ':</strong> ' + esc(o.no)
     + (o.src === 'shop' ? ' <span class="badge b-st">商城</span>' : '')
