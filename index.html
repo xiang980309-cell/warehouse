@@ -1575,7 +1575,14 @@ function toggleSpecFields() {
   document.getElementById('pmBagPrice').disabled = !document.getElementById('pmHasBag').checked;
   document.getElementById('pmCasePrice').disabled = !document.getElementById('pmHasCase').checked;
 }
+function syncStockFieldBySizes() {
+  const area = document.getElementById('pmSizesArea');
+  const stockWrap = document.getElementById('pmS') && document.getElementById('pmS').parentNode;
+  const showSizes = area && area.style.display !== 'none';
+  if (stockWrap) stockWrap.style.display = showSizes ? 'none' : '';
+}
 function toggleSizeFields() {
+  setTimeout(function(){ try { syncStockFieldBySizes(); } catch(_){} }, 0);
   var catType = document.getElementById('pmCatType').value;
   var area = document.getElementById('pmSizesArea');
   if (catType === 'general') { area.style.display = 'none'; return; }
@@ -2533,6 +2540,7 @@ function openAddP() {
   document.getElementById('pmCatType').value = 'general';
   document.getElementById('pmSizesArea').style.display = 'none';
   document.getElementById('pmSizesList').innerHTML = '';
+  syncStockFieldBySizes();
   document.getElementById('pmHasBag').checked = false;
   document.getElementById('pmBagPrice').value = '';
   document.getElementById('pmBagPrice').disabled = true;
@@ -2569,6 +2577,7 @@ function openEditP(id) {
   document.getElementById('pmCatType').value = catType;
   if (catType !== 'general') {
     toggleSizeFields();
+    syncStockFieldBySizes();
     var sizeStock = p.size_stock || {};
     document.getElementById('pmSizesList').querySelectorAll('input[data-size]').forEach(function(inp) {
       inp.value = sizeStock[inp.dataset.size] || '';
@@ -2794,7 +2803,10 @@ async function saveProd() {
       sizeStock[inp.dataset.size] = v;
     });
   }
-  const sumStock = catType !== 'general' ? Object.values(sizeStock).reduce(function(a,b){return a+b},0) : stock;
+  // 库存总数量 = 各尺码数量之和（有尺码时不再手填）
+  const sizeSum = Object.values(sizeStock).reduce(function(a,b){return a+b},0);
+  const hasSizeFields = catType !== 'general' || Object.keys(sizeStock).length > 0;
+  const sumStock = hasSizeFields ? sizeSum : stock;
   const hasBag = document.getElementById('pmHasBag').checked;
   const bagPrice = hasBag ? (parseFloat(document.getElementById('pmBagPrice').value) || 0) : 0;
   const hasCase = document.getElementById('pmHasCase').checked;
@@ -3787,7 +3799,6 @@ function editOrdShipInfo(id) {
 
 function formatOrdNote(o) {
   if (!o) return '';
-  if (o.supT) return String(o.supT);
   let n = String(o.note || '');
   n = n.replace(/(^|\|\s*)supType:[^|]*/g, ' ').replace(/(^|\|\s*)bill_paid:[^|]*/g, ' ');
   n = n.replace(/\|+/g, ' ').trim();
