@@ -2246,13 +2246,16 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 
 .po-item:active{background:var(--s2)}
 
-.po-l1,.po-l2{display:grid;grid-template-columns:minmax(4.2em,auto) minmax(0,1fr) minmax(3.2em,auto) 5.5em;gap:.35rem .55rem;align-items:center;font-size:.78rem;line-height:1.35}
-
-.po-l2{margin-top:.45rem;padding-top:.45rem;border-top:1px dashed var(--bd);color:var(--t2);font-size:.72rem}
+.po-l1,.po-l2{display:flex;flex-wrap:nowrap;gap:.4rem;align-items:center;font-size:.78rem;line-height:1.35;width:100%}
+.po-l1 .badge,.po-l2 .badge{flex:0 0 auto;font-size:.66rem;padding:.12rem .45rem}
+.po-l1 .po-name,.po-l2 .po-sep{color:var(--bd);flex:0 0 auto;margin:0 .15rem}
+.po-kv{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.po-l1 .po-date,.po-l2 .po-date{flex:0 0 5.4em;margin-left:auto;text-align:right}
+.po-l2{margin-top:.45rem;padding-top:.45rem;border-top:1px dashed var(--bd);color:var(--t2)}
 
 .po-code{font-family:Inter,monospace;font-variant-numeric:tabular-nums;font-weight:700;color:var(--ac)}
 
-.po-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.po-name{color:var(--t1);font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 .po-pcs{font-variant-numeric:tabular-nums;text-align:right;color:var(--t1)}
 
@@ -2260,6 +2263,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 
 .po-l2 .po-date{color:var(--t2)}
 
+.po-kv{font-variant-numeric:tabular-nums;white-space:nowrap}
 .po-flag{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 .po-flag .badge{font-size:.62rem}
@@ -2268,7 +2272,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 
 @media(max-width:420px){
 
-  .po-l1,.po-l2{grid-template-columns:minmax(3.8em,auto) minmax(0,1fr) minmax(2.8em,auto) 5.2em;font-size:.72rem;gap:.25rem .4rem}
+  .po-l1,.po-l2{font-size:.72rem;gap:.28rem}
+  .po-l1 .po-date,.po-l2 .po-date{flex-basis:5em}
 
   .po-item{padding:.65rem .7rem}
 
@@ -2663,6 +2668,19 @@ body.modal-open main{
 </div></div></div>
 
 
+
+
+<div class="mo" id="poLooseMo" style="z-index:420"><div class="mdl" style="max-width:380px"><div class="mh"><span class="mt" data-t="poLooseTitle">散件收货</span><button class="mx" onclick="cMo('poLooseMo')" style="min-width:40px;min-height:40px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb" id="poLooseBody"></div>
+<div class="mf" style="gap:.55rem">
+<button type="button" class="btn bg bs" onclick="cMo('poLooseMo')"><span data-t="cancel">取消</span></button>
+<button type="button" class="btn bp bs aw" onclick="poConfirmLoose()"><span data-t="poLooseOk">确定</span></button>
+</div></div></div>
+
+
+<div class="mo" id="poLoadMo" style="z-index:500"><div class="mdl" style="max-width:280px;text-align:center"><div class="mb" style="padding:1.5rem 1rem">
+<div class="spinner" style="margin:0 auto .75rem"></div>
+<div id="poLoadText" style="font-size:.88rem;color:var(--t2)" data-t="poLoading">处理中…</div>
+</div></div></div>
 
 <!-- PO Add Product Dialog -->
 
@@ -3212,7 +3230,7 @@ const T = {
 
     poConfirmLost:'确定标记为货物丢失？', poReceiveWave:'收货（支持多波次，只填本次真实到货）', poConfirmReceive:'确认收货入库',
 
-    poAddBox:'新增箱', poDanshu:'打数', poSaveBarcode:'保存条码图', poTypeFilter:'类型', poShipType:'运输方式', poStatusFilter:'状态',
+    poAddBox:'新增箱', poDanshu:'打数', poSaveBarcode:'保存条码图', poTypeFilter:'类型', poLoading:'处理中…', poLoose:'散件', poLooseTitle:'散件收货', poLooseOk:'确定', poCatCount:'类别', poShipType:'运输方式', poStatusFilter:'状态',
 
     poCol1:'发出/出发', poCol2:'到货/预计', poCol3:'件数', poCol4:'姓名/箱件', poCol5:'已付款',
 
@@ -3584,7 +3602,7 @@ const T = {
 
     poConfirmLost:'Marcar como perdido?', poReceiveWave:'Receber (multi-onadas)', poConfirmReceive:'Confirmar entrada',
 
-    poAddBox:'Adicionar caixa', poDanshu:'Dúzias', poSaveBarcode:'Salvar código', poTypeFilter:'Tipo', poShipType:'Envio', poStatusFilter:'Status',
+    poAddBox:'Adicionar caixa', poDanshu:'Dúzias', poSaveBarcode:'Salvar código', poTypeFilter:'Tipo', poLoading:'Processando…', poLoose:'Avulso', poLooseTitle:'Itens avulsos', poLooseOk:'OK', poCatCount:'Categorias', poShipType:'Envio', poStatusFilter:'Status',
 
     poCol1:'Saída', poCol2:'Chegada', poCol3:'Peças', poCol4:'Nome/caixas', poCol5:'Pago',
 
@@ -5921,21 +5939,19 @@ function poLinesOf(o) {
 
 
 function poCalcStatus(o) {
-
   if (o.status === 'lost') return 'lost';
-
   const lines = poLinesOf(o);
-
-  const total = lines.reduce((s, l) => s + (Number(l.qty) || 0), 0);
-
-  const recv = lines.reduce((s, l) => s + (Number(l.received) || 0), 0);
-
+  const total = lines.reduce(function (s, l) {
+    const q = Number(l.qty) || 0;
+    const dz = Number(l.danshu) || 0;
+    return s + (dz > 0 ? dz * q : q);
+  }, 0);
+  const recv = lines.reduce(function (s, l) {
+    return s + (Number(l.received) || 0);
+  }, 0);
   if (total > 0 && recv >= total) return 'received';
-
   if (recv > 0) return 'partial';
-
   return 'pending';
-
 }
 
 
@@ -7876,177 +7892,186 @@ function poOpenDetail(id) {
 
 
 function poOpenReceive(id) {
-
   const o = PO_LIST.find(x => String(x.id) === String(id));
-
   if (!o) return;
-
   if (o.status === 'lost' || poCalcStatus(o) === 'received') { toast(poStatusLabel(o.status === 'lost' ? 'lost' : 'received'), 'inf'); return; }
-
   const lines = poLinesOf(o);
-
   window._poRecvId = String(id);
-
+  window._poLoose = {};
   let h = '<div style="font-size:.82rem;color:var(--t2);margin-bottom:.55rem">' + t('poReceiveSub') + '</div>';
-
   h += '<div style="display:flex;flex-direction:column;gap:.65rem">';
-
   lines.forEach(function (l, i) {
-
     const prod = prodById(l.pid) || {};
-
     const src = safeUrl(prod.img);
-
     const expDanshu = Number(l.danshu) > 0 ? Number(l.danshu) : (Number(l.qty) || 0);
-
-    const perDozen = Number(l.danshu) > 0 ? Math.max(1, Math.round((Number(l.qty) || 0) / Math.max(1, Number(l.danshu) || 1))) : 1;
-
-    const recvDanshu = Math.floor((Number(l.received) || 0) / perDozen);
-
+    const per = Number(l.danshu) > 0 ? Math.max(1, Number(l.qty) || 1) : 1;
+    const recvDanshu = Math.floor((Number(l.received) || 0) / per);
     const remainDanshu = Math.max(0, expDanshu - recvDanshu);
-
     h += '<div class="po-goods" style="margin:0;align-items:center">'
-
       + (src ? '<div class="po-goods-img"><img src="' + src + '" alt="" onerror="this.style.display=\'none\'"></div>' : '<div class="po-goods-img">—</div>')
-
       + '<div class="po-goods-meta">'
-
       + '<div class="po-goods-r1"><span class="po-goods-name">' + esc(l.name || prod.name || '') + '</span></div>'
-
-      + '<div class="po-goods-r2" style="margin-top:.35rem">'
-
+      + '<div class="po-goods-r2" style="margin-top:.35rem;flex-wrap:wrap">'
       + '<span style="color:var(--t2)">' + t('poExpDanshu') + ' ' + expDanshu + ' ' + t('poDanshuUnit') + '</span>'
-
-      + '<span class="po-goods-qty" style="margin-left:.55rem">' + t('poDanshu')
-
-      + '：<input type="number" id="poRw_' + i + '" min="0" max="' + remainDanshu + '" value="' + remainDanshu + '" style="width:78px;padding:.35rem;background:var(--s2);border:1px solid var(--bd);border-radius:6px;color:var(--t1);font-size:.82rem"></span>'
-
+      + '<span class="po-goods-qty" style="margin-left:.45rem">' + t('poDanshu')
+      + '：<input type="number" id="poRw_' + i + '" min="0" max="' + remainDanshu + '" value="' + remainDanshu + '" style="width:72px;padding:.35rem;background:var(--s2);border:1px solid var(--bd);border-radius:6px;color:var(--t1);font-size:.82rem"></span>'
+      + '<button type="button" class="btn bg bs" style="margin-left:.35rem;min-height:36px" onclick="poOpenLoose(' + i + ')">' + t('poLoose') + '</button>'
+      + '<span id="poLooseSum_' + i + '" style="margin-left:.35rem;color:var(--t2);font-size:.75rem"></span>'
       + '</div></div></div>';
-
   });
-
   h += '</div>';
-
   h += '<div style="margin-top:.75rem;display:flex;gap:.55rem;justify-content:flex-end">'
-
     + '<button type="button" class="btn bg bs" onclick="cMo(\'pormo\')">' + t('cancel') + '</button>'
-
     + '<button type="button" class="btn bp bs aw" onclick="poDoReceive()">' + t('poConfirmReceive') + '</button>'
-
     + '</div>';
-
   document.getElementById('poRmBody').innerHTML = h;
-
   oMo('pormo');
+}
 
+function poSortSizes(arr) {
+  const order = ['PP','P','M','G','GG','XG','XGG','XXG','XS','S','M','L','XL','2XL','3XL','4XL','5XL'];
+  const rank = function (s) {
+    const k = String(s || '').toUpperCase();
+    const i = order.indexOf(k);
+    if (i >= 0) return i;
+    const n = parseInt(k, 10);
+    if (String(n) === k) return 100 + n;
+    return 50 + k.charCodeAt(0);
+  };
+  return (arr || []).slice().sort(function (a, b) { return rank(a) - rank(b); });
+}
+function poOpenLoose(idx) {
+  const o = PO_LIST.find(x => String(x.id) === String(window._poRecvId));
+  if (!o) return;
+  const lines = poLinesOf(o);
+  const l = lines[idx];
+  if (!l) return;
+  const prod = prodById(l.pid) || {};
+  let sizes = [];
+  try {
+    if (prod.sizes && prod.sizes.length) sizes = prod.sizes.slice();
+    else if (prod.size_stock) sizes = Object.keys(prod.size_stock);
+  } catch (_) {}
+  if (!sizes.length && l.sizeQty && Object.keys(l.sizeQty).length) sizes = Object.keys(l.sizeQty);
+  if (!sizes.length) sizes = ['P', 'M', 'G', 'GG'];
+  sizes = poSortSizes(sizes);
+  window._poLooseIdx = idx;
+  window._poLoose[idx] = window._poLoose[idx] || {};
+  let h = '<div style="font-size:.82rem;color:var(--t2);margin-bottom:.55rem">' + esc(l.name || prod.name || '') + '</div>';
+  h += '<div style="display:flex;flex-wrap:wrap;gap:.55rem">';
+  sizes.forEach(function (s) {
+    const v = Number(window._poLoose[idx][s]) || 0;
+    h += '<div style="display:flex;flex-direction:column;align-items:center;gap:.3rem;min-width:66px">'
+      + '<div style="font-size:.75rem;color:var(--t2)">' + esc(s) + '</div>'
+      + '<input type="number" min="0" placeholder="0" value="' + (v > 0 ? v : '') + '" class="po-size-in" style="width:66px;height:42px;text-align:center;background:var(--s2);border:1px solid var(--bd);border-radius:8px" data-loose-size="' + esc(s) + '" />'
+      + '</div>';
+  });
+  h += '</div>';
+  document.getElementById('poLooseBody').innerHTML = h;
+  oMo('poLooseMo');
+}
+
+function poConfirmLoose() {
+  const idx = window._poLooseIdx;
+  if (idx == null) { cMo('poLooseMo'); return; }
+  const map = {};
+  let sum = 0;
+  document.querySelectorAll('#poLooseBody [data-loose-size]').forEach(function (inp) {
+    const v = Math.max(0, parseInt(inp.value) || 0);
+    map[inp.getAttribute('data-loose-size')] = v;
+    sum += v;
+  });
+  window._poLoose = window._poLoose || {};
+  window._poLoose[idx] = map;
+  const el = document.getElementById('poLooseSum_' + idx);
+  if (el) el.textContent = sum > 0 ? (t('poLoose') + '+' + sum) : '';
+  cMo('poLooseMo');
 }
 
 
 
+function poShowLoading(msg) {
+  var el = document.getElementById('poLoadText');
+  if (el) el.textContent = msg || t('poLoading');
+  oMo('poLoadMo');
+}
+function poHideLoading() {
+  try { cMo('poLoadMo'); } catch (_) {}
+}
+
 async function poDoReceive() {
-
   if (!(user.r === 'wh_admin' || has('inbound'))) { toast(t('noPermission'), 'er'); return; }
-
+  poShowLoading(t('poLoading'));
   const o = PO_LIST.find(x => String(x.id) === String(window._poRecvId));
-
   if (!o) return;
-
   const lines = poLinesOf(o);
-
   const wave = [];
-
   for (let i = 0; i < lines.length; i++) {
-
     const el = document.getElementById('poRw_' + i);
-
     const n = el ? (parseInt(el.value) || 0) : 0;
-
-    if (n > 0) wave.push({ i: i, n: n });
-
+    const looseMap = (window._poLoose && window._poLoose[i]) || {};
+    let loose = 0;
+    Object.keys(looseMap).forEach(function (k) { loose += Number(looseMap[k]) || 0; });
+    if (n > 0 || loose > 0) wave.push({ i: i, n: n, loose: loose, looseMap: looseMap });
   }
-
   if (!wave.length) { toast(t('poNeedQty'), 'er'); return; }
-
   try {
-
     for (const w of wave) {
-
       const l = lines[w.i];
-
-      const perDozen = Number(l.danshu) > 0 ? Math.max(1, Math.round((Number(l.qty) || 0) / Math.max(1, Number(l.danshu) || 1))) : 1;
-
-      const pieces = w.n * perDozen;
-
+      const per = Number(l.danshu) > 0 ? Math.max(1, Number(l.qty) || 1) : 1;
+      const pieces = (w.n * per) + w.loose;
+      if (pieces <= 0) continue;
       const p = prodById(l.pid);
-
       const newStock = (p ? p.stock : 0) + pieces;
-
       const { error: e1 } = await adminFrom('inbound_records').insert({
-
-        product_id: l.pid, qty: pieces, operator: user.u, note: 'PO:' + (o.code || '') + '#' + ((o.receives || []).length)
-
+        product_id: l.pid, qty: pieces, operator: user.u,
+        note: 'PO:' + (o.code || '') + '#' + ((o.receives || []).length) + (w.loose ? '+散件' : '')
       });
-
       if (e1) throw e1;
-
       const { error: e2 } = await adminFrom('products').update({ stock: newStock }).eq('id', l.pid);
-
       if (e2) throw e2;
-
       l.received = (Number(l.received) || 0) + pieces;
-
-    }
-
-    o.receives = o.receives || [];
-
-    o.receives.push({ at: new Date().toISOString(), by: user.u, lines: wave });
-
-    o.status = poCalcStatus(o);
-
-    try {
-
-      if (o.id != null && Number(o.id) > 0) {
-
-        await adminFrom('purchase_orders').update({
-
-          status: o.status,
-
-          receives: JSON.stringify(o.receives || []),
-
-          updated_at: new Date().toISOString()
-
-        }).eq('id', Number(o.id));
-
-        await poReplaceItems(o.id, o.lines, o.boxes);
-
-      } else {
-
-        await savePurchaseOrders();
-
+      if (w.looseMap && Object.keys(w.looseMap).length) {
+        l.looseReceived = l.looseReceived || {};
+        Object.keys(w.looseMap).forEach(function (k) {
+          l.looseReceived[k] = (Number(l.looseReceived[k]) || 0) + (Number(w.looseMap[k]) || 0);
+        });
       }
-
+    }
+    o.receives = o.receives || [];
+    o.receives.push({ at: new Date().toISOString(), by: user.u, lines: wave.map(function (w) {
+      return { i: w.i, n: w.n, loose: w.loose, looseMap: w.looseMap };
+    }) });
+    o.status = poCalcStatus(o);
+    try {
+      if (o.id != null && Number(o.id) > 0) {
+        await adminFrom('purchase_orders').update({
+          status: o.status,
+          receives: JSON.stringify(o.receives || []),
+          updated_at: new Date().toISOString()
+        }).eq('id', Number(o.id));
+        await poReplaceItems(o.id, o.lines, o.boxes);
+      } else {
+        await savePurchaseOrders();
+      }
     } catch (eS) { console.warn('poDoReceive save', eS); }
-
-    try { await loadAllData(); } catch (_) {}
-
     await loadPurchaseOrders();
-
-    toast(t('poReceivedMsg', wave.reduce(function (s, w) { return s + w.n; }, 0)), 'ok');
-
+    toast(t('poReceivedMsg', wave.reduce(function (s, w) { return s + w.n * ((Number(lines[w.i].danshu) > 0 ? Math.max(1, Number(lines[w.i].qty) || 1) : 1)) + w.loose; }, 0)), 'ok');
     cMo('pormo');
-
-    // keep order UI: reopen detail
-
-    try { poOpenDetail(String(o.id)); } catch (_) { render('purchase'); }
-
+    cMo('podmo');
+    poHideLoading();
+    try {
+      curP = 'purchase';
+      document.querySelectorAll('.ni').forEach(function (n) {
+        n.classList.toggle('on', n.getAttribute('data-p') === 'purchase');
+      });
+      render('purchase');
+    } catch (_) { render('purchase'); }
   } catch (e) {
-
+    poHideLoading();
     console.warn('poDoReceive', e);
-
     toast(t('opFailed'), 'er');
-
   }
-
 }
 
 
@@ -8223,6 +8248,15 @@ function poStatusBadge(st) {
 
 
 
+function poPaidBadge(o) {
+  if (o.type === 'air') {
+    return '<span class="badge ' + (o.paid_domestic ? 'b-dn' : 'b-pd') + '">' + (o.paid_domestic ? t('poPaid') : t('poUnpaid')) + '</span>';
+  }
+  if (o.type === 'express') {
+    return '<span class="badge b-st">' + (o.tracking ? t('poHasTrack') : '—') + '</span>';
+  }
+  return '';
+}
 function poTypeBadge(tp) {
 
   return '<span class="badge b-st">' + poTypeLabel(tp) + '</span>';
@@ -8331,7 +8365,11 @@ function rPurchase() {
 
       const lines = poLinesOf(o);
 
-      const qty = lines.reduce((s, l) => s + (+l.qty || 0), 0);
+      const qty = lines.reduce(function (s, l) {
+        const q = Number(l.qty) || 0;
+        const dz = Number(l.danshu) || 0;
+        return s + (dz > 0 ? dz * q : q);
+      }, 0);
 
       const recv = lines.reduce((s, l) => s + (+l.received || 0), 0);
 
@@ -8349,32 +8387,41 @@ function rPurchase() {
 
       // 两行：行1 编号/姓名/件数/出发；行2 付款/收货/到达 — 日期列同宽对齐
 
+      const catCount = (function () {
+        const s = {};
+        (lines || []).forEach(function (l) {
+          const prod = prodById(l.pid) || {};
+          const cid = (prod.catIds && prod.catIds[0]) || l.sku || l.name || '';
+          s[cid] = 1;
+        });
+        return Object.keys(s).length;
+      })();
+      const dzIn = (lines || []).reduce(function (s, l) {
+        const q = Math.max(1, Number(l.qty) || 1);
+        const dz = Number(l.danshu) || 0;
+        const recvP = Number(l.received) || 0;
+        if (dz > 0) return s + Math.floor(recvP / q);
+        return s + Math.floor(recvP / q);
+      }, 0);
+      const dzAll = (lines || []).reduce(function (s, l) {
+        return s + (Number(l.danshu) > 0 ? Number(l.danshu) : (Number(l.qty) || 0));
+      }, 0);
       return '<div class="po-item" onclick="poOpenDetail(\'' + o.id + '\')">'
-
         + '<div class="po-l1">'
-
         + '<span class="po-code">' + esc(o.code) + '</span>'
-
-        + '<span class="po-name">' + esc(name) + '</span>'
-
-        + '<span class="po-pcs">' + esc(pieces) + '</span>'
-
+        + poPaidBadge(o)
+        + poStatusBadge(st)
+        + '<span class="po-name" style="color:var(--t1);font-weight:600">' + esc(name) + '</span>'
         + '<span class="po-date">' + poDate(o.depart_at) + '</span>'
-
         + '</div>'
-
         + '<div class="po-l2">'
-
-        + '<span class="po-flag">' + esc(paid) + '</span>'
-
-        + '<span class="po-flag po-recv-txt">' + esc(recvTxt) + '</span>'
-
-        + '<span class="po-pcs po-recv-cnt">' + recv + '/' + qty + '</span>'
-
+        + '<span class="po-kv">' + t('poCatCount') + ' ' + catCount + '</span>'
+        + '<span class="po-sep">|</span>'
+        + '<span class="po-kv">' + recv + '/' + qty + '</span>'
+        + '<span class="po-sep">|</span>'
+        + '<span class="po-kv">' + dzIn + '/' + dzAll + '</span>'
         + '<span class="po-date">' + poDate(o.arrive_at) + '</span>'
-
         + '</div>'
-
         + '</div>';
 
     }).join('');
