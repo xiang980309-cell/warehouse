@@ -268,7 +268,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;appearance
 
 .bm{display:none;background:none;border:none;color:var(--t2);cursor:pointer;padding:.1rem}.bm svg{width:24px;height:24px}
 
-.tt{font-weight:600;font-size:.95rem}.tm{font-size:.6rem;font-family:Inter,sans-serif;font-variant-numeric:tabular-nums;padding:.15rem .45rem;border-radius:4px}.tsp{flex:1}
+.tt{font-weight:600;font-size:.95rem;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tm{font-size:.6rem;font-family:Inter,sans-serif;font-variant-numeric:tabular-nums;padding:.15rem .45rem;border-radius:4px;white-space:nowrap;flex-shrink:0}.tsp{flex:1}
 
 .sbox{position:relative;width:220px}.sbox input{width:100%;padding:.45rem .8rem .45rem 2rem;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1);font-size:.78rem;transition:all var(--tr)}.sbox input:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--ag)}
 
@@ -1450,11 +1450,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
 
 /* === HEADER CONTROLS === */
 
-header .bi#langBtn,
-
-header .sbox input,
-
-header input#gS{
+header .bi#langBtn,header .bi.bw{
 
   height:38px;
 
@@ -1464,11 +1460,13 @@ header input#gS{
 
 }
 
-header .sbox{width:220px;display:flex;align-items:center}
+.bi.bw{width:auto;min-width:52px;padding:0 .75rem;display:inline-flex;align-items:center;justify-content:center;gap:.35rem;font-family:Inter,sans-serif;font-variant-numeric:tabular-nums;font-size:.72rem;color:var(--t1);white-space:nowrap;flex-shrink:0;overflow:hidden}
 
-header .sbox input{padding:0 .85rem 0 2.1rem}
+.bi.bw:hover{background:var(--s3);border-color:var(--bl);color:var(--t1)}
 
-header .sbox svg{top:50%;transform:translateY(-50%)}
+@media(max-width:600px){.bi.bw .bw-t{display:none}.bi.bw{min-width:0;padding:0 .55rem}}
+
+@media(max-width:420px){.tt{font-size:.85rem}}
 
 /* === end header controls === */
 
@@ -2146,8 +2144,6 @@ input[id^="lp_"]{
 
 .sbox > input,
 
-.sbox input#gS,
-
 .sbox input#iS{
 
   padding-left:2.15rem !important;
@@ -2175,16 +2171,6 @@ input[id^="lp_"]{
 #loginPage:not([style*="display: none"]):not([style*="display:none"]) #loginLangBtn{
 
   display:flex !important
-
-}
-
-.bi#langBtn{
-
-  background:var(--s2);
-
-  border:1px solid var(--bd);
-
-  overflow:hidden
 
 }
 
@@ -2495,9 +2481,9 @@ body.modal-open main{
 
     <span class="tsp"></span>
 
-    <button class="bi" onclick="toggleLang()" title="中/PT" id="langBtn" style="font-family:Inter,sans-serif;font-variant-numeric:tabular-nums;font-size:.65rem;width:auto;height:38px;min-width:52px;padding:0 .75rem;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box">中/BR</button>
+    <button class="bi bw" onclick="toggleLang()" title="中/BR" id="langBtn">中/BR</button>
 
-    <div class="sbox"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="gS" data-t-ph="searchPH" placeholder="搜索商品、SKU..." oninput="gSearch(this.value)" /></div>
+    <button type="button" class="bi bw" id="scanBtn" title="扫码" data-t-title="scanTitle" onclick="openScanner()"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h3"/><path d="M20 7V4h-3"/><path d="M4 17v3h3"/><path d="M20 17v3h-3"/><path d="M4 12h16"/></svg><span class="bw-t" data-t="scanBtn">扫码</span></button>
 
   </header>
 
@@ -2515,19 +2501,14 @@ body.modal-open main{
 
 <!-- Product Modal -->
 
-<div class="mo" id="pmo"><div class="mdl"><div class="mh"><span class="mt" id="pmT">新增商品</span><button class="mx" onclick="cMo('pmo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="pmId" /><input type="hidden" id="pmManual" value="0" /><div class="fgm"><label data-t="productImage">商品图片</label><div class="iu"><div class="ib" id="pmIB" onclick="document.getElementById('pmIF').click()"><span class="ia">+</span><input type="file" id="pmIF" accept="image/*" onchange="hImg(this,'pmIB','pmImgData')" /></div></div></div><div class="fgm"><label data-t="productName">商品名称 *</label><input type="text" id="pmN" data-t-ph="enterProductName" placeholder="输入商品名称" /></div><div class="fgm"><label data-t="productCategory">商品分类 *</label><div class="cpills" id="pmCats"></div></div><div class="fgm"><label data-t="skuCode">SKU 编码</label><div class="sku-prev" id="skuPrev"><span class="spl">SKU:</span><span class="spv" id="skuAuto">请先选择分类</span><span class="spm" id="skuMode" onclick="toggleSkuMode()">切换手动</span></div></div><div class="fr"><div class="fgm"><label data-t="stockQty">库存数量</label><input type="number" id="pmS" placeholder="0" min="0" /></div><div class="fgm"><label data-t="position">存放位置</label><input type="text" id="pmL" data-t-ph="positionPH" placeholder="如 A区-3层-2号" /></div></div>
+<div class="mo" id="pmo"><div class="mdl"><div class="mh"><span class="mt" id="pmT" data-t="addNew">新增商品</span><button class="mx" onclick="cMo('pmo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><input type="hidden" id="pmId" /><input type="hidden" id="pmManual" value="0" /><div class="fgm"><label data-t="productImage">商品图片</label><div class="iu"><div class="ib" id="pmIB" onclick="document.getElementById('pmIF').click()"><span class="ia">+</span><input type="file" id="pmIF" accept="image/*" onchange="hImg(this,'pmIB','pmImgData')" /></div></div></div><div class="fgm"><label data-t="productName"><span data-t="productName">商品名称</span> <span style="color:var(--dg)">*</span></label><input type="text" id="pmN" data-t-ph="enterProductName" placeholder="输入商品名称" /></div><div class="fgm"><label data-t="productCategory"><span data-t="productCategory">商品分类</span> <span style="color:var(--dg)">*</span></label><div class="cpills" id="pmCats"></div></div><div class="fgm"><label data-t="skuCode">SKU 编码</label><div class="sku-prev" id="skuPrev"><span class="spl">SKU:</span><span class="spv" id="skuAuto" data-t="selectCatFirst">请先选择分类</span><span class="spm" id="skuMode" onclick="toggleSkuMode()"><span data-t="switchManual">切换手动</span></span></div></div><div class="fr"><div class="fgm"><label data-t="stockQty">库存数量</label><input type="number" id="pmS" placeholder="0" min="0" /></div><div class="fgm"><label data-t="position">存放位置</label><input type="text" id="pmL" data-t-ph="positionPH" placeholder="如 A区-3层-2号" /></div></div>
 
-<div class="fgm"><label data-t="productType">商品类型</label>
-
-<select id="pmCatType" onchange="toggleSizeFields()">
-
-  <option value="general" data-t="general">通用</option>
-
-  <option value="clothing" data-t="clothing">衣服</option>
-
-  <option value="shoes" data-t="shoes">鞋子</option>
-
-</select></div>
+<div class="fgm" style="display:flex;gap:.55rem;align-items:flex-end">
+<div style="flex:1 1 50%;min-width:0"><label data-t="productType">商品类型</label>
+<input type="hidden" id="pmCatType" value="general">
+<button type="button" id="pmCatTypeBtn" class="btn bp bs" style="width:100%;min-height:42px;height:42px;justify-content:flex-start;padding:0 .75rem;font-size:.82rem" onclick="pmOpenTypePicker()">通用</button></div>
+<button type="button" class="btn bp bs" style="flex:1 1 50%;min-width:0;min-height:42px;height:42px" onclick="pmEnableSizes()" data-t="addSizeSpec">Tamanhos</button>
+</div>
 
 <div class="fgm" id="pmSizesArea" style="display:none"><label data-t="sizeStock">尺码库存</label>
 
@@ -2561,7 +2542,7 @@ body.modal-open main{
 
 <div style="font-size:.6rem;color:var(--t3)" data-t="bagCaseHint">包：仅小批发客和大批发客可见 · 箱：仅大批发客可见</div></div>
 
-<div class="fr"><div class="fgm"><label data-t="sellPrice">销售单价 (¥)</label><input type="number" id="pmP" placeholder="0.00" min="0" step="0.01" /></div><div class="fgm" id="pmCw"><label data-t="costPrice">进货成本 (¥)</label><input type="number" id="pmC" placeholder="0.00" min="0" step="0.01" /></div></div><div class="fgm"><label data-t="remarks">备注</label><textarea id="pmNt" data-t-ph="optionalNote" placeholder="可选备注..."></textarea></div><div class="fgm"><label data-t="labelTag">标签</label><select id="pmLabel"><option value="normal">Normal</option><option value="novo">Novo</option><option value="oferta">Oferta</option><option value="promocao">Promoção</option></select></div></div><div class="mf"><button class="btn bg bs" onclick="cMo('pmo')" data-t="cancel">取消</button><button class="btn bp bs aw" onclick="saveProd()" data-t="saveProduct">保存商品</button></div></div></div>
+<div class="fr"><div class="fgm"><label data-t="sellPrice">销售单价 (¥)</label><input type="number" id="pmP" placeholder="0.00" min="0" step="0.01" /></div><div class="fgm" id="pmCw"><label data-t="costPrice">进货成本 (¥)</label><input type="number" id="pmC" placeholder="0.00" min="0" step="0.01" /></div></div><div class="fgm"><label data-t="remarks">备注</label><textarea id="pmNt" data-t-ph="optionalNote" placeholder="可选备注..."></textarea></div><div class="fgm"><label data-t="labelTag">标签</label><select id="pmLabel"><option value="normal">Normal</option><option value="novo">Novo</option><option value="oferta">Oferta</option><option value="promocao">Promoção</option></select></div></div><div class="mf" style="gap:.55rem"><button type="button" class="btn bg bs" style="min-height:42px;flex:1" onclick="cMo('pmo')" data-t="cancel">取消</button><button type="button" class="btn bp bs aw" style="min-height:42px;flex:1" onclick="saveProd()" data-t="saveProduct">保存商品</button></div></div></div>
 
 
 
@@ -2680,6 +2661,41 @@ body.modal-open main{
 <div class="mo" id="poLoadMo" style="z-index:500"><div class="mdl" style="max-width:280px;text-align:center"><div class="mb" style="padding:1.5rem 1rem">
 <div class="spinner" style="margin:0 auto .75rem"></div>
 <div id="poLoadText" style="font-size:.88rem;color:var(--t2)" data-t="poLoading">处理中…</div>
+</div></div></div>
+
+
+<div class="mo" id="poExpMo" style="z-index:390"><div class="mdl" style="max-width:360px"><div class="mh"><span class="mt" data-t="poExportDetail">导出表格</span><button class="mx" onclick="cMo('poExpMo')" style="min-width:40px;min-height:40px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb">
+<button type="button" class="btn bp bs" style="width:100%;min-height:42px;margin-bottom:.55rem" onclick="cMo('poExpMo');poExportDetailCSV(window._poExpId)"><span data-t="poExpTable">订单表格</span></button>
+<button type="button" class="btn bp bs" style="width:100%;min-height:42px" onclick="cMo('poExpMo');poExportRFID(window._poExpId)"><span data-t="poExpRfid">RFID 独立码</span></button>
+</div></div></div>
+
+
+<div class="mo" id="pmTypeMo" style="z-index:360"><div class="mdl" style="max-width:320px"><div class="mh"><span class="mt" data-t="productType">商品类型</span><button class="mx" onclick="cMo('pmTypeMo')" style="min-width:40px;min-height:40px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb" id="pmTypeBody"></div></div></div>
+
+
+<div class="mo" id="pmDelMo" style="z-index:400"><div class="mdl" style="max-width:380px"><div class="mh"><span class="mt" data-t="prodDelTitle">删除商品</span><button class="mx" onclick="cMo('pmDelMo')" style="min-width:40px;min-height:40px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb" style="text-align:center;padding:1.25rem 1rem">
+<div style="width:56px;height:56px;margin:0 auto .85rem;border-radius:50%;background:#e8545422;border:1px solid #e8545455;display:flex;align-items:center;justify-content:center">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e85454" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+</div>
+<div id="pmDelName" style="font-size:.95rem;font-weight:700;color:var(--t1);margin-bottom:.45rem"></div>
+<div style="font-size:.88rem;color:var(--t1);line-height:1.55" data-t="prodDelWarn">删除后不可恢复。</div>
+<div style="margin-top:.35rem;font-size:.78rem;color:var(--t2)" data-t="poDeleteAsk">确认继续删除？</div>
+</div><div class="mf" style="gap:.55rem">
+<button type="button" class="btn bg bs" style="flex:1;min-height:42px" onclick="cMo('pmDelMo')"><span data-t="cancel">取消</span></button>
+<button type="button" class="btn bp bs aw" style="flex:1;min-height:42px;background:#e85454;color:#fff" onclick="pmConfirmDeleteP()"><span data-t="delete">删除</span></button>
+</div></div></div>
+
+
+<div class="mo" id="scanMo" style="z-index:410"><div class="mdl" style="max-width:420px"><div class="mh"><span class="mt" data-t="scanTitle">扫码</span><button class="mx" onclick="closeScanner()" style="min-width:40px;min-height:40px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb">
+<div id="scanVideoWrap" style="width:100%;aspect-ratio:4/3;background:var(--s2);border:1px solid var(--bd);border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center">
+<video id="scanVideo" playsinline muted style="width:100%;height:100%;object-fit:cover"></video>
+</div>
+<div id="scanStatus" style="margin-top:.55rem;font-size:.78rem;color:var(--t2)"></div>
+<div class="fgm" style="margin-top:.75rem"><label data-t="scanManual">手动输入条码</label>
+<input id="scanManual" style="width:100%;height:42px;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1)" onkeydown="if(event.key==='Enter')doScanInput()"/></div>
+</div><div class="mf" style="gap:.55rem">
+<button type="button" class="btn bg bs" onclick="closeScanner()"><span data-t="cancel">取消</span></button>
+<button type="button" class="btn bp bs aw" onclick="doScanInput()"><span data-t="scanGo">打开</span></button>
 </div></div></div>
 
 <!-- PO Add Product Dialog -->
@@ -3230,7 +3246,7 @@ const T = {
 
     poConfirmLost:'确定标记为货物丢失？', poReceiveWave:'收货（支持多波次，只填本次真实到货）', poConfirmReceive:'确认收货入库',
 
-    poAddBox:'新增箱', poDanshu:'打数', poSaveBarcode:'保存条码图', poTypeFilter:'类型', poLoading:'处理中…', poLoose:'散件', poLooseTitle:'散件收货', poLooseOk:'确定', poCatCount:'类别', poShipType:'运输方式', poStatusFilter:'状态',
+    poAddBox:'新增箱', poDanshu:'打数', poSaveBarcode:'保存条码图', poTypeFilter:'类型', poLoading:'处理中…', scanBtn:'扫码', scanTitle:'扫码', scanManual:'手动输入条码', scanGo:'打开', scanReady:'请对准条码/二维码', scanNoApi:'本机不支持摄像头识别，请手动输入条码', scanCamFail:'无法打开摄像头，请手动输入', scanNoMatch:'未找到对应信息', prodDelTitle:'删除商品', prodDelWarn:'删除后不可恢复。', prodEdit:'编辑商品', selectCatFirst:'请先选择分类', addSizeSpec:'添加尺码规格', poExpTable:'订单表格', poExpRfid:'RFID 独立码', poLoose:'散件', poLooseTitle:'散件收货', poLooseOk:'确定', poCatCount:'类别', poShipType:'运输方式', poStatusFilter:'状态',
 
     poCol1:'发出/出发', poCol2:'到货/预计', poCol3:'件数', poCol4:'姓名/箱件', poCol5:'已付款',
 
@@ -3602,7 +3618,7 @@ const T = {
 
     poConfirmLost:'Marcar como perdido?', poReceiveWave:'Receber (multi-onadas)', poConfirmReceive:'Confirmar entrada',
 
-    poAddBox:'Adicionar caixa', poDanshu:'Dúzias', poSaveBarcode:'Salvar código', poTypeFilter:'Tipo', poLoading:'Processando…', poLoose:'Avulso', poLooseTitle:'Itens avulsos', poLooseOk:'OK', poCatCount:'Categorias', poShipType:'Envio', poStatusFilter:'Status',
+    poAddBox:'Adicionar caixa', poDanshu:'Dúzias', poSaveBarcode:'Salvar código', poTypeFilter:'Tipo', poLoading:'Processando…', scanBtn:'Escanear', scanTitle:'Escanear', scanManual:'Código manual', scanGo:'Abrir', scanReady:'Aponte para o código', scanNoApi:'Sem leitor de câmera — digite o código', scanCamFail:'Sem acesso à câmera', scanNoMatch:'Não encontrado', prodDelTitle:'Excluir produto', prodDelWarn:'Esta ação não pode ser desfeita.', prodEdit:'Editar produto', selectCatFirst:'Selecione a categoria', addSizeSpec:'Tamanhos', poExpTable:'Tabela do pedido', poExpRfid:'Códigos RFID', poLoose:'Avulso', poLooseTitle:'Itens avulsos', poLooseOk:'OK', poCatCount:'Categorias', poShipType:'Envio', poStatusFilter:'Status',
 
     poCol1:'Saída', poCol2:'Chegada', poCol3:'Peças', poCol4:'Nome/caixas', poCol5:'Pago',
 
@@ -3660,7 +3676,13 @@ function applyLang() {
 
     var langBtn = document.getElementById('langBtn');
 
-    if (langBtn) langBtn.textContent = lang === 'zh' ? 'PT/BR' : '中/文';
+    if (langBtn) {
+
+      langBtn.textContent = lang === 'zh' ? 'PT/BR' : '中/文';
+
+      langBtn.title = langBtn.textContent;
+
+    }
 
     var loginLangText = document.getElementById('loginLangText');
 
@@ -3687,6 +3709,14 @@ function applyLang() {
       var k = el.getAttribute('data-th');
 
       if (k) el.innerHTML = t(k);
+
+    });
+
+    document.querySelectorAll('[data-t-title]').forEach(function(el) {
+
+      var k = el.getAttribute('data-t-title');
+
+      if (k) el.title = t(k);
 
     });
 
@@ -3818,36 +3848,87 @@ function syncStockFieldBySizes() {
 
 }
 
-function toggleSizeFields() {
-
-  setTimeout(function(){ try { syncStockFieldBySizes(); } catch(_){} }, 0);
-
-  var catType = document.getElementById('pmCatType').value;
-
-  var area = document.getElementById('pmSizesArea');
-
-  if (catType === 'general') { area.style.display = 'none'; return; }
-
-  area.style.display = '';
-
-  var sizes = catType === 'clothing' ? CLOTHING_SIZES : SHOE_SIZES;
-
-  var list = document.getElementById('pmSizesList');
-
-  // Read existing values if any
-
-  var existing = {};
-
-  list.querySelectorAll('input[data-size]').forEach(function(inp) { existing[inp.dataset.size] = inp.value; });
-
-  list.innerHTML = sizes.map(function(s) {
-
-    var val = existing[s] || '';
-
-    return '<div style="display:flex;align-items:center;gap:.3rem;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:.25rem .4rem"><span style="font-size:.72rem;font-family:Inter,sans-serif;font-variant-numeric:tabular-nums;min-width:28px">' + s + '</span><input type="number" data-size="' + s + '" value="' + val + '" min="0" placeholder="0" style="width:55px;padding:.15rem .3rem;background:var(--s3);border:1px solid var(--bd);border-radius:4px;color:var(--t1);font-size:.75rem;font-family:Inter,sans-serif;font-variant-numeric:tabular-nums;text-align:center"></div>';
-
+function pmRefreshSizeSkus() {
+  var base = pmBaseSku();
+  document.querySelectorAll('[data-size-sku]').forEach(function (el) {
+    var s = el.getAttribute('data-size-sku');
+    el.textContent = (base || '') + (typeof poEncodeSize === 'function' ? poEncodeSize(s) : s);
+  });
+}
+function pmBaseSku() {
+  try {
+    if (window._pmSku) return String(window._pmSku).trim();
+    const el = document.getElementById('skuAuto');
+    let s = (el && (el.value || el.textContent)) ? String(el.value || el.textContent).trim() : '';
+    s = s.replace('请先选择分类', '').replace('请选择分类', '').trim();
+    if (s && /^[A-Za-z0-9-]+$/.test(s)) return s;
+    return '';
+  } catch (_) { return ''; }
+}
+function pmOpenTypePicker() {
+  const cur = (document.getElementById('pmCatType') || {}).value || 'general';
+  const opts = [
+    { v: 'general', k: 'general', label: t('general') },
+    { v: 'clothing', k: 'clothing', label: t('clothing') },
+    { v: 'shoes', k: 'shoes', label: t('shoes') }
+  ];
+  const body = document.getElementById('pmTypeBody');
+  if (!body) return;
+  body.innerHTML = opts.map(function (o) {
+    return '<button type="button" class="btn bp bs" style="width:100%;min-height:44px;margin-bottom:.55rem;justify-content:flex-start'
+      + (o.v === cur ? ';outline:2px solid var(--ac)' : '')
+      + '" onclick="pmPickType(\'' + o.v + '\')">' + o.label + '</button>';
   }).join('');
+  oMo('pmTypeMo');
+}
+function pmPickType(v) {
+  const el = document.getElementById('pmCatType');
+  if (el) el.value = v;
+  const btn = document.getElementById('pmCatTypeBtn');
+  if (btn) btn.textContent = t(v === 'clothing' ? 'clothing' : v === 'shoes' ? 'shoes' : 'general');
+  cMo('pmTypeMo');
+  try { toggleSizeFields(); } catch (_) {}
+}
 
+function pmEnableSizes() {
+  const sel = document.getElementById('pmCatType');
+  if (sel && sel.value === 'general') {
+    sel.value = 'clothing';
+    try { toggleSizeFields(); } catch (_) {}
+  }
+  const area = document.getElementById('pmSizesArea');
+  if (area) area.style.display = '';
+  try { toggleSizeFields(); } catch (_) {}
+  if (area && area.scrollIntoView) area.scrollIntoView({ block: 'nearest' });
+}
+
+function toggleSizeFields() {
+  setTimeout(function () {
+    try { syncStockFieldBySizes(); } catch (_) {}
+  }, 0);
+  var catType = document.getElementById('pmCatType').value;
+  var area = document.getElementById('pmSizesArea');
+  if (catType === 'general') { area.style.display = 'none'; return; }
+  area.style.display = '';
+  var sizes = (catType === 'clothing' ? CLOTHING_SIZES : SHOE_SIZES).slice();
+  var list = document.getElementById('pmSizesList');
+  var existing = {};
+  list.querySelectorAll('input[data-size]').forEach(function (inp) {
+    existing[inp.dataset.size] = inp.value;
+  });
+  var base = pmBaseSku();
+  list.style.flexDirection = 'column';
+  list.style.flexWrap = 'nowrap';
+  list.style.gap = '.35rem';
+  list.innerHTML = sizes.map(function (s) {
+    var val = existing[s] || '';
+    var skuTag = (base || '') + (typeof poEncodeSize === 'function' ? poEncodeSize(s) : s);
+    return '<div style="display:flex;align-items:center;gap:.55rem;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:.4rem .55rem">'
+      + '<span style="font-size:.82rem;font-family:Inter,sans-serif;font-variant-numeric:tabular-nums;min-width:42px;font-weight:600">' + s + '</span>'
+      + '<span style="flex:1;min-width:0;font-family:monospace;font-size:.72rem;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" data-size-sku="' + s + '">' + skuTag + '</span>'
+      + '<input type="number" data-size="' + s + '" value="' + val + '" min="0" placeholder="0" style="width:64px;padding:.35rem;background:var(--s1);border:1px solid var(--bd);border-radius:6px;color:var(--t1);font-size:.82rem">'
+      + '</div>';
+  }).join('');
 }
 
 
@@ -5156,13 +5237,146 @@ function doLogin() {
 
 }
 
+let _scanStream = null, _scanTimer = null;
+
+function openScanner() {
+  oMo('scanMo');
+  const st = document.getElementById('scanStatus');
+  if (st) st.textContent = t('scanReady') || '请对准条码/二维码';
+  startCameraScan();
+}
+
+function closeScanner() {
+  stopCameraScan();
+  cMo('scanMo');
+}
+
+function stopCameraScan() {
+  try { if (_scanTimer) clearInterval(_scanTimer); } catch (_) {}
+  _scanTimer = null;
+  try {
+    if (_scanStream) _scanStream.getTracks().forEach(function (tr) { tr.stop(); });
+  } catch (_) {}
+  _scanStream = null;
+  try {
+    const v = document.getElementById('scanVideo');
+    if (v) v.srcObject = null;
+  } catch (_) {}
+}
+
+async function startCameraScan() {
+  stopCameraScan();
+  const video = document.getElementById('scanVideo');
+  const st = document.getElementById('scanStatus');
+  if (!video) return;
+  try {
+    _scanStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: 'environment' } }, audio: false
+    });
+    video.srcObject = _scanStream;
+    await video.play();
+    if (st) st.textContent = t('scanReady') || '请对准条码/二维码';
+    if (typeof BarcodeDetector !== 'undefined') {
+      const det = new BarcodeDetector({
+        formats: ['qr_code', 'code_128', 'code_39', 'ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_93']
+      });
+      _scanTimer = setInterval(async function () {
+        try {
+          const codes = await det.detect(video);
+          if (codes && codes[0] && codes[0].rawValue) {
+            const val = String(codes[0].rawValue).trim();
+            stopCameraScan();
+            if (st) st.textContent = val;
+            doScanInput(val);
+          }
+        } catch (_) {}
+      }, 400);
+    } else if (st) {
+      st.textContent = t('scanNoApi') || '本机不支持摄像头识别，请手动输入条码';
+    }
+  } catch (e) {
+    if (st) st.textContent = t('scanCamFail') || '无法打开摄像头，请手动输入';
+    console.warn('startCameraScan', e);
+  }
+}
+
+function doScanInput(forced) {
+  const el = document.getElementById('scanManual');
+  const raw = String(forced || (el && el.value) || '').trim();
+  if (!raw) return;
+  stopCameraScan();
+  cMo('scanMo');
+  routeScannedCode(raw);
+}
+
+function routeScannedCode(raw) {
+  const code = String(raw).trim();
+  // purchase order 03xxxx
+  if (/^03\d{3,}$/.test(code)) {
+    const po = (PO_LIST || []).find(function (o) {
+      return String(o.code) === code || String(o.code).slice(-8) === code.slice(-8);
+    });
+    if (po) {
+      goPage('purchase');
+      poOpenDetail(String(po.id));
+      return;
+    }
+    toast(t('scanNoMatch') || '未找到采购单', 'inf');
+    return;
+  }
+  // order number
+  const ord = (DB.ords || []).find(function (o) {
+    return String(o.no || '') === code || String(o.id) === code;
+  });
+  if (ord && typeof viewOrd === 'function') {
+    goPage('whOrd');
+    viewOrd(ord.id);
+    return;
+  }
+  // product SKU / id
+  const prod = (DB.prods || []).find(function (p) {
+    return String(p.sku || '').toLowerCase() === code.toLowerCase() || String(p.id) === code
+      || String(p.sku || '').toLowerCase() === code.toLowerCase().replace(/^(0{1,4})/, '');
+  });
+  if (prod) {
+    goPage('inv');
+    openPDetail(prod.id);
+    return;
+  }
+  // size-sku suffix: base + 4 size chars
+  const prod2 = (DB.prods || []).find(function (p) {
+    return p.sku && code.toLowerCase().indexOf(String(p.sku).toLowerCase()) === 0;
+  });
+  if (prod2) {
+    goPage('inv');
+    openPDetail(prod2.id);
+    return;
+  }
+  toast(t('scanNoMatch') || '未找到对应信息', 'er');
+}
+
 async function enterApp() {
+
+  try {
+    var lt = document.getElementById('poLoadText');
+    if (lt) lt.textContent = t('poLoading');
+    if (typeof oMo === 'function' && document.getElementById('poLoadMo')) oMo('poLoadMo');
+  } catch (_) {}
+
+  const sl = user.r==='sales';
+
+  try {
+    await loadCoreData();
+    await loadSettingsData();
+  } catch (eLoad) { console.warn('enterApp load', eLoad); }
+
+  try {
+    if (typeof cMo === 'function' && document.getElementById('poLoadMo')) cMo('poLoadMo');
+  } catch (_) {}
 
   document.getElementById('loginPage').style.display = 'none';
 
   document.getElementById('appPage').style.display = 'block';
-
-  const sl = user.r==='sales';
 
   document.body.classList.toggle('mode-sale', sl);
 
@@ -5765,6 +5979,76 @@ function downloadExcelHTML(filename, rows) {
 }
 
 
+
+function poOpenExportChoice() {
+  oMo('poExpMo');
+}
+
+function poEncodeSize(s) {
+  s = String(s == null ? '' : s).trim();
+  if (!s) return '0000';
+  if (/^\d+(\.\d+)?$/.test(s)) {
+    const n = parseFloat(s);
+    if (s.indexOf('.') >= 0) {
+      const whole = Math.floor(n);
+      const frac = Math.round((n - whole) * 10);
+      return String(whole).padStart(3, '0') + String(frac);
+    }
+    return String(Math.round(n)).padStart(3, '0') + '0';
+  }
+  return String(s).padStart(4, '0');
+}
+
+function poYmdPart(dt, mode) {
+  const s = poNormDate(dt || '');
+  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return '0000';
+  return mode === 'mmdd' ? (m[2] + m[3]) : (m[3] + m[2]);
+}
+
+function poExportRFID(id) {
+  const key = String(id);
+  const o = PO_LIST.find(x => String(x.id) === key);
+  if (!o) return;
+  const lines = poLinesOf(o);
+  const dep = poYmdPart(o.depart_at, 'mmdd');
+  const arr = poYmdPart(o.arrive_at, 'mmdd');
+  const rows = [];
+  rows.push(['RFID', 'SKU', 'Size', 'Product', 'Seq']);
+  let styleSeq = 0;
+  lines.forEach(function (l) {
+    const prod = prodById(l.pid) || {};
+    let sizeMap = {};
+    try { sizeMap = l.sizeQty && Object.keys(l.sizeQty).length ? l.sizeQty : null; } catch (_) { sizeMap = null; }
+    const pairs = [];
+    const q = Number(l.qty) || 0;
+    const dz = Number(l.danshu) || 0;
+    const totalPieces = dz > 0 ? dz * q : q;
+    if (sizeMap) {
+      const perDozen = [];
+      Object.keys(sizeMap).forEach(function (sz) {
+        const n = Number(sizeMap[sz]) || 0;
+        for (let i = 0; i < n; i++) perDozen.push(sz);
+      });
+      const rounds = dz > 0 ? dz : 1;
+      for (let r = 0; r < rounds; r++) {
+        perDozen.forEach(function (sz) { pairs.push(sz); });
+      }
+      // 若尺寸合计*打数 < 总件数，用首个尺码补齐
+      while (pairs.length < totalPieces && perDozen.length) pairs.push(perDozen[0]);
+    } else {
+      for (let i = 0; i < totalPieces; i++) pairs.push('');
+    }
+    let seq = 0;
+    pairs.forEach(function (sz) {
+      seq += 1;
+      const seqStr = String(seq).padStart(3, '0');
+      const rfid = String(l.sku || '') + poEncodeSize(sz) + dep + arr + seqStr;
+      rows.push([rfid, l.sku || '', sz || '', l.name || prod.name || '', seqStr]);
+    });
+  });
+  downloadExcelHTML('PO-' + (o.code || o.id) + '-RFID.xls', rows);
+}
 
 function poExportDetailCSV(id) {
 
@@ -7853,7 +8137,7 @@ function poOpenDetail(id) {
 
     + '<button type="button" class="btn bp bs" style="width:100%;min-height:42px;white-space:normal;line-height:1.25;padding:.55rem .35rem" onclick="poDownloadBarcode(\'' + o.code + '\')">' + t('poSaveBarcode') + '</button>'
 
-    + '<button type="button" class="btn bp bs" style="width:100%;min-height:42px;white-space:normal;line-height:1.25;padding:.55rem .35rem" onclick="poExportDetailCSV(\'' + o.id + '\')">' + t('poExportDetail') + '</button>'
+    + '<button type="button" class="btn bp bs" style="width:100%;min-height:42px;white-space:normal;line-height:1.25;padding:.55rem .35rem" onclick="window._poExpId=\'' + o.id + '\';poOpenExportChoice()">' + t('poExportDetail') + '</button>'
 
     + '</div>'
 
@@ -9898,7 +10182,7 @@ function onInvCascadeChange(level) {
 
 function openAddP() {
 
-  document.getElementById('pmT').textContent = t('saveProduct');
+  document.getElementById('pmT').textContent = t('addNew');
 
   document.getElementById('pmId').value = '';
 
@@ -9928,7 +10212,7 @@ function openAddP() {
 
   // Init new fields
 
-  document.getElementById('pmCatType').value = 'general';
+  document.getElementById('pmCatType').value = 'general'; var _ptb=document.getElementById('pmCatTypeBtn'); if(_ptb) _ptb.textContent=t('general');;
 
   document.getElementById('pmSizesArea').style.display = 'none';
 
@@ -9937,6 +10221,7 @@ function openAddP() {
   syncStockFieldBySizes();
 
   document.getElementById('pmHasBag').checked = false;
+  window._pmSku = '';
 
   { const el=document.getElementById('pmStockAlert'); if(el) el.checked=false; const mn=document.getElementById('pmStockAlertMin'); if(mn) mn.value=10; }
 
@@ -9967,12 +10252,13 @@ function openAddP() {
 
 
 function openEditP(id) {
+  window._pmSku = '';
 
   const p = prodById(id);
 
   if (!p) return;
 
-  document.getElementById('pmT').textContent = t('edit') + ' ' + t('product');
+  document.getElementById('pmT').textContent = t('prodEdit');
 
   document.getElementById('pmId').value = id;
 
@@ -10004,7 +10290,7 @@ function openEditP(id) {
 
   var catType = p.category_type || 'general';
 
-  document.getElementById('pmCatType').value = catType;
+  document.getElementById('pmCatType').value = catType; var _ptb2=document.getElementById('pmCatTypeBtn'); if(_ptb2) _ptb2.textContent=t(catType==='clothing'?'clothing':catType==='shoes'?'shoes':'general');;
 
   if (catType !== 'general') {
 
@@ -10027,6 +10313,8 @@ function openEditP(id) {
   }
 
   document.getElementById('pmHasBag').checked = !!p.has_bag;
+  window._pmSku = p.sku || '';
+  try { toggleSizeFields(); } catch (_){} 
 
   { const a=PO_STOCK_ALERTS&&PO_STOCK_ALERTS[p.id]; const el=document.getElementById('pmStockAlert'); if(el) el.checked=!!(a&&a.on); const mn=document.getElementById('pmStockAlertMin'); if(mn) mn.value=(a&&a.min)||10; }
 
@@ -10156,9 +10444,14 @@ function openPDetail(id) {
 
   rows += pdRow(t('remarks'), p.note ? '<span style="white-space:pre-wrap">' + esc(p.note) + '</span>' : '<span style="color:var(--t3)">-</span>');
 
-  rows += pdRow(t('mallList'), p.ml ? '<span class="badge b-novo">' + t('onShelf') + '</span>' : '<span class="badge b-normal">' + t('offShelf') + '</span>');
-
-  rows += pdRow(t('galleryList'), p.gl ? '<span class="badge b-novo">' + t('onShelf') + '</span>' : '<span class="badge b-normal">' + t('offShelf') + '</span>');
+  rows += pdRow(t('mallList'),
+    (p.ml ? '<span class="badge b-novo">' + t('onShelf') + '</span>' : '<span class="badge b-normal">' + t('offShelf') + '</span>')
+    + (has('editProduct') ? ' <button class="btn bg bs" style="margin-left:.4rem" onclick="toggleMallListed(' + p.id + ');cMo(\'pdm\');openPDetail(' + p.id + ')">' + (p.ml ? (t('mallOff') || '移出商城') : (t('mallOn') || '上架商城')) + '</button>' : '')
+  );
+  rows += pdRow(t('galleryList'),
+    (p.gl ? '<span class="badge b-novo">' + t('onShelf') + '</span>' : '<span class="badge b-normal">' + t('offShelf') + '</span>')
+    + (has('editProduct') ? ' <button class="btn bg bs" style="margin-left:.4rem" onclick="toggleGalleryListed(' + p.id + ');cMo(\'pdm\');openPDetail(' + p.id + ')">' + (p.gl ? (t('galleryOff') || '移出相册') : (t('galleryOn') || '上架相册')) + '</button>' : '')
+  );
 
   const img = p.img ? '<div style="margin-bottom:.85rem;text-align:center"><img src="' + safeUrl(p.img) + '" alt="" style="width:100%;max-height:55vh;object-fit:contain;border-radius:12px;border:1px solid var(--bd);background:var(--s2);cursor:zoom-in" onclick="window.open(this.src)" onerror="this.style.opacity=0"></div>' : '<div style="margin-bottom:.85rem;height:180px;display:flex;align-items:center;justify-content:center;background:var(--s2);border:1px dashed var(--bd);border-radius:12px;font-size:2.2rem">👕</div>';
 
@@ -10166,19 +10459,11 @@ function openPDetail(id) {
 
   document.getElementById('pdB').innerHTML = img + rows;
 
-  let f = '<button class="btn bg bs" onclick="cMo(\'pdm\')">' + t('close') + '</button>';
-
-  if (has('editProduct')) {
-
-    f += '<button class="btn bs aw" style="background:' + (p.ml ? 'var(--wa)' : 'var(--sf)') + ';color:#fff" onclick="toggleMallListed(' + p.id + ')">' + (p.ml ? t('mallOff') : t('mallOn')) + '</button>';
-
-    f += '<button class="btn bs aw" style="background:' + (p.gl ? 'var(--wa)' : 'var(--sf)') + ';color:#fff" onclick="toggleGalleryListed(' + p.id + ')">' + (p.gl ? t('galleryOff') : t('galleryOn')) + '</button>';
-
-  }
-
-  if (has('deleteProduct')) f += '<button class="btn bs aw" style="background:var(--dg);color:#fff" onclick="delP(' + p.id + ')">' + t('delete') + '</button>';
+  let f = '<span style="margin-right:auto;font-size:.75rem;color:var(--t2)">' + t('action') + '</span>';
 
   if (has('editProduct')) f += '<button class="btn bp bs aw" onclick="cMo(\'pdm\');openEditP(' + p.id + ')">' + t('edit') + '</button>';
+
+  if (has('deleteProduct')) f += '<button class="btn bs aw" style="background:var(--dg);color:#fff" onclick="delP(' + p.id + ')">' + t('delete') + '</button>';
 
   document.getElementById('pdF').innerHTML = f;
 
@@ -10671,25 +10956,29 @@ async function toggleGalleryListed(id) {
 
 
 async function delP(id) {
-
   const p = prodById(id);
+  if (!p) return;
+  window._pmDelId = id;
+  const el = document.getElementById('pmDelName');
+  if (el) el.textContent = p.name || '';
+  try { applyLang(); } catch (_) {}
+  oMo('pmDelMo');
+}
 
-  if (!p || !confirm(t('confirmDelete', p.name))) return;
-
+async function pmConfirmDeleteP() {
+  const id = window._pmDelId;
+  cMo('pmDelMo');
+  if (id == null) return;
+  window._pmDelId = null;
   try {
-
     await adminFrom('products').delete().eq('id', id);
-
     await loadAllData();
-
     toast(t('productDeleted'), 'inf');
-
-    cMo('pdm');
-
+    try { cMo('pdm'); } catch (_) {}
     render(curP);
-
-  } catch (err) { toast(t('deleteFailed') + ': ' + err.message, 'er'); }
-
+  } catch (err) {
+    toast(t('deleteFailed') + ': ' + (err && err.message ? err.message : err), 'er');
+  }
 }
 
 
@@ -16083,30 +16372,6 @@ async function saveCus() {
 }
 
 
-
-// ═══════════════════════════════════════
-
-// GLOBAL SEARCH
-
-// ═══════════════════════════════════════
-
-function gSearch(q) {
-
-  if (user?.r === 'sales') {
-
-    if (curP !== 'sProds') goPage('sProds');
-
-    setTimeout(() => { const e = document.getElementById('spS'); if (e) { e.value = q; doSPSearch(); } }, 50);
-
-  } else {
-
-    if (curP !== 'inv') goPage('inv');
-
-    setTimeout(() => { iSq = q; const e = document.getElementById('iS'); if (e) { e.value = q; iPg = 1; render('inv'); } }, 50);
-
-  }
-
-}
 
 
 
