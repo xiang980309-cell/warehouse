@@ -22,7 +22,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js" integrity="sha384-TcHRA3zBbn+Lexh5n+Oil4guNPOS3rjNDpGRAN46u/s/mB2IZ50ceC6TYDU2yvgK" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script src="common.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
 
 <style>
 
@@ -112,7 +112,7 @@ h2,h3,.tt,.pnT,.odL{font-family:'Inter','Noto Sans SC',system-ui,sans-serif;font
 
 h1,.sc .sv{font-family:'Inter','Noto Sans SC',system-ui,sans-serif;font-size:36px;font-weight:700;line-height:1.15}
 
-html[lang^="pt"] h1,html[lang^="pt"] .sc .sv{font-size:40px}
+/* 中葡数字字号统一:移除语言分支放大(2026-11-08);字重补偿见上一行 */
 
 .mono,input[type=number],.qty-pill,.pdv.mono{font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums}
 
@@ -2409,6 +2409,39 @@ body.modal-open main{
 
 .mo .mdl{cursor:auto}
 
+/* === 移动端优化包 2026-11-08 === */
+@media(max-width:600px){
+  .top{padding-top:calc(.5rem + env(safe-area-inset-top))}
+  .top .bi.bw{height:44px;min-width:42px;justify-content:center}
+  .bm{padding:.55rem}
+  .ac .bi{width:42px;height:42px}
+  .chip-btn{min-height:42px}
+  .btn.bs{min-height:40px}
+  .pg{width:34px;height:34px}
+  .badge,.ctag,.ptag{white-space:nowrap;font-size:.7rem!important}
+  thead th{font-size:.7rem!important}
+  .sl,.sch,.atm,.sk{font-size:.72rem!important}
+  #mc td{font-size:.72rem!important}
+  #mc input:not([type=checkbox]):not([type=radio]),#mc select{min-height:42px!important}
+  .cc,.ccn,.depth-badge,.sub-count{font-size:.7rem!important}
+  .tm{font-size:.7rem!important}
+  .tw{-webkit-overflow-scrolling:touch}
+  #langBtn{width:56px}
+}
+/* === 中葡切换布局稳定 2026-11-08 === */
+@media(min-width:601px){
+  #langBtn{width:64px}
+  #scanBtn{width:96px;justify-content:center}
+}
+#mc .sc .sv{min-height:44px}
+#mc .sc .sl{min-height:3.2em}
+#mc .sc .sch{min-height:4.2em}
+#mc .tb .btn{min-width:11em;justify-content:center}
+#mc thead th{min-width:6em}
+#mc td:has(> .badge){min-width:11em}
+#mc .chip-btn{min-width:5.5em;justify-content:center}
+
+
 </style>
 
 </head>
@@ -2465,7 +2498,7 @@ body.modal-open main{
 
   <nav class="sbnav" id="sbNav"></nav>
 
-  <div class="sbf"><button type="button" class="sb-btn" onclick="openProfile()" title="个人信息"><div class="sba" id="uA">A</div><div class="sbinfo"><div class="sbname" id="uN">Admin</div><div class="sbrole" id="uR">管理员</div></div><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="opacity:.45;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></button><button class="bl" onclick="doLogout()" title="退出登录"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button></div>
+  <div class="sbf"><button type="button" class="sb-btn" onclick="openProfile()" title="" data-t-title="myProfile"><div class="sba" id="uA">A</div><div class="sbinfo"><div class="sbname" id="uN">Admin</div><div class="sbrole" id="uR">管理员</div></div><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="opacity:.45;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></button><button class="bl" onclick="doLogout()" title="" data-t-title="logout"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button></div>
 
 </aside>
 
@@ -2660,7 +2693,7 @@ body.modal-open main{
 
 <div class="mo" id="poLoadMo" style="z-index:500"><div class="mdl" style="max-width:280px;text-align:center"><div class="mb" style="padding:1.5rem 1rem">
 <div class="spinner" style="margin:0 auto .75rem"></div>
-<div id="poLoadText" style="font-size:.88rem;color:var(--t2)" data-t="poLoading">处理中…</div>
+<div id="poLoadText" style="font-size:.88rem;color:var(--t2)">处理中…</div>
 </div></div></div>
 
 
@@ -2697,6 +2730,20 @@ body.modal-open main{
 <button type="button" class="btn bg bs" onclick="closeScanner()"><span data-t="cancel">取消</span></button>
 <button type="button" class="btn bp bs aw" onclick="doScanInput()"><span data-t="scanGo">打开</span></button>
 </div></div></div>
+
+<!-- W3 Batch Confirm Dialog -->
+
+<div class="mo" id="ordBatchMo"><div class="mdl" style="max-width:420px"><div class="mh"><span class="mt" data-t="batchConfirm">批量确认</span><button class="mx" onclick="cMo('ordBatchMo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb" id="ordBatchBody"></div><div class="mf"><button type="button" class="btn bg bs" onclick="cMo('ordBatchMo')" data-t="cancel">取消</button><button type="button" class="btn bp bs" id="ordBatchGo" onclick="ordBatchGo()">确认</button></div></div></div>
+
+<!-- W8 RMA Dialog -->
+
+<div class="mo" id="rmaNewMo"><div class="mdl" style="max-width:460px"><div class="mh"><span class="mt" data-t="rmaNew">新建退货单</span><button class="mx" onclick="cMo('rmaNewMo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><div class="fgm"><label data-t="rmaOrig">原订单号</label><input id="rmaOrig" /></div><div class="fgm"><label data-t="rmaCus">客户</label><input id="rmaCus" /></div><div class="fgm"><label data-t="rmaNote2">备注</label><input id="rmaNote" /></div><div class="fgm"><label data-t="countRows">行</label><div style="display:flex;gap:.45rem;align-items:center;flex-wrap:wrap"><select id="rmaP" style="flex:2;min-width:140px;height:38px;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1)"></select><input type="number" id="rmaQ" min="1" value="1" style="width:70px;height:38px;padding:0 .5rem;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1)" /><select id="rmaC" style="width:88px;height:38px;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1)"><option value="good" data-t="rmaCondGood">良品</option><option value="defective" data-t="rmaCondDef">残次</option></select><button type="button" class="btn bg bs" onclick="rmaAddRow()">+</button></div><div id="rmaList" style="margin-top:.55rem"></div></div></div><div class="mf"><button type="button" class="btn bg bs" onclick="cMo('rmaNewMo')" data-t="cancel">取消</button><button type="button" class="btn bp bs" onclick="rmaSave()" data-t="countCreate">创建</button></div></div></div>
+
+<!-- W4 Count Dialogs -->
+
+<div class="mo" id="cntNewMo"><div class="mdl" style="max-width:420px"><div class="mh"><span class="mt" data-t="countNew">新建盘点单</span><button class="mx" onclick="cMo('cntNewMo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb"><div class="fgm"><label data-t="countName">盘点名称</label><input id="cntNewName" /></div><div class="fgm"><label data-t="countScope">盘点范围</label><div style="margin-top:.35rem"><label style="display:inline-flex;align-items:center;gap:.35rem;cursor:pointer;font-size:.78rem;color:var(--t2);margin-right:.9rem"><input type="radio" name="cntNewScope" value="all" checked /><span data-t="countScopeAll">全盘</span></label><label style="display:inline-flex;align-items:center;gap:.35rem;cursor:pointer;font-size:.78rem;color:var(--t2);margin-right:.9rem"><input type="radio" name="cntNewScope" value="cat" /><span data-t="countScopeCat">按分类</span></label></div></div><div class="fgm"><label data-t="countCat">分类</label><select id="cntNewCat"></select></div></div><div class="mf"><button type="button" class="btn bg bs" onclick="cMo('cntNewMo')" data-t="cancel">取消</button><button type="button" class="btn bp bs" onclick="cntCreate()" data-t="countCreate">创建盘点单</button></div></div></div>
+
+<div class="mo" id="cntPostMo"><div class="mdl" style="max-width:380px"><div class="mh"><span class="mt" data-t="countPostTitle">确认过账</span><button class="mx" onclick="cMo('cntPostMo')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="mb" id="cntPostBody"></div><div class="mf"><button type="button" class="btn bg bs" onclick="cMo('cntPostMo')" data-t="cancel">取消</button><button type="button" class="btn bp bs" onclick="cntPostRun()" data-t="countPost">过账</button></div></div></div>
 
 <!-- PO Add Product Dialog -->
 
@@ -3268,7 +3315,7 @@ const T = {
 
     poInfoPieces:'件数', poInfoName:'姓名', poInfoPaid:'国内已付款', poInfoAddr:'收货地址',
 
-    poInfoBoxes:'箱数', poInfoCount:'件数', poYes:'是', poNo:'否',
+    poInfoBoxes:'箱数', poInfoCount:'件数', poYes:'是', poNo:'否', dataLoading:'数据加载中…', onibus:'巴士', outStock:'缺货', poImportNeedLib:'缺少导入依赖库', srcShop:'商城', logout:'退出登录', rptPage:'退货与报表', rmaTab:'退货 RMA', tabTurn:'周转', tabSlow:'滞销', tabMargin:'毛利', tabShip:'发货时效', rmaNew:'新建退货单', rmaNo:'退货单号', rmaOrig:'原订单号', rmaCus:'客户', rmaNote2:'备注', rmaCondGood:'良品', rmaCondDef:'残次', rmaPost:'退货入库', rmaPosted:'已入库', rmaStrategyHint:'良品回补可售库存（RMA 流水）；残次仅记录不回补', rmaQty:'数量', rmaDel:'删除', rptExport:'导出 CSV', rptSku:'SKU', rptSold30:'30 天出库', rptAvgStock:'当前库存', rptTurnover:'周转', rptLastOut:'最近出库', rptMarginRev:'收入', rptMarginCost:'成本', rptMarginRate:'毛利率', rptLead:'平均处理时长', rptOrders:'完成单', rptNone:'暂无数据', category:'分类', printLabel:'打印标签', reconPage:'对账报表', reconAdmin:'管理单', reconShop:'商城单', reconInToday:'今日入库', reconOutToday:'今日出库', reconAnom:'异常列表', reconNegStock:'负库存', reconLate:'超期未处理', reconNoShip:'缺发货信息', reconAmtDiff:'金额不一致', reconNone:'无异常', auditPage:'日志与通知', auditTitle:'审计日志', notiTitle:'低库存通知', auditTime:'时间', auditBy:'操作人', auditType:'类型', auditTable:'对象', auditSummary:'摘要', notiQty:'当前', notiMin:'阈值', notiResend:'重发', notiView:'查看', notiResolved:'已恢复', notiEmpty:'暂无低库存通知', auditEmpty:'暂无日志', lowStock:'低库存', countTask:'盘点', countNew:'新建盘点单', countNo:'盘点单号', countName:'盘点名称', countScope:'盘点范围', countScopeAll:'全盘', countScopeCat:'按分类', countCat:'分类', countCreate:'创建盘点单', countRows:'行', countEntered:'已录入', countBook:'账面', countActual:'实盘', countDiff:'差异', countPlu:'盘盈', countPls:'盘亏', countSave:'暂存', countPost:'过账', countStatusOpen:'进行中', countPosted:'已过账', countDel:'删除', countBack:'返回列表', countPostTitle:'确认过账', countPostHint:'过账按差异调增/调减库存并写入流水（COUNT 前缀）；账面为创建时快照；过账后不可修改', countNoActual:'未录入实盘的行不参与过账', countConfirmDel:'确认删除该盘点单？库存不受影响', noData:'暂无数据', createdBy:'创建人', ordQPh:'搜索单号/SKU，回车直达', batchAll:'全选', batchPick:'批量拣货', batchDone:'批量完成', batchPrint:'批量打印', batchConfirm:'批量确认', batchOrders:'订单', batchExpect:'预计出库明细', batchStockHint:'库存已于下单时扣减，完成出库不再变动库存', batchOk:'成功 {0} 单', batchErr:'失败 {0} 单', batchRetry:'重试未成功', batchNone:'请先勾选订单', batchClear:'清除选择', batchWrongState:'状态不符',
 
   },
 
@@ -3640,7 +3687,7 @@ const T = {
 
     poInfoPieces:'Peças', poInfoName:'Nome', poInfoPaid:'Pago', poInfoAddr:'Endereço',
 
-    poInfoBoxes:'Caixas', poInfoCount:'Peças', poYes:'Sim', poNo:'Não',
+    poInfoBoxes:'Caixas', poInfoCount:'Peças', poYes:'Sim', poNo:'Não', dataLoading:'Carregando dados…', onibus:'Ônibus', outStock:'Esgotado', poImportNeedLib:'Biblioteca de importação ausente', srcShop:'Loja', logout:'Sair', rptPage:'Devoluções e relatórios', rmaTab:'Devoluções', tabTurn:'Giro', tabSlow:'Parados', tabMargin:'Margem', tabShip:'Prazo', rmaNew:'Nova devolução', rmaNo:'Nº devolução', rmaOrig:'Pedido origem', rmaCus:'Cliente', rmaNote2:'Obs', rmaCondGood:'Bom', rmaCondDef:'Defeituoso', rmaPost:'Entrar estoque', rmaPosted:'Entrado', rmaStrategyHint:'Bom retorna ao estoque (movimento RMA); defeituoso só registra', rmaQty:'Qtd', rmaDel:'Excluir', rptExport:'Exportar CSV', rptSku:'SKU', rptSold30:'Saída 30d', rptAvgStock:'Estoque', rptTurnover:'Giro', rptLastOut:'Última saída', rptMarginRev:'Receita', rptMarginCost:'Custo', rptMarginRate:'Margem', rptLead:'Tempo médio', rptOrders:'Concluídos', rptNone:'Sem dados', category:'Categoria', printLabel:'Imprimir etiqueta', reconPage:'Conciliação', reconAdmin:'Pedidos admin', reconShop:'Pedidos loja', reconInToday:'Entradas hoje', reconOutToday:'Saídas hoje', reconAnom:'Anomalias', reconNegStock:'Estoque negativo', reconLate:'Pendente >48h', reconNoShip:'Sem info de envio', reconAmtDiff:'Valor divergente', reconNone:'Sem anomalias', auditPage:'Log e alertas', auditTitle:'Log de auditoria', notiTitle:'Alertas de estoque', auditTime:'Hora', auditBy:'Operador', auditType:'Tipo', auditTable:'Objeto', auditSummary:'Resumo', notiQty:'Atual', notiMin:'Mínimo', notiResend:'Reenviar', notiView:'Ver', notiResolved:'Resolvido', notiEmpty:'Sem alertas', auditEmpty:'Sem registros', lowStock:'Baixo', countTask:'Inventário', countNew:'Novo inventário', countNo:'Nº', countName:'Nome', countScope:'Escopo', countScopeAll:'Total', countScopeCat:'Por categoria', countCat:'Categoria', countCreate:'Criar inventário', countRows:'linhas', countEntered:'Contado', countBook:'Sistema', countActual:'Contado', countDiff:'Diferença', countPlu:'Sobra', countPls:'Falta', countSave:'Salvar', countPost:'Lançar', countStatusOpen:'Em andamento', countPosted:'Lançado', countDel:'Excluir', countBack:'Voltar', countPostTitle:'Confirmar lançamento', countPostHint:'O lançamento ajusta o estoque pela diferença e grava movimento (prefixo COUNT); sistema é o valor da criação; após lançar não edita', countNoActual:'Linhas sem contagem não entram', countConfirmDel:'Excluir este inventário? Estoque não muda', noData:'Sem dados', createdBy:'Criado por', ordQPh:'Buscar pedido/SKU, Enter abrir', batchAll:'Selecionar tudo', batchPick:'Separação em lote', batchDone:'Concluir em lote', batchPrint:'Imprimir em lote', batchConfirm:'Confirmar em lote', batchOrders:'Pedidos', batchExpect:'Itens previstos', batchStockHint:'Estoque já deduzido no pedido; concluir não altera o estoque', batchOk:'{0} concluídos', batchErr:'{0} falhas', batchRetry:'Repetir falhas', batchNone:'Selecione pedidos', batchClear:'Limpar seleção', batchWrongState:'Status inválido',
 
   }
 
@@ -3682,6 +3729,10 @@ function applyLang() {
 
       langBtn.title = langBtn.textContent;
 
+    var tMEl = document.getElementById('tM');
+
+    if (tMEl && typeof user !== 'undefined' && user) tMEl.textContent = user.r === 'sales' ? t('sales') : t('warehouse');
+
     }
 
     var loginLangText = document.getElementById('loginLangText');
@@ -3720,7 +3771,7 @@ function applyLang() {
 
     });
 
-    if (typeof user !== 'undefined' && user) { buildNav(); render(curP); }
+    if (typeof user !== 'undefined' && user) { buildNav(); var _onEl = document.querySelector('.ni.on'); var _tT2 = document.getElementById('tT'); if (_onEl && _tT2) _tT2.textContent = _onEl.textContent.trim(); if (!window._inRenderTail) render(curP); }
 
     try {
 
@@ -4109,7 +4160,7 @@ function searchHaystack(p) {
 
   }
 
-  return name + ' ' + sku + ' ' + catText;
+  return name + ' ' + sku + ' ' + catText + ' ' + (p.loc || '').toLowerCase();
 
 }
 
@@ -4753,6 +4804,13 @@ async function loadCoreData() {
 
   try {
 
+    if (!(DB.prods || []).length) {
+      try {
+        const _c = JSON.parse(localStorage.getItem('cs-core-cache') || 'null');
+        if (_c && _c.at && (Date.now() - _c.at) < 86400000) { DB.cats = _c.cats || []; DB.prods = _c.prods || []; }
+      } catch (_) {}
+    }
+
     const [catR,prodR,pcR] = await Promise.all([
 
       safeQ(sb.from('categories').select('*').order('order_num')),
@@ -4769,6 +4827,8 @@ async function loadCoreData() {
 
     DB.prods = (prodR.data||[]).map(p => ({id:p.id,name:p.name,catIds:(function(){const ids=pc.filter(x=>x.product_id===p.id).map(x=>x.category_id);const d=deepestCatId(ids);return d?[d]:[]})(),sku:p.sku,skuManual:p.sku_manual?1:0,stock:(function(){let st=Number(p.stock)||0;try{if(p.size_stock){const ss=typeof p.size_stock==='string'?JSON.parse(p.size_stock):p.size_stock;if(ss&&typeof ss==='object'&&Object.keys(ss).length){st=Object.values(ss).reduce((a,b)=>a+(Number(b)||0),0);}}}catch(_){}return st;})(),price:Number(p.price),cost:Number(p.cost),loc:p.location||'',note:p.note||'',cr:fmtDate(p.created_at).split(' ')[0],img:(function(){const raw=p.image||'';if(raw)return raw;const arr=p.images||[];const f=arr[0];if(!f)return '';return typeof f==='string'?f:(f.url||f.image||f.src||'');})(),category_type:p.category_type||'general',sizes:p.sizes||[],size_stock:(function(ss){try{return typeof ss==='string'?JSON.parse(ss):(ss||{});}catch(_){return {};}})(p.size_stock),has_bag:p.has_bag||false,bag_price:Number(p.bag_price||0),bag_qty:Number(p.bag_qty||0),has_case:p.has_case||false,case_price:Number(p.case_price||0),case_qty:Number(p.case_qty||0),label:p.label||'',lp:(p.label_price==null?null:Number(p.label_price)),yr:p.release_year||'',ver:p.release_version||'',tg:p.tags||[],ml:!!p.mall_listed,gl:p.gallery_listed!==false}));
 
+    try { localStorage.setItem('cs-core-cache', JSON.stringify({ at: Date.now(), cats: DB.cats, prods: DB.prods })); } catch (_) {}
+
   } catch(e) { console.warn('loadCoreData:', e); }
 
 }
@@ -4783,15 +4843,15 @@ async function loadOrdersData() {
 
     const [ordR,oiR,shopR,shopIR,chgR] = await Promise.all([
 
-      safeQ(ADMIN_TOKEN ? adminSelect('orders', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : fetchPaged(function() { return sb.from('orders').select('*').order('created_at',{ascending:false}).order('id', { ascending: false }); })),
+      safeQ(ADMIN_TOKEN ? adminSelect('orders', { order: { column: 'created_at', ascending: false }, limit: 400 }) : fetchPaged(function() { return sb.from('orders').select('*').order('created_at',{ascending:false}).order('id', { ascending: false }); })),
 
-      safeQ(ADMIN_TOKEN ? adminSelect('order_items', { limit: 5000 }) : sb.from('order_items').select('*')),
+      safeQ(ADMIN_TOKEN ? adminSelect('order_items', { limit: 2000 }) : sb.from('order_items').select('*')),
 
-      safeQ(ADMIN_TOKEN ? adminSelect('shop_orders', { order: { column: 'created_at', ascending: false }, limit: 1000 }).catch(() => sb.from('shop_orders').select('*').order('created_at', { ascending: false }).limit(1000).then(r => r.data || [])) : sb.from('shop_orders').select('*').order('created_at', { ascending: false }).limit(1000).then(r => r.data || [])),
+      safeQ(sb.from('shop_orders').select('*').order('created_at', { ascending: false }).limit(400).then(r => r.data || []).catch(() => adminSelect('shop_orders', { order: { column: 'created_at', ascending: false }, limit: 400 }))),
 
-      safeQ(ADMIN_TOKEN ? adminSelect('shop_order_items', { limit: 5000 }).catch(() => sb.from('shop_order_items').select('*').limit(5000).then(r => r.data || [])) : sb.from('shop_order_items').select('*').limit(5000).then(r => r.data || [])),
+      safeQ(sb.from('shop_order_items').select('*').order('id', { ascending: false }).limit(1500).then(r => r.data || []).catch(() => adminSelect('shop_order_items', { limit: 1500 }))),
 
-      safeQ(ADMIN_TOKEN ? adminSelect('order_changes', { order: { column: 'created_at', ascending: false }, limit: 1000 }) : Promise.resolve({ data: [], error: null }))
+      safeQ(ADMIN_TOKEN ? adminSelect('order_changes', { order: { column: 'created_at', ascending: false }, limit: 300 }) : Promise.resolve({ data: [], error: null }))
 
     ]);
 
@@ -4917,9 +4977,13 @@ async function loadSettingsData() {
 
   if (!sb) return;
 
+  const _mlP = sb.from('member_levels').select('*');
+
+  const _prP = sb.from('site_settings').select('key,value').in('key', ['product_stock_alerts']);
+
   try {
 
-    const mlR = await sb.from('member_levels').select('*');
+    const mlR = await _mlP;
 
     DB.memberLevels = {};
 
@@ -4929,7 +4993,7 @@ async function loadSettingsData() {
 
   try {
 
-    const pr = await sb.from('site_settings').select('key,value').in('key', ['product_stock_alerts']);
+    const pr = await _prP;
 
     const map = {};
 
@@ -4952,6 +5016,8 @@ async function loadSettingsData() {
 // 全量刷新（写操作后调用，保证数据一致）
 
 async function loadAllData() {
+
+  loadNoti().then(function () { setTimeout(notiCheck, 2500); });
 
   await Promise.all([loadCoreData(), loadOrdersData(), loadStockData(), loadAdminData(), loadSettingsData()]);
 
@@ -5081,6 +5147,15 @@ function startOrdersRealtime() {
 
 // 按页懒加载路由
 
+(function () {
+  const rawLoadAll = loadAllData;
+  loadAllData = function () {
+    if (window._loadAllP) return window._loadAllP;
+    window._loadAllP = Promise.resolve().then(rawLoadAll).finally(function () { window._loadAllP = null; });
+    return window._loadAllP;
+  };
+})();
+
 const PAGE_LOADER = {
 
   dash: loadCoreData,
@@ -5100,6 +5175,14 @@ const PAGE_LOADER = {
   sNewOrd: loadOrdersData,
 
   billReview: loadOrdersData,
+
+count: loadCountTasks,
+
+audit: function () { return Promise.all([loadAudit(), loadNoti()]); },
+
+recon: loadRecon,
+
+rpt: function () { return Promise.all([loadRma(), loadRpt()]); },
 
   accts: loadAdminData,
 
@@ -5357,22 +5440,15 @@ function routeScannedCode(raw) {
 
 async function enterApp() {
 
-  try {
-    var lt = document.getElementById('poLoadText');
-    if (lt) lt.textContent = t('poLoading');
-    if (typeof oMo === 'function' && document.getElementById('poLoadMo')) oMo('poLoadMo');
-  } catch (_) {}
+  dataLoadingStart();
 
   const sl = user.r==='sales';
 
-  try {
-    await loadCoreData();
-    await loadSettingsData();
-  } catch (eLoad) { console.warn('enterApp load', eLoad); }
+  const _bootP = Promise.all([loadCoreData(), loadSettingsData()]);
 
-  try {
-    if (typeof cMo === 'function' && document.getElementById('poLoadMo')) cMo('poLoadMo');
-  } catch (_) {}
+  _bootP.catch(function (eLoad) { console.warn('enterApp load', eLoad); });
+
+  _bootP.then(dataLoadingEnd, dataLoadingEnd);
 
   document.getElementById('loginPage').style.display = 'none';
 
@@ -5394,21 +5470,21 @@ async function enterApp() {
 
   startOrdersRealtime();
 
-  // 先载核心数据（商品/分类），再进页面（页面内再懒加载）
+  // 秒开:缓存已热立即进页,数据到达后自动刷新;未热则等数据到位
 
-  loadCoreData().then(function() {
+  const _enter = function () {
 
-    return loadSettingsData();
-
-  }).then(function() {
-
-    goPage(sl ? 'sWork' : 'dash');
+    if (!curP || curP === 'dash' || curP === 'sWork') goPage(sl ? 'sWork' : 'dash'); else render(curP);
 
     // 后台预热常用业务数据，不阻塞首屏
 
     loadOrdersData().then(function() { DB._loaded && (DB._loaded.whOrd = DB._loaded.sOrds = DB._loaded.sWork = true); });
 
-  });
+  };
+
+  if ((DB.prods || []).length) { _enter(); _bootP.then(function () { render(curP || (sl ? 'sWork' : 'dash')); }); }
+
+  else { _bootP.then(_enter, _enter); }
 
 }
 
@@ -8274,6 +8350,30 @@ function poConfirmLoose() {
 
 
 
+// 数据加载中弹窗:300ms 防闪,引用计数防提前关闭
+let _dlDepth = 0, _dlTimer = null, _dlShown = false;
+
+function dataLoadingStart(immediate) {
+  _dlDepth++;
+  if (_dlTimer) { clearTimeout(_dlTimer); _dlTimer = null; }
+  if (immediate) {
+    if (_dlDepth > 0 && !_dlShown) { _dlShown = true; try { poShowLoading(t('dataLoading')); } catch (_) {} }
+    return;
+  }
+  _dlTimer = setTimeout(function () {
+    _dlTimer = null;
+    if (_dlDepth > 0) { _dlShown = true; try { poShowLoading(t('dataLoading')); } catch (_) {} }
+  }, 300);
+}
+
+function dataLoadingEnd() {
+  _dlDepth = Math.max(0, _dlDepth - 1);
+  if (_dlDepth === 0) {
+    if (_dlTimer) { clearTimeout(_dlTimer); _dlTimer = null; }
+    if (_dlShown) { _dlShown = false; try { poHideLoading(); } catch (_) {} }
+  }
+}
+
 function poShowLoading(msg) {
   var el = document.getElementById('poLoadText');
   if (el) el.textContent = msg || t('poLoading');
@@ -8804,6 +8904,14 @@ function buildNav() {
 
     if (has('outbound')) h += '<div class="ni" data-p="outb" onclick="goPage(\'outb\',this)">'+sv.out+' '+t('outboundRecord')+'</div>';
 
+if (has('inbound')) h += '<div class="ni" data-p="count" onclick="goPage(\'count\',this)">'+sv.chk+' '+t('countTask')+'</div>';
+
+if (has('processOrder')) h += '<div class="ni" data-p="audit" onclick="goPage(\'audit\',this)">'+sv.tag+' '+t('auditPage')+'</div>';
+
+if (has('processOrder')) h += '<div class="ni" data-p="recon" onclick="goPage(\'recon\',this)">'+sv.ana+' '+t('reconPage')+'</div>';
+
+if (has('processOrder')) h += '<div class="ni" data-p="rpt" onclick="goPage(\'rpt\',this)">'+sv.ship+' '+t('rptPage')+'</div>';
+
     h += '<div class="nl">'+t('orders')+'</div><div class="ni" data-p="whOrd" onclick="goPage(\'whOrd\',this)">'+sv.ord+' '+t('orderProcess')+'</div>';
 
     h += '<div class="nl">'+t('productLabels')+'</div>';
@@ -8926,7 +9034,11 @@ function goPage(p, el, keepLabel) {
 
   if (window.ensurePageData) {
 
-    ensurePageData(p, true).then(function() { render(curP === p ? p : curP); markPreVal(); }).catch(function() { render(p); });
+    try { render(p); } catch (e) {}
+
+    dataLoadingStart(true);
+
+    ensurePageData(p, true).then(function() { render(curP === p ? p : curP); markPreVal(); }).catch(function() { render(p); }).finally(dataLoadingEnd);
 
   } else {
 
@@ -9029,6 +9141,10 @@ function render(p) {
     case 'cats': c.innerHTML = rCats(); break;
 
     case 'whOrd': c.innerHTML = rWhOrd(); break;
+case 'count': c.innerHTML = rCount(); break;
+case 'audit': c.innerHTML = rAudit(); break;
+case 'recon': c.innerHTML = rRecon(); break;
+case 'rpt': c.innerHTML = rRpt(); break;
 
     case 'sWork': c.innerHTML = rSW(); break;
 
@@ -9067,6 +9183,10 @@ function render(p) {
     case 'purchase': c.innerHTML = rPurchase(); break;
 
   }
+
+window._inRenderTail = true;
+
+try { applyLang(); } finally { window._inRenderTail = false; }
 
 }
 
@@ -10453,6 +10573,8 @@ function openPDetail(id) {
     + (has('editProduct') ? ' <button class="btn bg bs" style="margin-left:.4rem" onclick="toggleGalleryListed(' + p.id + ');cMo(\'pdm\');openPDetail(' + p.id + ')">' + (p.gl ? (t('galleryOff') || '移出相册') : (t('galleryOn') || '上架相册')) + '</button>' : '')
   );
 
+  rows += pdRow(t('printLabel'), '<button type="button" class="btn bp bs" onclick="printLabel(' + p.id + ')">' + t('printLabel') + '</button>');
+
   const img = p.img ? '<div style="margin-bottom:.85rem;text-align:center"><img src="' + safeUrl(p.img) + '" alt="" style="width:100%;max-height:55vh;object-fit:contain;border-radius:12px;border:1px solid var(--bd);background:var(--s2);cursor:zoom-in" onclick="window.open(this.src)" onerror="this.style.opacity=0"></div>' : '<div style="margin-bottom:.85rem;height:180px;display:flex;align-items:center;justify-content:center;background:var(--s2);border:1px dashed var(--bd);border-radius:12px;font-size:2.2rem">👕</div>';
 
   document.getElementById('pdT').textContent = t('prodDetail');
@@ -11241,6 +11363,8 @@ async function doIO() {
 
     if (result && result.error) throw new Error(result.error);
 
+    logAudit('stock', 'products', (tp === 'in' ? '+' : '-') + qty + ' #' + pid + ' ' + (note || ''));
+
     await loadAllData();
 
     cMo('imo');
@@ -11388,6 +11512,7 @@ function openAddAcct() {
 
 
 async function saveAcct() {
+  try { logAudit('perm', 'accounts', document.getElementById('amU') ? document.getElementById('amU').value : ''); } catch (_) {}
 
   const id = document.getElementById('amId').value;
 
@@ -12631,6 +12756,726 @@ function setOrdPkF(pk) {
 
 
 
+// ═══ W8: 退货 RMA + 报表包(周转/滞销/毛利/发货时效) ═══
+
+let RMA = [];
+
+let rptTab = 'rma';
+
+let RPT = { out: [], in: [], done: [] };
+
+async function loadRma() { RMA = (await ssLoad('rma_orders', [])) || []; }
+
+function rmaCreate(data) {
+  const seq = String(RMA.length + 1).padStart(3, '0');
+  const t = {
+    id: 'R' + Date.now(),
+    no: 'RMA-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '-' + seq,
+    origNo: data.origNo || '', customer: data.customer || '', note: data.note || '',
+    status: 'open', createdBy: user.u, createdAt: new Date().toISOString(), postedAt: '',
+    items: (data.items || []).map(function (i) {
+      const p = prodById(i.pid) || {};
+      return { pid: i.pid, sku: p.sku || '', name: p.name || '', qty: Number(i.qty) || 0, price: Number(i.price) || 0, cond: i.cond === 'defective' ? 'defective' : 'good' };
+    })
+  };
+  RMA.unshift(t);
+  ssSave('rma_orders', RMA);
+  logAudit('rma', 'orders', t.no + ' create');
+  return t;
+}
+
+async function rmaPost(id) {
+  const r = RMA.find(function (x) { return x.id === id; });
+  if (!r || r.status === 'posted') return;
+  const ok = [], fail = [];
+  for (const it of r.items) {
+    if (it.cond !== 'good' || !it.qty) continue;
+    try {
+      const { error } = await sb.rpc('stock_io', { p_type: 'in', p_product_id: Number(it.pid), p_qty: it.qty, p_operator: user.u, p_note: 'RMA:' + r.no });
+      if (error) throw error;
+      ok.push(it.sku);
+    } catch (e) { fail.push({ sku: it.sku, reason: String((e && e.message) || e) }); }
+  }
+  r.status = 'posted';
+  r.postedAt = new Date().toISOString();
+  ssSave('rma_orders', RMA);
+  logAudit('rma', 'orders', r.no + ' post ' + ok.length + '/' + r.items.length);
+  await loadAllData();
+  render(curP);
+  toast(t('opSuccess') + ' ' + ok.length + (fail.length ? ' / ' + t('batchErr').replace('{0}', fail.length) : ''), fail.length ? 'er' : 'ok');
+}
+
+async function rmaDelete(id) {
+  const r = RMA.find(function (x) { return x.id === id; });
+  if (!r || r.status === 'posted') return;
+  if (!confirm(t('countConfirmDel'))) return;
+  RMA = RMA.filter(function (x) { return x.id !== id; });
+  ssSave('rma_orders', RMA);
+  render(curP);
+}
+
+let rmaRows = [];
+
+function rmaNew() {
+  rmaRows = [];
+  const sel = document.getElementById('rmaP');
+  if (sel) sel.innerHTML = (DB.prods || []).slice(0, 300).map(function (p) { return '<option value="' + p.id + '">' + esc((p.sku || '') + ' · ' + (p.name || '')) + '</option>'; }).join('');
+  rmaRenderRows();
+  oMo('rmaNewMo');
+}
+
+function rmaRenderRows() {
+  const el = document.getElementById('rmaList');
+  if (!el) return;
+  el.innerHTML = rmaRows.map(function (r, i) {
+    return '<div style="display:flex;gap:.45rem;align-items:center;padding:.25rem 0;font-size:.72rem"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis">' + esc(r.sku) + ' ×' + r.qty + ' <span class="badge ' + (r.cond === 'good' ? 'b-dn' : 'b-cn') + '">' + (r.cond === 'good' ? t('rmaCondGood') : t('rmaCondDef')) + '</span></span><button type="button" class="bi" onclick="rmaRows.splice(' + i + ',1);rmaRenderRows()" style="color:var(--dg)">✕</button></div>';
+  }).join('') || '<div style="font-size:.7rem;color:var(--t3)">' + t('rmaQty') + ': 0</div>';
+}
+
+function rmaAddRow() {
+  const pid = Number((document.getElementById('rmaP') || {}).value);
+  const qty = Number((document.getElementById('rmaQ') || {}).value) || 0;
+  const cond = (document.getElementById('rmaC') || {}).value || 'good';
+  if (!pid || qty <= 0) { toast(t('selectAndEnter'), 'er'); return; }
+  const p = prodById(pid) || {};
+  rmaRows.push({ pid: pid, qty: qty, price: Number(p.price) || 0, cond: cond, sku: p.sku || '' });
+  rmaRenderRows();
+}
+
+async function rmaSave() {
+  if (!rmaRows.length) { toast(t('selectItemsErr'), 'er'); return; }
+  const t2 = rmaCreate({
+    origNo: (document.getElementById('rmaOrig') || {}).value || '',
+    customer: (document.getElementById('rmaCus') || {}).value || '',
+    note: (document.getElementById('rmaNote') || {}).value || '',
+    items: rmaRows
+  });
+  rmaRows = [];
+  cMo('rmaNewMo');
+  render(curP);
+  toast(t('opSuccess') + ' ' + t2.no, 'ok');
+}
+
+async function loadRpt() {
+  try {
+    const since = new Date(Date.now() - 30 * 86400000).toISOString();
+    const r1 = sb.from('outbound_records').select('product_id,qty,created_at').gte('created_at', since);
+    const r2 = sb.from('inbound_records').select('product_id,qty,created_at').gte('created_at', since);
+    const r3 = adminApi('select', { table: 'orders', limit: 500 }).catch(function () { return { data: [] }; });
+    const res = await Promise.all([r1, r2, r3]);
+    RPT.out = (res[0] && res[0].data) || [];
+    RPT.in = (res[1] && res[1].data) || [];
+    const doneRows = Array.isArray(res[2]) ? res[2] : ((res[2] && res[2].data) || []);
+    RPT.done = doneRows.filter(function (o) { return o.status === 'done' && String(o.created_at || '') >= since; }).map(function (o) { return { order_no: o.order_no, created_at: o.created_at, updated_at: o.updated_at }; });
+  } catch (e) { console.warn('loadRpt', e); }
+}
+
+function rptCsvCell(v) {
+  const s = String(v == null ? '' : v);
+  return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+}
+
+function rptOutQty(pid) { return RPT.out.filter(function (r) { return Number(r.product_id) === Number(pid); }).reduce(function (s, r) { return s + (Number(r.qty) || 0); }, 0); }
+
+function rptData(tab) {
+  const prods = DB.prods || [];
+  if (tab === 'turn') {
+    const cats = {};
+    prods.forEach(function (p) {
+      const cid = (p.catIds || [])[0];
+      const c = (typeof catById === 'function' && cid) ? catById(cid) : null;
+      const key = c ? (c.name || '#') : t('all');
+      cats[key] = cats[key] || { qty: 0, stock: 0, n: 0 };
+      cats[key].qty += rptOutQty(p.id);
+      cats[key].stock += Number(p.stock) || 0;
+      cats[key].n += 1;
+    });
+    return { head: [t('category'), t('rptSold30'), t('rptAvgStock'), t('rptTurnover')], rows: Object.keys(cats).map(function (k) { const v = cats[k]; return [k, v.qty, v.stock, v.stock ? (v.qty / v.stock).toFixed(2) : '-']; }) };
+  }
+  if (tab === 'slow') {
+    const rows = prods.map(function (p) { return { p: p, qty: rptOutQty(p.id) }; }).filter(function (x) { return x.qty === 0 && (Number(x.p.stock) || 0) > 0; }).sort(function (a, b) { return (Number(b.p.stock) || 0) - (Number(a.p.stock) || 0); }).slice(0, 30);
+    return { head: [t('rptSku'), t('name'), t('rptAvgStock'), t('rptLastOut')], rows: rows.map(function (x) { return [x.p.sku, x.p.name, x.p.stock, '-']; }) };
+  }
+  if (tab === 'margin') {
+    const map = {};
+    (DB.ords || []).filter(function (o) { return o.st === 'done' && o.src !== 'shop'; }).forEach(function (o) { (o.items || []).forEach(function (i) {
+      const p = prodById(i.pid) || {};
+      const sku = p.sku || String(i.pid);
+      map[sku] = map[sku] || { rev: 0, cost: 0, qty: 0 };
+      const price = Number(i.price != null ? i.price : i.unit_price) || 0;
+      map[sku].rev += price * (Number(i.qty) || 0);
+      map[sku].cost += (Number(p.cost) || 0) * (Number(i.qty) || 0);
+      map[sku].qty += Number(i.qty) || 0;
+    }); });
+    return { head: [t('rptSku'), t('quantity'), t('rptMarginRev'), t('rptMarginCost'), t('rptMarginRate')], rows: Object.keys(map).map(function (k) { const v = map[k]; return [k, v.qty, v.rev.toFixed(2), v.cost.toFixed(2), v.rev ? (((v.rev - v.cost) / v.rev) * 100).toFixed(1) + '%' : '-']; }).sort(function (a, b) { return b[2] - a[2]; }) };
+  }
+  const leads = RPT.done.map(function (o) {
+    const a = new Date(o.created_at || 0).getTime(), b = new Date(o.updated_at || o.created_at || 0).getTime();
+    return { no: o.order_no, h: a && b && b >= a ? (b - a) / 3600000 : null };
+  });
+  const valid = leads.filter(function (x) { return x.h != null; });
+  const avg = valid.length ? (valid.reduce(function (s, x) { return s + x.h; }, 0) / valid.length) : null;
+  return { head: [t('countNo'), t('rptLead')], rows: leads.slice(0, 30).map(function (x) { return [x.no, x.h == null ? '-' : x.h.toFixed(1) + 'h']; }), extra: avg == null ? '' : t('rptLead') + ': ' + avg.toFixed(1) + 'h · ' + t('rptOrders') + ' ' + valid.length };
+}
+
+function rptExport(tab) {
+  const d = rptData(tab);
+  const csv = [d.head].concat(d.rows).map(function (r) { return r.map(rptCsvCell).join(','); }).join('\r\n');
+  const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'rpt-' + tab + '-' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click();
+  logAudit('export', 'reports', tab + ' ' + d.rows.length);
+}
+
+function setRptTab(k) { rptTab = k; render(curP); }
+
+function rRpt() {
+  const tabs = [['rma', t('rmaTab')], ['turn', t('tabTurn')], ['slow', t('tabSlow')], ['margin', t('tabMargin')], ['ship', t('tabShip')]];
+  const bar = '<div class="tb">' + tabs.map(function (x) { return '<button type="button" class="chip-btn' + (rptTab === x[0] ? ' on' : '') + '" onclick="setRptTab(\'' + x[0] + '\')">' + x[1] + '</button>'; }).join('') + '</div>';
+  if (rptTab === 'rma') {
+    const rows = RMA.map(function (r) {
+      return '<tr><td class="sk"><strong>' + esc(r.no) + '</strong></td><td>' + esc(r.origNo || '-') + '</td><td>' + esc(r.customer || '-') + '</td><td style="font-size:.7rem">' + r.items.map(function (i) { return esc(i.sku) + '×' + i.qty + (i.cond === 'good' ? '' : ' (' + t('rmaCondDef') + ')'); }).join(', ') + '</td><td>' + (r.status === 'posted' ? '<span class="badge b-dn">' + t('rmaPosted') + '</span>' : '<span class="badge b-pd">' + t('countStatusOpen') + '</span>') + '</td><td class="hide-sm" style="font-size:.68rem;color:var(--t3)">' + esc((r.createdAt || '').slice(0, 16).replace('T', ' ')) + '</td><td><div class="ac">'
+        + (r.status !== 'posted' ? '<button class="bi" title="' + t('rmaPost') + '" onclick="rmaPost(\'' + r.id + '\')" style="color:var(--sf)">✔</button><button class="bi" title="' + t('rmaDel') + '" onclick="rmaDelete(\'' + r.id + '\')" style="color:var(--dg)">✕</button>' : '')
+        + '</div></td></tr>';
+    }).join('');
+    return bar + '<div class="tb"><button class="btn bp bs aw" onclick="rmaNew()">+ ' + t('rmaNew') + '</button><span style="font-size:.66rem;color:var(--t3)">' + t('rmaStrategyHint') + '</span></div>'
+      + '<div class="tw"><div class="ts"><table><thead><tr><th>' + t('rmaNo') + '</th><th>' + t('rmaOrig') + '</th><th>' + t('rmaCus') + '</th><th>' + t('countRows') + '</th><th>' + t('status') + '</th><th class="hide-sm">' + t('auditTime') + '</th><th>' + t('action') + '</th></tr></thead><tbody>' + (rows || '<tr><td colspan="7"><div class="empty"><p>' + t('noData') + '</p></div></td></tr>') + '</tbody></table></div></div>';
+  }
+  const d = rptData(rptTab);
+  const rows = d.rows.map(function (r) { return '<tr>' + r.map(function (c, i) { return '<td' + (i ? ' class="mono"' : ' class="sk"') + '>' + esc(c) + '</td>'; }).join('') + '</tr>'; }).join('');
+  return bar + '<div class="tb"><button class="btn bg bs aw" onclick="rptExport(\'' + rptTab + '\')">' + t('rptExport') + '</button><span style="font-size:.66rem;color:var(--t3)">' + (d.extra || '') + '</span></div>'
+    + '<div class="tw"><div class="ts"><table><thead><tr>' + d.head.map(function (h) { return '<th>' + h + '</th>'; }).join('') + '</tr></thead><tbody>' + (rows || '<tr><td colspan="' + d.head.length + '"><div class="empty"><p>' + t('rptNone') + '</p></div></td></tr>') + '</tbody></table></div></div>';
+}
+
+
+// ═══ W6: 双订单对账报表(orders vs shop_orders vs 库存流水) ═══
+
+let RECON = { inQty: null, outQty: null };
+
+async function loadRecon() {
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    const r1 = sb.from('inbound_records').select('qty').gte('created_at', today);
+    const r2 = sb.from('outbound_records').select('qty').gte('created_at', today);
+    const res = await Promise.all([r1, r2]);
+    RECON.inQty = ((res[0] && res[0].data) || []).reduce(function (s, r) { return s + (Number(r.qty) || 0); }, 0);
+    RECON.outQty = ((res[1] && res[1].data) || []).reduce(function (s, r) { return s + (Number(r.qty) || 0); }, 0);
+  } catch (_) {}
+}
+
+function reconAmt(o) {
+  if (o.origTotal != null && !isNaN(o.origTotal)) return Number(o.origTotal);
+  return (o.items || []).reduce(function (s, i) { return s + (Number(i.price != null ? i.price : i.unit_price) || 0) * (Number(i.qty) || 0); }, 0);
+}
+
+function rRecon() {
+  const today = new Date().toISOString().slice(0, 10);
+  const isToday = function (s) { return String(s || '').slice(0, 10) === today; };
+  const all = DB.ords || [];
+  const admin = all.filter(function (o) { return o.src !== 'shop' && o.st !== 'draft' && isToday(o.cr); });
+  const shop = all.filter(function (o) { return o.src === 'shop' && isToday(o.cr); });
+  const sumA = admin.reduce(function (s, o) { return s + reconAmt(o); }, 0);
+  const sumS = shop.reduce(function (s, o) { return s + reconAmt(o); }, 0);
+  const anoms = [];
+  (DB.prods || []).forEach(function (p) { if ((Number(p.stock) || 0) < 0) anoms.push({ k: 'reconNegStock', no: p.sku, d: p.name + ' · ' + p.stock }); });
+  const limit = Date.now() - 48 * 3600 * 1000;
+  all.forEach(function (o) {
+    if (o.st === 'pending' || o.st === 'picking') {
+      const ts = new Date(o.cr || 0).getTime();
+      if (ts && ts < limit) anoms.push({ k: 'reconLate', no: o.no, d: t(o.st) + ' · ' + (o.cr || '').slice(0, 10) });
+    }
+    if (o.st === 'done' && o.src !== 'shop' && !o.adminConfirmedShip) {
+      const canShip = (o.pk === 'pickup') || (o.pk === 'onibus' && o.onibusName && o.onibusImg) || ((o.pk === 'motoboy' || o.pk === 'correios') && o.shipAddr);
+      if (!canShip) anoms.push({ k: 'reconNoShip', no: o.no, d: t(o.pk) });
+    }
+  });
+  const byNo = {};
+  all.forEach(function (o) { if (o.no) { if (byNo[o.no]) { if (Math.abs(reconAmt(byNo[o.no]) - reconAmt(o)) > 0.01) anoms.push({ k: 'reconAmtDiff', no: o.no, d: reconAmt(byNo[o.no]) + ' vs ' + reconAmt(o) }); } else byNo[o.no] = o; } });
+  const card = function (t1, t2, t3) { return '<div class="sc"><div class="sl">' + t1 + '</div><div class="sv">' + t2 + '</div><div class="sch">' + t3 + '</div></div>'; };
+  const rows = anoms.map(function (a) { return '<tr><td><span class="badge b-dr">' + t(a.k) + '</span></td><td class="sk">' + esc(a.no) + '</td><td style="font-size:.72rem">' + esc(a.d) + '</td></tr>'; }).join('');
+  return '<div class="stats">'
+    + card(t('reconAdmin'), admin.length, '¥' + sumA.toLocaleString())
+    + card(t('reconShop'), shop.length, '¥' + sumS.toLocaleString())
+    + card(t('reconInToday'), RECON.inQty == null ? '…' : RECON.inQty, '')
+    + card(t('reconOutToday'), RECON.outQty == null ? '…' : RECON.outQty, '')
+    + '</div>'
+    + '<div style="font-size:.95rem;font-weight:600;margin:.35rem 0 .55rem">' + t('reconAnom') + ' (' + anoms.length + ')</div>'
+    + '<div class="tw"><div class="ts"><table><thead><tr><th>' + t('auditType') + '</th><th>' + t('countNo') + '</th><th>' + t('auditSummary') + '</th></tr></thead><tbody>' + (rows || '<tr><td colspan="3"><div class="empty"><p>' + t('reconNone') + '</p></div></td></tr>') + '</tbody></table></div></div>';
+}
+
+
+// ═══ W5: 审计日志 + 低库存通知(零 DDL,site_settings 持久化) ═══
+
+const _ssChain = {};
+
+function ssSave(key, val) {
+  const payload = typeof val === 'string' ? val : JSON.stringify(val);
+  _ssChain[key] = (_ssChain[key] || Promise.resolve()).then(async function () {
+    const { data: ex } = await sb.from('site_settings').select('key').eq('key', key).limit(1);
+    if (ex && ex.length) await adminFrom('site_settings').update({ value: payload, updated_at: new Date().toISOString() }).eq('key', key);
+    else await adminFrom('site_settings').insert({ key: key, value: payload, label: key });
+  }).catch(function (e) { console.warn('ssSave', key, e); });
+  return _ssChain[key];
+}
+
+async function ssLoad(key, dflt) {
+  await (_ssChain[key] || Promise.resolve());
+  try {
+    const { data } = await sb.from('site_settings').select('value').eq('key', key).limit(1);
+    return data && data.length ? JSON.parse(data[0].value || 'null') : dflt;
+  } catch (_) { return dflt; }
+}
+
+let AUD = [];
+
+const AUD_MAX = 1500;
+
+let _auditTimer = null;
+
+async function loadAudit() {
+  if (_auditTimer) { clearTimeout(_auditTimer); _auditTimer = null; ssSave('audit_logs', AUD); }
+  await (_ssChain['audit_logs'] || Promise.resolve());
+  const loaded = (await ssLoad('audit_logs', [])) || [];
+  const ids = {};
+  loaded.forEach(function (a) { ids[a.id] = 1; });
+  const pending = AUD.filter(function (a) { return !ids[a.id]; });
+  AUD = pending.concat(loaded);
+  if (AUD.length > AUD_MAX) AUD.length = AUD_MAX;
+}
+
+function logAudit(type, table, summary) {
+  try {
+    AUD.unshift({ id: 'A' + Date.now() + Math.random().toString(36).slice(2, 6), at: new Date().toISOString(), by: (typeof user !== 'undefined' && user && user.u) || '', type: String(type), table: String(table), summary: String(summary == null ? '' : summary).slice(0, 180) });
+    if (AUD.length > AUD_MAX) AUD.length = AUD_MAX;
+    if (_auditTimer) clearTimeout(_auditTimer);
+    _auditTimer = setTimeout(function () { ssSave('audit_logs', AUD); }, 800);
+  } catch (_) {}
+}
+
+(function () {
+  const raw = adminApi;
+  adminApi = async function (action, payload) {
+    const r = await raw(action, payload);
+    try {
+      if (action !== 'select' && payload && payload.table && payload.table !== 'site_settings') {
+        logAudit(action, payload.table, JSON.stringify(payload.patch || payload.row || payload.rows || payload.where || {}).slice(0, 160));
+      }
+    } catch (_) {}
+    return r;
+  };
+})();
+
+let NOTI = [];
+
+async function loadNoti() { NOTI = (await ssLoad('stock_notifications', [])) || []; }
+
+function notiCheck() {
+  try {
+    const alerts = (typeof PO_STOCK_ALERTS !== 'undefined' && PO_STOCK_ALERTS) || {};
+    let changed = false;
+    (DB.prods || []).forEach(function (p) {
+      const a = alerts[p.id];
+      const min = a && a.on ? (Number(a.min) || 10) : null;
+      if (min == null) return;
+      if ((Number(p.stock) || 0) < min) {
+        const last = NOTI.find(function (n) { return n.pid === p.id && n.min === min && !n.resolved; });
+        if (last) return;
+        NOTI.unshift({ id: 'N' + Date.now() + Math.random().toString(36).slice(2, 6), pid: p.id, sku: p.sku, name: p.name, qty: Number(p.stock) || 0, min: min, at: new Date().toISOString(), resend: 0, resolved: false });
+        changed = true;
+      }
+    });
+    NOTI.forEach(function (n) {
+      const p = (DB.prods || []).find(function (x) { return x.id === n.pid; });
+      if (n.resolved || !p) return;
+      if ((Number(p.stock) || 0) >= n.min) { n.resolved = true; changed = true; }
+    });
+    if (changed) ssSave('stock_notifications', NOTI);
+  } catch (_) {}
+}
+
+function notiResend(id) {
+  const n = NOTI.find(function (x) { return x.id === id; });
+  if (!n) return;
+  n.resend = (n.resend || 0) + 1;
+  ssSave('stock_notifications', NOTI);
+  toast('SKU ' + n.sku + ' · ' + n.qty + ' < ' + n.min, 'inf');
+}
+
+function notiGo(pid) { goPage('inv'); openPDetail(pid); }
+
+let auditF = { by: '', type: '', day: '' };
+
+function setAuditF(k, v) { auditF[k] = v || ''; render(curP); }
+
+function rAudit() {
+  const notis = NOTI.slice(0, 30).map(function (n) {
+    return '<tr><td class="sk">' + esc(n.sku) + '</td><td>' + esc(n.name) + '</td><td class="mono" style="color:var(--dg)">' + n.qty + '</td><td class="mono">' + n.min + '</td><td style="font-size:.68rem;color:var(--t3)">' + esc((n.at || '').slice(0, 16).replace('T', ' ')) + '</td><td>' + (n.resolved ? '<span class="badge b-dn">' + t('notiResolved') + '</span>' : '<span class="badge b-pd">' + t('lowStock') + '</span>') + '</td><td><div class="ac">'
+      + '<button class="bi" title="' + t('notiResend') + '" onclick="notiResend(\'' + n.id + '\')" style="color:var(--in)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>'
+      + '<button class="bi" title="' + t('notiView') + '" onclick="notiGo(' + n.pid + ')" style="color:var(--ac)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>'
+      + '</div></td></tr>';
+  }).join('');
+  const bys = {};
+  const types = {};
+  AUD.forEach(function (a) { bys[a.by || '-'] = 1; types[a.type] = 1; });
+  const logs = AUD.filter(function (a) {
+    return (!auditF.by || (a.by || '-') === auditF.by) && (!auditF.type || a.type === auditF.type) && (!auditF.day || (a.at || '').slice(0, 10) === auditF.day);
+  }).slice(0, 200).map(function (a) {
+    return '<tr><td style="font-size:.68rem;color:var(--t3);white-space:nowrap">' + esc((a.at || '').slice(0, 19).replace('T', ' ')) + '</td><td>' + esc(a.by || '-') + '</td><td><span class="badge b-pk">' + esc(a.type) + '</span></td><td class="sk hide-sm">' + esc(a.table) + '</td><td style="font-size:.7rem;word-break:break-all">' + esc(a.summary) + '</td></tr>';
+  }).join('');
+  const opt = function (sel, obj) { return Object.keys(obj).map(function (k) { return '<option value="' + esc(k) + '"' + (sel === k ? ' selected' : '') + '>' + esc(k) + '</option>'; }).join(''); };
+
+  return '<div style="font-size:.95rem;font-weight:600;margin:.25rem 0 .55rem">' + t('notiTitle') + ' (' + NOTI.length + ')</div>'
+    + '<div class="tw"><div class="ts"><table><thead><tr><th>' + t('sku') + '</th><th>' + t('name') + '</th><th>' + t('notiQty') + '</th><th>' + t('notiMin') + '</th><th>' + t('auditTime') + '</th><th>' + t('status') + '</th><th>' + t('action') + '</th></tr></thead><tbody>' + (notis || '<tr><td colspan="7"><div class="empty"><p>' + t('notiEmpty') + '</p></div></td></tr>') + '</tbody></table></div></div>'
+    + '<div style="font-size:.95rem;font-weight:600;margin:1.1rem 0 .55rem">' + t('auditTitle') + ' (' + AUD.length + ')</div>'
+    + '<div class="tb">'
+    + '<select onchange="setAuditF(\'by\',this.value)" style="height:34px;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1);padding:0 .5rem"><option value="">' + t('auditBy') + ': ' + t('all') + '</option>' + opt(auditF.by, bys) + '</select>'
+    + '<select onchange="setAuditF(\'type\',this.value)" style="height:34px;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1);padding:0 .5rem"><option value="">' + t('auditType') + ': ' + t('all') + '</option>' + opt(auditF.type, types) + '</select>'
+    + '<input type="date" value="' + esc(auditF.day) + '" onchange="setAuditF(\'day\',this.value)" style="height:34px;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1);padding:0 .5rem" />'
+    + '</div>'
+    + '<div class="tw"><div class="ts"><table><thead><tr><th>' + t('auditTime') + '</th><th>' + t('auditBy') + '</th><th>' + t('auditType') + '</th><th class="hide-sm">' + t('auditTable') + '</th><th>' + t('auditSummary') + '</th></tr></thead><tbody>' + (logs || '<tr><td colspan="5"><div class="empty"><p>' + t('auditEmpty') + '</p></div></td></tr>') + '</tbody></table></div></div>';
+}
+
+
+// ═══ W4: 盘点单(账面快照 + 差异过账,存 site_settings.count_tasks) ═══
+
+let CNT = [];
+
+let cntView = '';
+
+async function loadCountTasks() {
+  await _cntSaveChain;
+  try {
+    const { data } = await sb.from('site_settings').select('value').eq('key', 'count_tasks').limit(1);
+    CNT = data && data.length ? (JSON.parse(data[0].value || '[]') || []) : [];
+  } catch (_) { CNT = []; }
+}
+
+let _cntSaveChain = Promise.resolve();
+
+function saveCountTasks() {
+  const val = JSON.stringify(CNT || []);
+  _cntSaveChain = _cntSaveChain.then(async function () {
+    const { data: existing } = await sb.from('site_settings').select('key').eq('key', 'count_tasks').limit(1);
+    if (existing && existing.length) {
+      await adminFrom('site_settings').update({ value: val, updated_at: new Date().toISOString() }).eq('key', 'count_tasks');
+    } else {
+      await adminFrom('site_settings').insert({ key: 'count_tasks', value: val, label: 'count_tasks' });
+    }
+  }).catch(function (e) { console.warn('saveCountTasks', e); });
+  return _cntSaveChain;
+}
+
+function cntCatIdsOf(catId) {
+  const ids = [Number(catId)];
+  const cats = DB.cats || [];
+  let grew = true;
+  while (grew) {
+    grew = false;
+    cats.forEach(function (c) {
+      const pid = Number(c.parent_id != null ? c.parent_id : c.pid);
+      if (ids.includes(pid) && !ids.includes(Number(c.id))) { ids.push(Number(c.id)); grew = true; }
+    });
+  }
+  return ids;
+}
+
+function rCount() {
+  if (cntView) {
+    const task = CNT.find(function (x) { return x.id === cntView; });
+    if (task) return cntDetailHtml(task);
+    cntView = '';
+  }
+  const rows = CNT.slice().reverse().map(function (o) {
+    const done = o.lines.filter(function (l) { return l.actual != null && l.actual !== ''; }).length;
+    const st = o.status === 'posted' ? '<span class="badge b-dn">' + t('countPosted') + '</span>' : '<span class="badge b-pd">' + t('countStatusOpen') + '</span>';
+    return '<tr><td><strong>' + esc(o.no) + '</strong></td><td>' + esc(o.name) + '</td><td>' + (o.scope === 'all' ? t('countScopeAll') : t('countScopeCat')) + '</td><td>' + o.lines.length + ' ' + t('countRows') + ' · ' + t('countEntered') + ' ' + done + '/' + o.lines.length + '</td><td>' + st + '</td><td class="hide-sm" style="font-size:.68rem;color:var(--t3)">' + esc(o.createdBy || '') + '<br>' + esc((o.createdAt || '').slice(0, 16).replace('T', ' ')) + '</td><td><div class="ac">'
+      + '<button class="bi" title="' + t('view') + '" onclick="cntOpen(\'' + o.id + '\')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>'
+      + (o.status !== 'posted' ? '<button class="bi" title="' + t('countDel') + '" onclick="cntDelete(\'' + o.id + '\')" style="color:var(--dg)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>' : '')
+      + '</div></td></tr>';
+  }).join('');
+  return '<div class="tb"><button class="btn bp bs aw" onclick="cntNew()">+ ' + t('countNew') + '</button></div>'
+    + '<div class="tw"><div class="ts"><table><thead><tr><th>' + t('countNo') + '</th><th>' + t('countName') + '</th><th>' + t('countScope') + '</th><th>' + t('countRows') + '</th><th>' + t('status') + '</th><th class="hide-sm">' + t('createdBy') + '</th><th>' + t('action') + '</th></tr></thead><tbody>'
+    + (rows || '<tr><td colspan="7"><div class="empty"><p>' + t('noData') + '</p></div></td></tr>') + '</tbody></table></div></div>';
+}
+
+function cntOpen(id) { cntView = id; render(curP); }
+
+function cntNew() {
+  const sel = document.getElementById('cntNewCat');
+  if (sel) sel.innerHTML = (DB.cats || []).map(function (c) { return '<option value="' + c.id + '">' + esc((c.name || '')) + '</option>'; }).join('');
+  oMo('cntNewMo');
+}
+
+async function cntCreate() {
+  const name = (document.getElementById('cntNewName').value || '').trim() || t('countTask');
+  const scope = (document.querySelector('input[name="cntNewScope"]:checked') || {}).value || 'all';
+  const catId = Number((document.getElementById('cntNewCat') || {}).value) || 0;
+  let prods = (DB.prods || []).slice();
+  if (scope === 'cat' && catId) {
+    const ids = cntCatIdsOf(catId);
+    prods = prods.filter(function (p) { return (p.catIds || []).some(function (x) { return ids.includes(Number(x)); }); });
+  }
+  const seq = (CNT.length + 1).toString().padStart(3, '0');
+  const task = {
+    id: 'CNT' + Date.now(),
+    no: 'CNT-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '-' + seq,
+    name: name, scope: scope, catId: scope === 'cat' ? catId : null,
+    status: 'open', createdBy: user.u, createdAt: new Date().toISOString(), postedAt: '', postedBy: '',
+    lines: prods.map(function (p) { return { pid: p.id, sku: p.sku, name: p.name, book: Number(p.stock) || 0, actual: null }; })
+  };
+  CNT.push(task);
+  await saveCountTasks();
+  cMo('cntNewMo');
+  cntView = task.id;
+  render(curP);
+  toast(t('opSuccess'), 'ok');
+}
+
+function cntDetailHtml(task) {
+  const posted = task.status === 'posted';
+  const canPost = has('inbound');
+  const rows = task.lines.map(function (l) {
+    const d = (l.actual == null || l.actual === '') ? null : Number(l.actual) - Number(l.book);
+    const dt = d == null ? '-' : (d > 0 ? '<span style="color:var(--sf)">+' + d + '</span>' : d < 0 ? '<span style="color:var(--dg)">' + d + '</span>' : '<span style="color:var(--t3)">0</span>');
+    return '<tr><td class="sk">' + esc(l.sku) + '</td><td>' + esc(l.name) + '</td><td class="mono">' + l.book + '</td><td><input type="number" min="0" value="' + (l.actual == null ? '' : l.actual) + '" ' + (posted ? 'disabled ' : '') + 'onchange="cntSetActual(\'' + task.id + '\',' + l.pid + ',this.value)" style="width:80px;height:34px;padding:0 .5rem;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);color:var(--t1)" /></td><td class="mono">' + dt + '</td></tr>';
+  }).join('');
+  const done = task.lines.filter(function (l) { return l.actual != null && l.actual !== ''; }).length;
+  const bar = '<div class="tb">'
+    + '<button class="btn bg bs" onclick="cntBack()">' + t('countBack') + '</button>'
+    + '<span class="tsp"></span>'
+    + '<span style="font-size:.72rem;color:var(--t2)">' + t('countEntered') + ' ' + done + '/' + task.lines.length + '</span>'
+    + (posted ? '<span class="badge b-dn">' + t('countPosted') + '</span>'
+      : '<button class="btn bg bs" onclick="cntSave()">' + t('countSave') + '</button>'
+        + '<button class="btn bp bs" ' + (canPost ? 'onclick="cntPostAsk()"' : 'disabled title="' + t('noPermission') + '"') + '>' + t('countPost') + '</button>')
+    + '</div>';
+  return '<div style="font-size:.95rem;font-weight:600;margin-bottom:.55rem">' + esc(task.no) + ' · ' + esc(task.name) + (posted ? ' <span class="badge b-dn">' + t('countPosted') + '</span>' : '') + '</div>' + bar
+    + '<div class="tw"><div class="ts"><table><thead><tr><th>' + t('sku') + '</th><th>' + t('name') + '</th><th>' + t('countBook') + '</th><th>' + t('countActual') + '</th><th>' + t('countDiff') + '</th></tr></thead><tbody>' + (rows || '<tr><td colspan="5"><div class="empty"><p>' + t('noData') + '</p></div></td></tr>') + '</tbody></table></div></div>';
+}
+
+function cntBack() { cntView = ''; render(curP); }
+
+async function cntSave() {
+  await saveCountTasks();
+  toast(t('opSuccess'), 'ok');
+}
+
+function cntSetActual(taskId, pid, v) {
+  const task = CNT.find(function (x) { return x.id === taskId; });
+  if (!task || task.status === 'posted') return;
+  const line = task.lines.find(function (l) { return Number(l.pid) === Number(pid); });
+  if (!line) return;
+  line.actual = (v === '' || v == null) ? null : Math.max(0, Number(v));
+  saveCountTasks();
+}
+
+async function cntDelete(id) {
+  const task = CNT.find(function (x) { return x.id === id; });
+  if (!task || task.status === 'posted') return;
+  if (!confirm(t('countConfirmDel'))) return;
+  CNT = CNT.filter(function (x) { return x.id !== id; });
+  await saveCountTasks();
+  render(curP);
+  toast(t('opSuccess'), 'ok');
+}
+
+function cntPostAsk() {
+  const task = CNT.find(function (x) { return x.id === cntView; });
+  if (!task) return;
+  const diffs = task.lines.filter(function (l) { return l.actual != null && l.actual !== '' && Number(l.actual) !== Number(l.book); });
+  const plus = diffs.filter(function (l) { return Number(l.actual) > Number(l.book); }).length;
+  const minus = diffs.filter(function (l) { return Number(l.actual) < Number(l.book); }).length;
+  document.getElementById('cntPostBody').innerHTML =
+      '<div style="font-size:.75rem;color:var(--t2)">' + esc(task.no) + ' · ' + diffs.length + ' ' + t('countDiff') + ' (' + t('countPlu') + ' ' + plus + ' / ' + t('countPls') + ' ' + minus + ')</div>'
+    + '<div style="font-size:.68rem;color:var(--t3);margin-top:.55rem">' + t('countPostHint') + '<br>' + t('countNoActual') + '</div>';
+  oMo('cntPostMo');
+}
+
+async function cntPostRun() {
+  cMo('cntPostMo');
+  const task = CNT.find(function (x) { return x.id === cntView; });
+  if (!task || task.status === 'posted') return;
+  const diffs = task.lines.filter(function (l) { return l.actual != null && l.actual !== '' && Number(l.actual) !== Number(l.book); });
+  const ok = [], fail = [];
+  for (const l of diffs) {
+    const delta = Number(l.actual) - Number(l.book);
+    try {
+      const { error } = await sb.rpc('stock_io', { p_type: delta > 0 ? 'in' : 'out', p_product_id: Number(l.pid), p_qty: Math.abs(delta), p_operator: user.u, p_note: 'COUNT:' + task.no });
+      if (error) throw error;
+      ok.push(l.sku);
+    } catch (e) { fail.push({ sku: l.sku, reason: (e && e.message) || String(e) }); }
+  }
+  logAudit('count', 'products', task.no + ' · ' + diffs.length + ' diff');
+  task.status = 'posted';
+  task.postedAt = new Date().toISOString();
+  task.postedBy = user.u;
+  await saveCountTasks();
+  await loadAllData();
+  render(curP);
+  toast(t('opSuccess') + ' ' + ok.length + (fail.length ? ' / ' + t('batchErr').replace('{0}', fail.length) : ''), fail.length ? 'er' : 'ok');
+  if (fail.length) console.warn('cntPost fails', fail);
+}
+
+
+// ═══ W3: 订单单号/SKU 过滤 + 批量出库 ═══
+
+let ordQF = '';
+
+let ordSel = new Set();
+
+function ordMatchQ(o, q) {
+  const s = String(q || '').trim().toLowerCase();
+  if (!s) return true;
+  if (String(o.no || '').toLowerCase().includes(s) || String(o.id) === s) return true;
+  return (o.items || []).some(function (i) {
+    const p = prodById(i.pid);
+    return p && String(p.sku || '').toLowerCase().includes(s);
+  });
+}
+
+function setOrdQF(v) {
+  ordQF = v || '';
+  const y = window.scrollY;
+  render(curP);
+  window.scrollTo(0, y);
+  const el = document.getElementById('ordQS');
+  if (el) { el.focus(); const L = el.value.length; try { el.setSelectionRange(L, L); } catch (_) {} }
+}
+
+function ordQKey(e) { if (e.key === 'Enter') ordQEnter(); }
+
+function ordQEnter() {
+  if (!ordQF.trim()) return;
+  const list = (DB.ords || []).filter(function (o) { return o.st !== 'draft' && ordMatchQ(o, ordQF); });
+  if (list.length === 1) { viewOrd(list[0].id); return; }
+  if (!list.length) { toast(t('noMatch'), 'inf'); return; }
+  toast(t('selectedCount').replace('{0}', list.length), 'inf');
+}
+
+function ordQBar() {
+  return '<div class="sbox" style="width:100%;max-width:340px;margin-bottom:.55rem"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="ordQS" value="' + esc(ordQF) + '" data-t-ph="ordQPh" placeholder="搜索单号/SKU，回车直达" oninput="setOrdQF(this.value)" onkeydown="ordQKey(event)" /></div>';
+}
+
+function toggleOrdSel(id, on) {
+  if (on) ordSel.add(id); else ordSel.delete(id);
+  const y = window.scrollY;
+  render(curP);
+  window.scrollTo(0, y);
+}
+
+function toggleAllOrdSel(on) {
+  let all = [...DB.ords].filter(function (o) { return o.st !== 'draft'; });
+  if (ordPkF) all = all.filter(function (o) { return o.pk === ordPkF; });
+  const vis = (ordStF ? all.filter(function (o) { return o.st === ordStF; }) : all).filter(function (o) { return ordMatchQ(o, ordQF); });
+  vis.forEach(function (o) { if (on) ordSel.add(o.id); else ordSel.delete(o.id); });
+  const y = window.scrollY;
+  render(curP);
+  window.scrollTo(0, y);
+}
+
+function ordSelClear() { ordSel.clear(); render(curP); }
+
+function ordBatchBar() {
+  if (!ordSel.size) return '';
+  const can = has('processOrder');
+  const gate = can ? '' : 'disabled title="' + t('noPermission') + '" ';
+  return '<div style="display:flex;gap:.45rem;align-items:center;flex-wrap:wrap;margin-bottom:.75rem;padding:.55rem .75rem;background:var(--ag);border:1px solid var(--bd);border-radius:var(--r)">'
+    + '<span style="font-size:.75rem;color:var(--ac)">' + t('selectedCount').replace('{0}', ordSel.size) + '</span>'
+    + '<button type="button" class="btn bp bs" style="height:36px;padding:0 .9rem" ' + gate + 'data-act="picking" onclick="ordBatchAsk(this.dataset.act)">' + t('batchPick') + '</button>'
+    + '<button type="button" class="btn bp bs" style="height:36px;padding:0 .9rem" ' + gate + 'data-act="done" onclick="ordBatchAsk(this.dataset.act)">' + t('batchDone') + '</button>'
+    + '<button type="button" class="btn bg bs" style="height:36px;padding:0 .9rem" data-act="print" onclick="ordBatchAsk(this.dataset.act)">' + t('batchPrint') + '</button>'
+    + '<button type="button" class="btn bg bs" style="height:36px;padding:0 .9rem" onclick="ordSelClear()">' + t('batchClear') + '</button>'
+    + '</div>';
+}
+
+function ordBatchAsk(action) {
+  const ids = [...ordSel];
+  if (!ids.length) { toast(t('batchNone'), 'inf'); return; }
+  const ords = ids.map(function (id) { return DB.ords.find(function (o) { return o.id === id; }); }).filter(Boolean);
+  const sum = {};
+  ords.forEach(function (o) { (o.items || []).forEach(function (i) {
+    const p = prodById(i.pid);
+    const key = (p ? p.sku + ' · ' + p.name : t('deleted'));
+    sum[key] = (sum[key] || 0) + (Number(i.qty) || 0);
+  }); });
+  const sumHtml = Object.keys(sum).map(function (k) {
+    return '<div style="display:flex;justify-content:space-between;gap:.5rem;padding:.15rem 0;font-size:.72rem"><span style="min-width:0;overflow:hidden;text-overflow:ellipsis">' + esc(k) + '</span><strong>×' + sum[k] + '</strong></div>';
+  }).join('') || '-';
+  document.getElementById('ordBatchBody').innerHTML =
+      '<div style="font-size:.72rem;color:var(--t2);margin-bottom:.5rem">' + t('batchOrders') + ' (' + ords.length + '): ' + ords.map(function (o) { return esc(o.no); }).join(', ') + '</div>'
+    + '<div style="font-size:.72rem;color:var(--t2);margin:.5rem 0 .25rem">' + t('batchExpect') + '</div>'
+    + '<div style="max-height:180px;overflow-y:auto;padding:.45rem;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r)">' + sumHtml + '</div>'
+    + '<div style="font-size:.66rem;color:var(--t3);margin-top:.55rem">' + t('batchStockHint') + '</div>';
+  window._batchAct = action;
+  const go = document.getElementById('ordBatchGo');
+  if (go) { go.textContent = action === 'picking' ? t('batchPick') : action === 'done' ? t('batchDone') : t('batchPrint'); go.setAttribute('onclick', 'ordBatchGo()'); }
+  oMo('ordBatchMo');
+}
+
+function ordBatchGo() {
+  const action = window._batchAct;
+  const ids = [...ordSel];
+  cMo('ordBatchMo');
+  ordBatchRun(action, ids);
+}
+
+function ordBatchClose() { cMo('ordBatchMo'); }
+
+function ordCanShip(o) {
+  if (o.pk === 'pickup') return true;
+  if (o.pk === 'onibus') return !!(o.onibusName && o.onibusImg);
+  return !!o.shipAddr;
+}
+
+async function ordBatchRun(action, ids) {
+  if (action === 'print') {
+    const html = ids.map(function (id) { return pickListPage(id); }).join('');
+    if (html) { document.getElementById('pa').innerHTML = html; window.print(); }
+    ordSel.clear();
+    render(curP);
+    return;
+  }
+  const ok = [], fail = [];
+  for (const id of ids) {
+    const o = DB.ords.find(function (x) { return x.id === id; });
+    if (!o) { fail.push({ id: id, no: String(id), reason: t('deleted') }); continue; }
+    try {
+      if (action === 'picking' && o.st !== 'pending') { fail.push({ id: o.id, no: o.no, reason: t('batchWrongState') }); continue; }
+      if (action === 'done') {
+        if (o.st !== 'picking') { fail.push({ id: o.id, no: o.no, reason: t('batchWrongState') }); continue; }
+        if (!ordCanShip(o) && !o.adminConfirmedShip) { fail.push({ id: o.id, no: o.no, reason: o.pk === 'onibus' ? t('missingScheduleOrAddr') : t('missingAddrOrAdmin') }); continue; }
+      }
+      const { error } = await adminFrom('orders').update({ status: action, processed_by: user.u }).eq('id', id);
+      if (error) throw error;
+      ok.push(o.no);
+    } catch (e) { fail.push({ id: o.id, no: o.no, reason: (e && e.message) || String(e) }); }
+  }
+  await loadAllData();
+  ordSel.clear();
+  render(curP);
+  let body = '<div style="font-size:.78rem;color:var(--sf);margin-bottom:.35rem">' + t('batchOk').replace('{0}', ok.length) + (ok.length ? ': ' + ok.map(esc).join(', ') : '') + '</div>';
+  if (fail.length) {
+    body += '<div style="font-size:.72rem;color:var(--dg)">' + t('batchErr').replace('{0}', fail.length) + '</div><div style="max-height:180px;overflow-y:auto;margin-top:.35rem">'
+      + fail.map(function (f) { return '<div style="padding:.15rem 0;font-size:.7rem">' + esc(f.no) + ' — ' + esc(f.reason) + '</div>'; }).join('') + '</div>';
+  }
+  document.getElementById('ordBatchBody').innerHTML = body;
+  window._batchFail = fail;
+  const go = document.getElementById('ordBatchGo');
+  if (go) {
+    go.textContent = fail.length ? t('batchRetry') : t('close');
+    go.setAttribute('onclick', fail.length ? 'ordBatchRetry()' : 'ordBatchClose()');
+  }
+  oMo('ordBatchMo');
+}
+
+function ordBatchRetry() {
+  const fail = window._batchFail || [];
+  const action = window._batchAct;
+  cMo('ordBatchMo');
+  if (fail.length) ordBatchRun(action, fail.map(function (f) { return f.id; }));
+}
+
 function ordPkFilterBar(counts) {
 
   const chip = (on, txt, n, pk) => '<button type="button" class="chip-btn' + (on ? ' on' : '') + '" onclick="setOrdPkF(\'' + pk + '\')">' + txt + (n != null ? ' <span class="n">' + n + '</span>' : '') + '</button>';
@@ -12689,13 +13534,13 @@ function rWhOrd() {
 
   all.forEach(o => { if (counts[o.st] != null) counts[o.st] += 1; });
 
-  const ords = ordStF ? all.filter(o => o.st === ordStF) : all;
+  const ords = (ordStF ? all.filter(o => o.st === ordStF) : all).filter(o => ordMatchQ(o, ordQF));
 
   let tb = '';
 
   if (!ords.length) {
 
-    tb = '<tr><td colspan="6"><div class="empty"><p>' + t('noOrders') + '</p></div></td></tr>';
+    tb = '<tr><td colspan="7"><div class="empty"><p>' + t('noOrders') + '</p></div></td></tr>';
 
   } else {
 
@@ -12823,17 +13668,17 @@ function rWhOrd() {
 
       const pkExtra = o.pk === 'onibus' ? ' <span style="font-size:.6rem;color:var(--t3)">(' + esc(o.onibusName || '-') + ')</span>' : '';
 
-      const srcTag = o.src === 'shop' ? ' <span class="badge b-st" style="font-size:.58rem">商城</span>' : '';
+      const srcTag = o.src === 'shop' ? ' <span class="badge b-st" style="font-size:.58rem">' + t('srcShop') + '</span>' : '';
 
 
 
-      return '<tr style="cursor:pointer" onclick="viewOrd(' + o.id + ')"><td><strong>' + esc(o.no) + '</strong>' + srcTag + '</td><td>' + (pk.i || '') + ' ' + t(OSTAT[o.st]?.l || o.st) + pkExtra + '</td><td><span class="badge ' + sc.c + '">' + t(sc.l) + '</span></td><td><span class="badge ' + payColor + '">' + payLabel + '</span></td><td style="font-family:Inter,sans-serif;font-variant-numeric:tabular-nums;font-size:.68rem;color:var(--t3)">' + esc(o.cr) + '</td><td><div class="ac">' + ac + '</div></td></tr>';
+      return '<tr style="cursor:pointer" onclick="viewOrd(' + o.id + ')"><td onclick="event.stopPropagation()"><input type="checkbox" ' + (ordSel.has(o.id) ? 'checked ' : '') + 'onchange="toggleOrdSel(' + o.id + ',this.checked)" /></td><td><strong>' + esc(o.no) + '</strong>' + srcTag + '</td><td>' + (pk.i || '') + ' ' + t(OSTAT[o.st]?.l || o.st) + pkExtra + '</td><td><span class="badge ' + sc.c + '">' + t(sc.l) + '</span></td><td><span class="badge ' + payColor + '">' + payLabel + '</span></td><td class="hide-sm" style="font-family:Inter,sans-serif;font-variant-numeric:tabular-nums;font-size:.68rem;color:var(--t3)">' + esc(o.cr) + '</td><td><div class="ac">' + ac + '</div></td></tr>';
 
     }).join('');
 
   }
 
-  return ordPkFilterBar(pkCounts) + ordStFilterBar(counts) + '<div class="tw"><div class="ts"><table><thead><tr><th>' + t('orderNo') + '</th><th>' + t('pickup') + '</th><th>' + t('status') + '</th><th>' + t('payment') + '</th><th>' + t('createdAt') + '</th><th>' + t('action') + '</th></tr></thead><tbody>' + tb + '</tbody><\/table></div></div>';
+  return ordQBar() + ordPkFilterBar(pkCounts) + ordStFilterBar(counts) + ordBatchBar() + '<div class="tw"><div class="ts"><table><thead><tr><th style="width:34px"><input type="checkbox" ' + (ords.length && ords.every(function (o) { return ordSel.has(o.id); }) ? 'checked ' : '') + 'title="' + t('batchAll') + '" onchange="toggleAllOrdSel(this.checked)" /></th><th>' + t('orderNo') + '</th><th>' + t('pickup') + '</th><th>' + t('status') + '</th><th>' + t('payment') + '</th><th class="hide-sm">' + t('createdAt') + '</th><th>' + t('action') + '</th></tr></thead><tbody>' + tb + '</tbody><\/table></div></div>';
 
 }
 
@@ -13158,6 +14003,7 @@ function updOrdStatus(id, st) {
 // Cancel order and restore stock (atomic RPC)
 
 async function cancelOrd(id) {
+  logAudit('cancel', 'orders', '#' + id);
 
   const o = DB.ords.find(x => x.id === id);
 
@@ -13580,6 +14426,7 @@ function openPayConf(id) {
 
 
 async function setPayStatus(status) {
+  logAudit('bill', 'orders', String(status));
 
   const id = parseInt(document.getElementById('payOid').value);
 
@@ -13823,21 +14670,45 @@ async function saveOrdPrice(orderId) {
 
 
 
-function printOrd(id) {
+function printLabel(id) {
+  const p = prodById(id);
+  if (!p) return;
+  const body = '<div style="font-size:13px">' + t('sku') + ': <strong>' + esc(p.sku) + '</strong></div>'
+    + '<div style="font-size:13px">' + t('name') + ': ' + esc(p.name) + '</div>'
+    + '<div style="font-size:13px">' + t('location') + ': <strong>' + esc(p.loc || '-') + '</strong></div>'
+    + '<div style="font-size:13px">' + t('sellPrice') + ': ¥' + (Number(p.price) || 0) + '</div>';
+  document.getElementById('pa').innerHTML = '<div style="border:2px solid #000;padding:14px;width:260px;font-family:Inter,sans-serif"><div style="font-size:15px;font-weight:800;margin-bottom:8px">CloudStock · ' + t('printLabel') + '</div>' + body + '</div>';
+  window.print();
+}
+
+
+function pickListPage(id) {
 
   const o = DB.ords.find(x => x.id === id);
 
-  if (!o) return;
+  if (!o) return '';
 
   const its = o.items.map(i => {
 
     const p = prodById(i.pid);
 
-    return '<tr><td>' + (p ? p.name : t('deleted')) + '</td><td>' + (p ? p.sku : '-') + '</td><td>' + (p ? p.loc : '-') + '</td><td><strong>' + i.qty + '</strong></td></tr>';
+    return '<tr><td>' + (p ? p.name : t('deleted')) + '</td><td>' + (p ? p.sku : '-') + '</td><td>' + (p ? (p.loc || '-') : '-') + '</td><td><strong>' + i.qty + '</strong></td></tr>';
 
   }).join('');
 
-  document.getElementById('pa').innerHTML = '<h2>📦 ' + t('printPickList') + '</h2><div style="font-size:14px;color:#666;margin-bottom:10px">' + esc(o.no) + '</div><table><thead><tr><th>' + t('name') + '</th><th>' + t('sku') + '</th><th>' + t('location') + '</th><th>' + t('quantity') + '</th></tr></thead><tbody>' + its + '</tbody><\/table><div style="margin-top:20px;font-size:12px;color:#999">' + new Date().toLocaleString() + ' · CloudStock</div>';
+  return '<div style="page-break-after:always"><h2>📦 ' + t('printPickList') + '</h2><div style="font-size:14px;color:#666;margin-bottom:10px">' + esc(o.no) + '</div><table><thead><tr><th>' + t('name') + '</th><th>' + t('sku') + '</th><th>' + t('location') + '</th><th>' + t('quantity') + '</th></tr></thead><tbody>' + its + '</tbody><\/table><div style="margin-top:20px;font-size:12px;color:#999">' + new Date().toLocaleString() + ' · CloudStock</div></div>';
+
+}
+
+
+
+function printOrd(id) {
+
+  const html = pickListPage(id);
+
+  if (!html) return;
+
+  document.getElementById('pa').innerHTML = html;
 
   window.print();
 
@@ -15959,11 +16830,15 @@ async function submitOrd() {
 
   }
 
+  let ordId = null;
+
+  const _dec = [];
+
+  const _prevItems = dEditId ? (((DB.ords || []).find(x => x.id === dEditId) || {}).items || []).map(i => ({ product_id: i.pid, qty: i.qty, size: i.size || '', original_price: Number(i.original_price || i.price) || 0 })) : [];
+
   try {
 
     const row = { ...buildOrderRow(), status: 'pending' };
-
-    let ordId;
 
     if (dEditId) { await adminFrom('orders').update(row).eq('id', dEditId); ordId = dEditId; await adminFrom('order_items').delete().eq('order_id', dEditId); }
 
@@ -15979,6 +16854,8 @@ async function submitOrd() {
 
       if (dErr) throw new Error('STOCK:' + it.pid + ':' + (dErr.message || dErr));
 
+      _dec.push(it);
+
     }
 
     await loadAllData();
@@ -15989,7 +16866,35 @@ async function submitOrd() {
 
     goPage('sOrds');
 
-  } catch (err) { toast(t('submitFailed') + ': ' + err.message, 'er'); }
+  } catch (err) {
+
+    // W6 补偿回滚:全成或全败(升级路径: 04-supabase/app_submit_order_rpc.sql)
+
+    try {
+
+      for (const it of _dec) { await sb.rpc('increment_stock', { pid: it.pid, amount: it.qty }); }
+
+      if (dEditId) {
+
+        await adminFrom('order_items').delete().eq('order_id', dEditId);
+
+        if (_prevItems.length) await adminFrom('order_items').insert(_prevItems.map(i => ({ ...i, order_id: dEditId })));
+
+      } else if (ordId) {
+
+        await adminFrom('order_items').delete().eq('order_id', ordId);
+
+        await adminFrom('orders').delete().eq('id', ordId);
+
+      }
+
+      logAudit('rollback', 'orders', 'STOCK:' + _dec.length);
+
+    } catch (_) {}
+
+    toast(t('submitFailed') + ': ' + err.message, 'er');
+
+  }
 
 }
 
@@ -16407,7 +17312,7 @@ async function saveCus() {
 
         try {
 
-          await adminApi('select', { table: 'products', limit: 1 });
+          var _acctsP = sb.rpc('app_list_accounts'); adminApi('select', { table: 'products', limit: 1 }).catch(function () { sessionStorage.removeItem('cs4'); try { initSb(''); } catch (_) {} });
 
         } catch (e) {
 
@@ -16421,7 +17326,7 @@ async function saveCus() {
 
           try {
 
-            const { data } = await sb.rpc('app_list_accounts');
+            const { data } = await _acctsP;
 
             const list = Array.isArray(data) ? data : [];
 
@@ -16451,9 +17356,17 @@ async function saveCus() {
 
   }
 
-  await loadAllData();
+  if (user) {
 
-  if (user) enterApp();
+    enterApp();
+
+    loadAllData().then(function () { try { render(curP || 'dash'); } catch (_) {} });
+
+  } else {
+
+    loadAllData();
+
+  }
 
 })();
 
