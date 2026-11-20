@@ -4770,7 +4770,7 @@ async function adminApi(action, payload) {
 
     } else if (res.status === 401) {
 
-      toast(t('sessionExpired') || '会话已过期，请重新登录', 'er');
+      sessionExpired();
 
     }
 
@@ -5487,6 +5487,25 @@ async function enterApp() {
   else { _bootP.then(_enter, _enter); }
 
 }
+
+// 会话过期统一处理:提示 + 自动回登录(幂等)
+function sessionExpired() {
+  try { if (!user && !sessionStorage.getItem('cs4')) return; } catch (_) {}
+  try { toast(t('sessionExpired') || '会话已过期，请重新登录', 'er'); } catch (_) {}
+  try { doLogout(); } catch (_) {}
+}
+
+// 到期巡检:每分钟核对本地过期时间,过期自动回登录
+function sessionWatch() {
+  try {
+    const s = sessionStorage.getItem('cs4');
+    if (!s) return;
+    const o = JSON.parse(s);
+    if (o && o.exp && Date.now() > o.exp) sessionExpired();
+  } catch (_) {}
+}
+
+setInterval(sessionWatch, 60000);
 
 function doLogout() {
 
@@ -17312,7 +17331,7 @@ async function saveCus() {
 
         try {
 
-          var _acctsP = sb.rpc('app_list_accounts'); adminApi('select', { table: 'products', limit: 1 }).catch(function () { sessionStorage.removeItem('cs4'); try { initSb(''); } catch (_) {} });
+          var _acctsP = sb.rpc('app_list_accounts'); adminApi('select', { table: 'products', limit: 1 }).catch(function () { try { sessionExpired(); } catch (_) {} });
 
         } catch (e) {
 
